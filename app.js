@@ -696,6 +696,38 @@ const KYC_ENGINE = (() => {
     return out.sort((a, b) => (b.licenses.length + b.adverse.length) - (a.licenses.length + a.adverse.length));
   }
 
+  // Near-name lookup for the no-exact-match case — "Metalex" vs "Metalix" style
+  // confusions are a classic KYC trap, deliberate or accidental.
+  function lev(a, b) {
+    if (Math.abs(a.length - b.length) > 2) return 99;
+    const m = a.length, n = b.length;
+    let prev = Array.from({ length: n + 1 }, (_, j) => j);
+    for (let i = 1; i <= m; i++) {
+      const cur = [i];
+      for (let j = 1; j <= n; j++) {
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+      }
+      prev = cur;
+    }
+    return prev[n];
+  }
+  function similarNames(q) {
+    build();
+    const qTokens = norm(q).split(" ").filter((t) => t.length >= 5 && !GENERIC.has(t));
+    if (!qTokens.length) return [];
+    const out = [];
+    for (const e of index.values()) {
+      const eTokens = e.key.split(" ").filter((t) => t.length >= 5 && !GENERIC.has(t));
+      const close = qTokens.some((qt) => eTokens.some((et) => {
+        const d = lev(qt, et);
+        return d > 0 && d <= (qt.length >= 8 ? 2 : 1);
+      }));
+      if (close) out.push(e);
+      if (out.length >= 5) break;
+    }
+    return out;
+  }
+
   function disputeMatches(entity) {
     if (!window.LEGAL) return [];
     const tokens = entity.key.split(" ").filter((t) => t.length >= 4 && !GENERIC.has(t));
@@ -767,7 +799,7 @@ const KYC_ENGINE = (() => {
     return { level, reasons, disputes, lics, cancelled, defaults, court };
   }
 
-  return { search, assess, build };
+  return { search, assess, build, similarNames };
 })();
 
 (function buildKycUI() {
@@ -790,10 +822,23 @@ const KYC_ENGINE = (() => {
         .map((c, i) => ({ c, i }))
         .filter(({ c }) => (c.name + " " + c.summary).toUpperCase().includes(nq))
         .slice(0, 6);
+      // No exact match → surface near-spellings we DO know. "Metalex" vs
+      // "Metalix" style confusion is a classic KYC trap — make it visible.
+      const similar = (!hits.length && q.length >= 5) ? KYC_ENGINE.similarNames(q) : [];
       countEl.textContent = hits.length || caseHits.length
         ? `${hits.length}${hits.length >= 30 ? "+" : ""} entities · ${caseHits.length} dispute case(s)`
-        : "no matches in register, adverse lists, or disputes index";
-      suggest.innerHTML = hits.map((e) => `
+        : similar.length
+          ? "no exact match — similar names below (verify: these may be DIFFERENT entities)"
+          : "no matches in register, adverse lists, disputes index, or similar spellings";
+      suggest.innerHTML = (similar.length ? `
+        <div style="font-size:11.5px;color:var(--warning);margin:2px 0 6px">⚠ No exact match for “${q.replace(/</g, "&lt;")}”.
+        Similar names in the official data — a close spelling can be a different company entirely:</div>` : "") +
+        similar.map((e) => `
+        <div class="kyc-suggestion" data-key="${encodeURIComponent(e.key)}" style="border-color:var(--warning)">
+          <span>≈ ${e.name}</span>
+          <span class="tags">${e.licenses.length} license(s)${e.adverse.length ? ` · <span class="hit">${e.adverse.length} adverse</span>` : ""}</span>
+        </div>`).join("") +
+        hits.map((e) => `
         <div class="kyc-suggestion" data-key="${encodeURIComponent(e.key)}">
           <span>${e.name}</span>
           <span class="tags">${e.licenses.length} license(s)${e.adverse.length ? ` · <span class="hit">${e.adverse.length} adverse</span>` : ""}${e.court && e.court.n ? ` · ⚖ ${e.court.n}` : ""}</span>
