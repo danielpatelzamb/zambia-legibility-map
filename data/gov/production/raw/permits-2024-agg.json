@@ -1,0 +1,905 @@
+﻿[
+    {
+        "desc":  "Copper anodes for electrolytic refining (primary quality)",
+        "uom":  "Dry metric tonnes",
+        "qty":  648800,
+        "usd":  24758946231.239983,
+        "n":  55
+    },
+    {
+        "desc":  "Copper anodes for electrolytic refining (primary quality)",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  392200,
+        "usd":  3911161412.2499995,
+        "n":  17
+    },
+    {
+        "desc":  "Electro-refined copper cathodes (high purity)",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  146256,
+        "usd":  1361957959.74,
+        "n":  14
+    },
+    {
+        "desc":  "Electro-won copper cathodes (high purity)",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  111360,
+        "usd":  1036111317.9900002,
+        "n":  42
+    },
+    {
+        "desc":  "Nickel ores and concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  176500,
+        "usd":  506189760.09999996,
+        "n":  9
+    },
+    {
+        "desc":  "Electro-won copper cathodes (high purity)",
+        "uom":  "Dry metric tonnes",
+        "qty":  49300,
+        "usd":  449251700.31000006,
+        "n":  53
+    },
+    {
+        "desc":  "Electro-refined copper cathodes (high purity)",
+        "uom":  "Dry metric tonnes",
+        "qty":  44590,
+        "usd":  409336417.26,
+        "n":  28
+    },
+    {
+        "desc":  "Electro-won copper cathodes (low purity)",
+        "uom":  "Dry metric tonnes",
+        "qty":  30500,
+        "usd":  269389049.33,
+        "n":  8
+    },
+    {
+        "desc":  "Copper-cobalt alloy (other than master alloys of 7405)",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  30500,
+        "usd":  231301332.58,
+        "n":  9
+    },
+    {
+        "desc":  "Copper blister (unrefined copper, not anodes for electrolytic refining)",
+        "uom":  "Dry metric tonnes",
+        "qty":  17370,
+        "usd":  158284342.15000004,
+        "n":  25
+    },
+    {
+        "desc":  "Bullion; semi-manufactured form of gold",
+        "uom":  "Kilogram",
+        "qty":  1689.1097,
+        "usd":  126378694.97000001,
+        "n":  11
+    },
+    {
+        "desc":  "Copper concentrate, Mixed sulphide and oxide",
+        "uom":  "Dry metric tonnes",
+        "qty":  28160.4,
+        "usd":  68326674.81,
+        "n":  16
+    },
+    {
+        "desc":  "Copper concentrate, Sulphide",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  28890,
+        "usd":  63226576.61,
+        "n":  9
+    },
+    {
+        "desc":  "other Zinc concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  62500,
+        "usd":  53016845.28,
+        "n":  22
+    },
+    {
+        "desc":  "Electro-refined copper cathodes (low purity)",
+        "uom":  "Dry metric tonnes",
+        "qty":  5500,
+        "usd":  48619701.9,
+        "n":  7
+    },
+    {
+        "desc":  "Anodic slimes",
+        "uom":  "Dry metric tonnes",
+        "qty":  920,
+        "usd":  40467968,
+        "n":  6
+    },
+    {
+        "desc":  "Other unrefined copper, off-grade anodes for electrolytic refining (not copper blister )",
+        "uom":  "Dry metric tonnes",
+        "qty":  6000,
+        "usd":  34478128.6,
+        "n":  6
+    },
+    {
+        "desc":  "Copper concentrate, Oxide",
+        "uom":  "Dry metric tonnes",
+        "qty":  21790,
+        "usd":  24826547.720000003,
+        "n":  13
+    },
+    {
+        "desc":  "Zincite, zinc oxide concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  31500,
+        "usd":  23071421.650000002,
+        "n":  10
+    },
+    {
+        "desc":  "Unwrought lead (excl. refined and containing antimony)",
+        "uom":  "Dry metric tonnes",
+        "qty":  13100,
+        "usd":  22730693.88,
+        "n":  27
+    },
+    {
+        "desc":  "Copper ore, Oxide",
+        "uom":  "Dry metric tonnes",
+        "qty":  58600,
+        "usd":  21171757.849999998,
+        "n":  29
+    },
+    {
+        "desc":  "Zinc dust",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  20008,
+        "usd":  20853512.09,
+        "n":  3
+    },
+    {
+        "desc":  "Aluminium alloys, unwrought",
+        "uom":  "Dry metric tonnes",
+        "qty":  6463,
+        "usd":  14961366.79,
+        "n":  20
+    },
+    {
+        "desc":  "Other zinc ores",
+        "uom":  "Dry metric tonnes",
+        "qty":  19790,
+        "usd":  13340918.38,
+        "n":  11
+    },
+    {
+        "desc":  "MANGANESE ORES/CONCENTRATES(INC.FERRUGINOUS), WITH MANGANESE CONT.OF=\u003e20%",
+        "uom":  "Dry metric tonnes",
+        "qty":  278046.69,
+        "usd":  12465510.01,
+        "n":  67
+    },
+    {
+        "desc":  "Zincite, zinc oxide ores",
+        "uom":  "Dry metric tonnes",
+        "qty":  21728,
+        "usd":  11577342.85,
+        "n":  12
+    },
+    {
+        "desc":  "Aluminium alloys, unwrought",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  4148,
+        "usd":  10294577.96,
+        "n":  7
+    },
+    {
+        "desc":  "Copper blister (unrefined copper, not anodes for electrolytic refining)",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  1170,
+        "usd":  10023810.28,
+        "n":  4
+    },
+    {
+        "desc":  "Unroasted iron pyrite ore",
+        "uom":  "Dry metric tonnes",
+        "qty":  23000,
+        "usd":  9587398.2,
+        "n":  3
+    },
+    {
+        "desc":  "Zincite, zinc oxide concentrates",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  8500,
+        "usd":  9253130.05,
+        "n":  4
+    },
+    {
+        "desc":  "Niobium, tantalum and vanadium ores and concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  235,
+        "usd":  8522439.56,
+        "n":  4
+    },
+    {
+        "desc":  "Copper ore, Oxide",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  20113.4,
+        "usd":  8274159.6599999992,
+        "n":  14
+    },
+    {
+        "desc":  "Copper concentrate, Mixed sulphide and oxide",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  3900,
+        "usd":  8256388.29,
+        "n":  3
+    },
+    {
+        "desc":  "Unroasted iron pyrite concentrate",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  38000,
+        "usd":  8156881.3,
+        "n":  3
+    },
+    {
+        "desc":  "Other copper alloys (other than master alloys of 7405)",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  800,
+        "usd":  6846461.52,
+        "n":  2
+    },
+    {
+        "desc":  "Unwrought aluminium, not alloyed",
+        "uom":  "Dry metric tonnes",
+        "qty":  2658,
+        "usd":  6195237.669999999,
+        "n":  13
+    },
+    {
+        "desc":  "MANGANESE ORES/CONCENTRATES(INC.FERRUGINOUS), WITH MANGANESE CONT.OF=\u003e20%",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  131483,
+        "usd":  6090538.1800000006,
+        "n":  35
+    },
+    {
+        "desc":  "Unroasted iron pyrite ore",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  22000,
+        "usd":  5813335,
+        "n":  1
+    },
+    {
+        "desc":  "Unroasted iron pyrite concentrate",
+        "uom":  "Dry metric tonnes",
+        "qty":  21000,
+        "usd":  5549092.5,
+        "n":  1
+    },
+    {
+        "desc":  "Lead ores and concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  5024,
+        "usd":  4940578.83,
+        "n":  2
+    },
+    {
+        "desc":  "Copper concentrate, Oxide",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  2501,
+        "usd":  4497515.91,
+        "n":  3
+    },
+    {
+        "desc":  "Copper ore, Sulphide",
+        "uom":  "Dry metric tonnes",
+        "qty":  15000,
+        "usd":  3974923.5,
+        "n":  1
+    },
+    {
+        "desc":  "other Zinc concentrates",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  4900,
+        "usd":  3864942.6399999997,
+        "n":  5
+    },
+    {
+        "desc":  "Unwrought lead (excl. refined and containing antimony)",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  1300,
+        "usd":  3828670.95,
+        "n":  3
+    },
+    {
+        "desc":  "Zincite, zinc oxide ores",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  6000,
+        "usd":  3756596.5,
+        "n":  2
+    },
+    {
+        "desc":  "Copper concentrate, Sulphide",
+        "uom":  "Dry metric tonnes",
+        "qty":  1900,
+        "usd":  3506208.54,
+        "n":  5
+    },
+    {
+        "desc":  "Unwrought gold (incl. gold plated with platinum), non-monetary",
+        "uom":  "Kilogram",
+        "qty":  41.86,
+        "usd":  3295907.5900000003,
+        "n":  10
+    },
+    {
+        "desc":  "Copper ore, Mixed sulphide and oxide",
+        "uom":  "Dry metric tonnes",
+        "qty":  11000,
+        "usd":  3243233.26,
+        "n":  3
+    },
+    {
+        "desc":  "Agglomerated iron ores and concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  5000,
+        "usd":  2740677.5,
+        "n":  1
+    },
+    {
+        "desc":  "other Zinc concentrates",
+        "uom":  "Kilogram",
+        "qty":  3500004,
+        "usd":  2654498.37,
+        "n":  3
+    },
+    {
+        "desc":  "Cobalt concentrate",
+        "uom":  "Dry metric tonnes",
+        "qty":  800,
+        "usd":  2274589.14,
+        "n":  4
+    },
+    {
+        "desc":  "Copper ore, Sulphide",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  4766.09,
+        "usd":  1828749.2,
+        "n":  8
+    },
+    {
+        "desc":  "Silver ores and concentrates",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  500,
+        "usd":  1342042.23,
+        "n":  1
+    },
+    {
+        "desc":  "Aluminium alloys, unwrought",
+        "uom":  "Kilogram",
+        "qty":  501000,
+        "usd":  1293522.23,
+        "n":  3
+    },
+    {
+        "desc":  "Copper, refined, unwrought, excl. copper in the form of billets, wire-bars, cathodes",
+        "uom":  "Kilogram",
+        "qty":  272000,
+        "usd":  1230666.49,
+        "n":  3
+    },
+    {
+        "desc":  "Cobalt ore",
+        "uom":  "Dry metric tonnes",
+        "qty":  2100,
+        "usd":  989636.66,
+        "n":  3
+    },
+    {
+        "desc":  "Niobium, tantalum and vanadium ores and concentrates",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  55,
+        "usd":  908378.63,
+        "n":  2
+    },
+    {
+        "desc":  "Tungsten ores and concentrates",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  120,
+        "usd":  879240.17999999993,
+        "n":  2
+    },
+    {
+        "desc":  "Tin ores and concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  79,
+        "usd":  723711.55999999994,
+        "n":  4
+    },
+    {
+        "desc":  "Waste and scrap",
+        "uom":  "Dry metric tonnes",
+        "qty":  350,
+        "usd":  720304.79,
+        "n":  1
+    },
+    {
+        "desc":  "Tin ores and concentrates",
+        "uom":  "Kilogram",
+        "qty":  57031,
+        "usd":  626829.33,
+        "n":  8
+    },
+    {
+        "desc":  "Tin ores and concentrates",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  120,
+        "usd":  530740.13,
+        "n":  2
+    },
+    {
+        "desc":  "Refined lead, unwrought",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  227,
+        "usd":  502367.23,
+        "n":  2
+    },
+    {
+        "desc":  "Brass, unwrought",
+        "uom":  "Dry metric tonnes",
+        "qty":  64.4,
+        "usd":  448049.79999999993,
+        "n":  5
+    },
+    {
+        "desc":  "Copper, refined, unwrought, excl. copper in the form of billets, wire-bars, cathodes",
+        "uom":  "Dry metric tonnes",
+        "qty":  50,
+        "usd":  446461.27,
+        "n":  1
+    },
+    {
+        "desc":  "Copper, refined, unwrought, excl. copper in the form of billets, wire-bars, cathodes",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  50,
+        "usd":  426054.94,
+        "n":  1
+    },
+    {
+        "desc":  "Copper ore, Mixed sulphide and oxide",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  1001,
+        "usd":  420506.54,
+        "n":  4
+    },
+    {
+        "desc":  "Other zinc ores",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  500,
+        "usd":  416541.15,
+        "n":  1
+    },
+    {
+        "desc":  "Refined lead, unwrought",
+        "uom":  "Kilogram",
+        "qty":  150149.99,
+        "usd":  355782.41000000003,
+        "n":  5
+    },
+    {
+        "desc":  "Other semi-manufactured forms of gold",
+        "uom":  "Kilogram",
+        "qty":  4,
+        "usd":  281430.39999999997,
+        "n":  4
+    },
+    {
+        "desc":  "Titanium ores and concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  226,
+        "usd":  183678.34,
+        "n":  2
+    },
+    {
+        "desc":  "Unwrought gold (incl. gold plated with platinum), non-monetary",
+        "uom":  "Gram",
+        "qty":  2349.82,
+        "usd":  182008.88,
+        "n":  6
+    },
+    {
+        "desc":  "Other semi-manufactured forms of gold",
+        "uom":  "Gram",
+        "qty":  1443,
+        "usd":  116305.26,
+        "n":  2
+    },
+    {
+        "desc":  "Copper matte",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  150,
+        "usd":  107122.85,
+        "n":  1
+    },
+    {
+        "desc":  "Tungsten ores and concentrates",
+        "uom":  "Dry metric tonnes",
+        "qty":  30,
+        "usd":  89224.2,
+        "n":  1
+    },
+    {
+        "desc":  "MANGANESE ORES/CONCENTRATES(INC.FERRUGINOUS), WITH MANGANESE CONT.OF=\u003e20%",
+        "uom":  "Kilogram",
+        "qty":  1003268,
+        "usd":  53040.759999999995,
+        "n":  15
+    },
+    {
+        "desc":  "Titanium ores and concentrates",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  26,
+        "usd":  19632.46,
+        "n":  1
+    },
+    {
+        "desc":  "Bullion; semi-manufactured form of gold",
+        "uom":  "Gram",
+        "qty":  141,
+        "usd":  11234.49,
+        "n":  1
+    },
+    {
+        "desc":  "Nickel ores and concentrates",
+        "uom":  "Kilogram",
+        "qty":  5405,
+        "usd":  10450.75,
+        "n":  9
+    },
+    {
+        "desc":  "Other waste and scrap of precious metals ",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  1.5,
+        "usd":  9486.48,
+        "n":  1
+    },
+    {
+        "desc":  "Copper ore, Oxide",
+        "uom":  "Kilogram",
+        "qty":  10635.5,
+        "usd":  8415.73,
+        "n":  33
+    },
+    {
+        "desc":  "Slag containing copper",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  20,
+        "usd":  7479.94,
+        "n":  1
+    },
+    {
+        "desc":  "Precious metal ores and concentrates (excl. silver)",
+        "uom":  "Kilogram",
+        "qty":  5.2,
+        "usd":  6332.34,
+        "n":  1
+    },
+    {
+        "desc":  "Copper concentrate, Sulphide",
+        "uom":  "Kilogram",
+        "qty":  2170,
+        "usd":  4428.2,
+        "n":  21
+    },
+    {
+        "desc":  "Unroasted iron pyrite ore",
+        "uom":  "Kilogram",
+        "qty":  7746.31,
+        "usd":  4053.73,
+        "n":  8
+    },
+    {
+        "desc":  "Niobium, tantalum and vanadium ores and concentrates",
+        "uom":  "Kilogram",
+        "qty":  146,
+        "usd":  3183.55,
+        "n":  3
+    },
+    {
+        "desc":  "Unroasted iron pyrite concentrate",
+        "uom":  "Kilogram",
+        "qty":  6600,
+        "usd":  3029.84,
+        "n":  2
+    },
+    {
+        "desc":  "WASTE material (Broken / crushed rock/stone from mining activity)",
+        "uom":  "Kilogram",
+        "qty":  18390.6,
+        "usd":  2441.1099999999997,
+        "n":  27
+    },
+    {
+        "desc":  "Other waste and scrap of precious metals ",
+        "uom":  "Kilogram",
+        "qty":  500,
+        "usd":  2364.58,
+        "n":  1
+    },
+    {
+        "desc":  "Copper ore, Sulphide",
+        "uom":  "Kilogram",
+        "qty":  9322.1899999999987,
+        "usd":  2039.7699999999995,
+        "n":  33
+    },
+    {
+        "desc":  "Cobalt concentrate",
+        "uom":  "Kilogram",
+        "qty":  237,
+        "usd":  1952.4099999999999,
+        "n":  9
+    },
+    {
+        "desc":  "Electro-won copper cathodes (high purity)",
+        "uom":  "Kilogram",
+        "qty":  209,
+        "usd":  1897.28,
+        "n":  3
+    },
+    {
+        "desc":  "Non-agglomerated iron ores and concentrates",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  5,
+        "usd":  1475.87,
+        "n":  3
+    },
+    {
+        "desc":  "Copper concentrate, Oxide",
+        "uom":  "Kilogram",
+        "qty":  512,
+        "usd":  1294.18,
+        "n":  10
+    },
+    {
+        "desc":  "Copper ore, Mixed sulphide and oxide",
+        "uom":  "Kilogram",
+        "qty":  3939.5,
+        "usd":  1225.52,
+        "n":  12
+    },
+    {
+        "desc":  "Copper blister (unrefined copper, not anodes for electrolytic refining)",
+        "uom":  "Kilogram",
+        "qty":  150.6,
+        "usd":  1170.08,
+        "n":  2
+    },
+    {
+        "desc":  "Other zinc ores",
+        "uom":  "Kilogram",
+        "qty":  1702,
+        "usd":  1114.69,
+        "n":  5
+    },
+    {
+        "desc":  "WASTE material (Broken / crushed rock/stone from mining activity)",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  4.8,
+        "usd":  685.29,
+        "n":  1
+    },
+    {
+        "desc":  "Copper anodes for electrolytic refining (primary quality)",
+        "uom":  "Kilogram",
+        "qty":  45,
+        "usd":  424.28,
+        "n":  1
+    },
+    {
+        "desc":  "Copper concentrate, Mixed sulphide and oxide",
+        "uom":  "Kilogram",
+        "qty":  120.53999999999999,
+        "usd":  380.57,
+        "n":  14
+    },
+    {
+        "desc":  "Slag containing copper",
+        "uom":  "Kilogram",
+        "qty":  200,
+        "usd":  244.66000000000003,
+        "n":  2
+    },
+    {
+        "desc":  "Copper-cobalt alloy (other than master alloys of 7405)",
+        "uom":  "Kilogram",
+        "qty":  24,
+        "usd":  157.22,
+        "n":  2
+    },
+    {
+        "desc":  "Cobalt ore",
+        "uom":  "Kilogram",
+        "qty":  50,
+        "usd":  146.5,
+        "n":  1
+    },
+    {
+        "desc":  "Roasted iron pyrites",
+        "uom":  "Kilogram",
+        "qty":  100,
+        "usd":  135.73,
+        "n":  1
+    },
+    {
+        "desc":  "Base metals or silver, clad with gold, up to semi-manufactured - Sheets, plates \u0026 strips",
+        "uom":  "Gram",
+        "qty":  2,
+        "usd":  107.03,
+        "n":  1
+    },
+    {
+        "desc":  "Unwrought lead (excl. refined and containing antimony)",
+        "uom":  "Kilogram",
+        "qty":  50,
+        "usd":  101.56,
+        "n":  1
+    },
+    {
+        "desc":  "Silver ores and concentrates",
+        "uom":  "Kilogram",
+        "qty":  2,
+        "usd":  99.47,
+        "n":  1
+    },
+    {
+        "desc":  "Zincite, zinc oxide ores",
+        "uom":  "Kilogram",
+        "qty":  102,
+        "usd":  87.92,
+        "n":  5
+    },
+    {
+        "desc":  "Non-agglomerated iron ores and concentrates",
+        "uom":  "Kilogram",
+        "qty":  221,
+        "usd":  81.64,
+        "n":  6
+    },
+    {
+        "desc":  "Tailings containing copper",
+        "uom":  "Kilogram",
+        "qty":  1405,
+        "usd":  60.209999999999994,
+        "n":  4
+    },
+    {
+        "desc":  "Electro-refined copper cathodes (high purity)",
+        "uom":  "Gram",
+        "qty":  3100,
+        "usd":  27.94,
+        "n":  1
+    },
+    {
+        "desc":  "Copper mattes; cement copper (precipitated copper) to be accessible immediately",
+        "uom":  "Kilogram",
+        "qty":  3,
+        "usd":  18.54,
+        "n":  1
+    },
+    {
+        "desc":  "Niobium, tantalum and vanadium ores and concentrates",
+        "uom":  "Gram",
+        "qty":  765,
+        "usd":  13.8,
+        "n":  2
+    },
+    {
+        "desc":  "Other copper products from electro-winning process",
+        "uom":  "Gram",
+        "qty":  12558,
+        "usd":  12.92,
+        "n":  2
+    },
+    {
+        "desc":  "Tin ores and concentrates",
+        "uom":  "Gram",
+        "qty":  607,
+        "usd":  9.86,
+        "n":  1
+    },
+    {
+        "desc":  "Aluminium ores and concentrates",
+        "uom":  "Kilogram",
+        "qty":  120,
+        "usd":  9.25,
+        "n":  1
+    },
+    {
+        "desc":  "Copper matte",
+        "uom":  "Kilogram",
+        "qty":  1.5,
+        "usd":  8.89,
+        "n":  1
+    },
+    {
+        "desc":  "Copper ore, Oxide",
+        "uom":  "Gram",
+        "qty":  7437,
+        "usd":  8.02,
+        "n":  1
+    },
+    {
+        "desc":  "Titanium ores and concentrates",
+        "uom":  "Kilogram",
+        "qty":  4,
+        "usd":  2.4,
+        "n":  1
+    },
+    {
+        "desc":  "Copper concentrate, Oxide",
+        "uom":  "Gram",
+        "qty":  650,
+        "usd":  1.8099999999999998,
+        "n":  2
+    },
+    {
+        "desc":  "Copper concentrate, Mixed sulphide and oxide",
+        "uom":  "Gram",
+        "qty":  500,
+        "usd":  1.6,
+        "n":  1
+    },
+    {
+        "desc":  "Copper concentrate, Sulphide",
+        "uom":  "Gram",
+        "qty":  760,
+        "usd":  1.44,
+        "n":  2
+    },
+    {
+        "desc":  "Bronze, unwrought",
+        "uom":  "Gram",
+        "qty":  150,
+        "usd":  1.18,
+        "n":  1
+    },
+    {
+        "desc":  "Electro-won copper cathodes (high purity)",
+        "uom":  "Gram",
+        "qty":  120,
+        "usd":  1.1500000000000001,
+        "n":  2
+    },
+    {
+        "desc":  "Copper ore, Sulphide",
+        "uom":  "Gram",
+        "qty":  6400,
+        "usd":  1.14,
+        "n":  2
+    },
+    {
+        "desc":  "Lead ores and concentrates",
+        "uom":  "Gram",
+        "qty":  600,
+        "usd":  0.18,
+        "n":  1
+    },
+    {
+        "desc":  "WASTE material (Broken / crushed rock/stone from mining activity)",
+        "uom":  "Gram",
+        "qty":  500,
+        "usd":  0.06,
+        "n":  1
+    },
+    {
+        "desc":  "Iron and non-alloy steel, in primary forms (excl. ingots), nes",
+        "uom":  "Gram",
+        "qty":  0.6,
+        "usd":  0,
+        "n":  1
+    },
+    {
+        "desc":  "Cobalt ore",
+        "uom":  "Metric ton (1000 kg)",
+        "qty":  0,
+        "usd":  0,
+        "n":  1
+    }
+]

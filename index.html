@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zambian Copper Legibility Map &amp; Bankability Scorecard</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+      integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="brand-row">
+    <h1><span class="tick">ZM◈CU</span>Zambia Minerals Legibility Terminal</h1>
+    <div class="global-search">
+      <span class="gs-icon">&gt;_</span>
+      <input type="text" id="global-search" placeholder="Run a KYC / smell test — company, holder, or license code…" autocomplete="off">
+      <kbd>/</kbd>
+    </div>
+  </div>
+  <p class="sub">Licenses, revocations, disputes, trade flows and corridors for the Zambian critical-minerals
+    supply chain — official register + MMMD notices + UN Comtrade, joined. Where verification ends, the void begins.</p>
+  <nav class="tabs">
+    <button data-tab="map" class="active">Legibility Map</button>
+    <button data-tab="kyc">KYC Check</button>
+    <button data-tab="trade">Trade Analysis</button>
+    <button data-tab="method">Methodology &amp; Caveats</button>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============ MAP ============ -->
+<section id="tab-map" class="tab-panel active">
+  <div class="hero-stats" id="hero-stats"></div>
+  <div class="card">
+    <h2>Licenses, operations &amp; export routes</h2>
+    <p class="note">The Zambian minerals map in one view: the official license register shaded by type
+      (red/amber where the Ministry's own notices flag a right), named mines · refiners · development projects
+      with EITI production, ZRA customs clearing hubs, documented disputes, and the five export corridors to
+      tidewater. Toggle layers top-right; filter licenses below.</p>
+    <div class="lic-filter" id="lic-filter"></div>
+    <div id="map"></div>
+    <div class="map-legend" id="map-legend"></div>
+    <div class="callout">
+      <strong>Provenance:</strong> license areas are the official NGDR register (see the card below).
+      Corridors are schematic polylines between real waypoints (redraw from Geofabrik OSM for production).
+      Named-operation badges are hand-placed from public sources at approximate site locations. Clearing-agent
+      points are city-level clusters of the ZRA licensed-agents list, not geocoded addresses. Dispute/fraud
+      markers are geolocated from public reporting — approximate site or town coordinates, not legal filings.
+    </div>
+  </div>
+
+  <div class="card" id="licenses-card" hidden>
+    <h2>Real licenses, real revocations — official government data</h2>
+    <p class="note" id="licenses-note"></p>
+    <div class="map-legend" id="licenses-stats"></div>
+    <div class="callout">
+      <strong>Provenance:</strong> license parcels are the actual polygons served by the Geological Survey's
+      open NGDR GeoServer (gsb.gov.zm WFS snapshot of the <em>active</em> register, 18 Jun 2025; first 5,000 of
+      ~7,468 records — WFS page cap), shaded by license type at every zoom — zoom in for individual parcel
+      borders. Flags join the Ministry's MLC-78 cancellation list (Apr 2024) and Final Public
+      Default Notice (18 Jun 2025) by license code. <strong>Because every parcel shown is on the current active
+      register, an MLC-78 flag means adverse history (likely reinstated on appeal), not a dead license</strong> —
+      red is reserved for rights in the current default notice. Absence from this snapshot proves nothing
+      (partial coverage). Holder names are the government's own published records.
+    </div>
+  </div>
+
+  <div class="card" id="disputes-card" hidden>
+    <h2>Disputes, fraud &amp; enforcement index</h2>
+    <p class="note">Documented license conflicts, corporate/tax disputes, fraud and scam cases, illegal-mining
+      incidents and environmental litigation in the Zambian minerals sector. Each row is plotted on the map above
+      (toggle the "Disputes &amp; fraud cases" layer). Locations are approximate. This is the other half of the
+      legibility thesis: where verification is absent, disputes and fraud fill the gap.</p>
+    <div class="controls">
+      <label for="dispute-filter">Filter:</label>
+      <select id="dispute-filter"><option value="all">All categories</option></select>
+    </div>
+    <table class="data" id="disputes-table"></table>
+  </div>
+
+  <div class="card" id="datasets-card" hidden>
+    <h2>License &amp; ownership datasets that actually exist</h2>
+    <p class="note"><strong>Revised verdict (2026-07-23):</strong> the Landfolio cadastre's ArcGIS endpoints are
+      token-gated and third-party portals carry no Zambian license polygons — but the Geological Survey's
+      <strong>NGDR GeoServer serves actual active-license polygons through an open WFS</strong> (~7,468 records,
+      fresher than the portal itself), and the Ministry's cancellation/default notices publish license codes and
+      holders. Joined by license code, those two official sources power the license and revocation layers on the
+      map above. The remaining sources below cover mine points, footprints, contracts and company data.</p>
+    <table class="data" id="datasets-table"></table>
+  </div>
+</section>
+
+<!-- ============ KYC ============ -->
+<section id="tab-kyc" class="tab-panel">
+  <div class="card">
+    <h2>Counterparty check (KYC)</h2>
+    <p class="note">Search any company, individual holder, or license code across the official register and
+      adverse lists: the NGDR active-license snapshot (5,000 records), the MLC-78 cancellation list
+      (2,604), the 2023/2025 default notices (7,702), published <strong>ZambiaLII court judgments</strong>
+      (2,789 holder names checked as exact phrases — every production/processing holder, every cancelled-license
+      holder, and repeat-adverse names; 158 with judgments), EITI company production, and this project's disputes
+      index. Everything runs locally in your browser; nothing is sent anywhere.</p>
+    <div class="controls">
+      <input type="text" id="kyc-query" placeholder="e.g. Kansanshi, Grizzly, 23189-HQ-LEL…" style="min-width:340px" autocomplete="off">
+      <span id="kyc-count" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <div class="kyc-examples">
+      <span style="font-size:11px;color:var(--muted);align-self:center">Try:</span>
+      <button class="kyc-example" data-q="Grizzly">Grizzly Mining</button>
+      <button class="kyc-example" data-q="Helmet Metal">Helmet Metal (cancelled)</button>
+      <button class="kyc-example" data-q="Kansanshi">Kansanshi</button>
+      <button class="kyc-example" data-q="Vedanta">Vedanta</button>
+      <button class="kyc-example" data-q="Chambishi">Chambishi</button>
+    </div>
+    <div id="kyc-suggest"></div>
+  </div>
+  <div id="kyc-report" hidden>
+    <div class="card">
+      <div class="kyc-head">
+        <div>
+          <h2 id="kyc-name" style="margin-bottom:2px"></h2>
+          <div id="kyc-sub" style="font-size:12.5px;color:var(--muted)"></div>
+        </div>
+        <div id="kyc-badge" class="risk-badge"></div>
+      </div>
+      <ul id="kyc-reasons" class="improvements" style="margin-top:10px"></ul>
+      <div class="controls" style="margin-top:8px">
+        <button class="btn primary" id="kyc-map-btn">Show licenses on map</button>
+        <span id="kyc-external"></span>
+      </div>
+    </div>
+    <div class="card" id="kyc-lic-card" hidden>
+      <h3 style="margin-top:0">Licenses on the register (NGDR snapshot)</h3>
+      <table class="data" id="kyc-lic-table"></table>
+    </div>
+    <div class="card" id="kyc-adverse-card" hidden>
+      <h3 style="margin-top:0">Adverse list hits (official MMMD notices)</h3>
+      <table class="data" id="kyc-adverse-table"></table>
+    </div>
+    <div class="card" id="kyc-court-card" hidden>
+      <h3 style="margin-top:0">Court &amp; tribunal records (ZambiaLII)</h3>
+      <p class="note">Exact-phrase matches in published Zambian judgments — the name may appear as plaintiff,
+        defendant, or in passing. Read the judgment before drawing conclusions.</p>
+      <table class="data" id="kyc-court-table"></table>
+    </div>
+    <div class="card" id="kyc-dispute-card" hidden>
+      <h3 style="margin-top:0">Possible dispute-index mentions</h3>
+      <p class="note">Loose name matching against this project's disputes index — verify manually.</p>
+      <table class="data" id="kyc-dispute-table"></table>
+    </div>
+    <div class="card">
+      <div class="callout">
+        <strong>Limits of this check:</strong> formal-economy data only — a clean result means "no adverse
+        findings in these sources", not "clean". Holder names are matched as published (spelling variants and
+        shell entities will evade string matching). Beneficial ownership is not in any open dataset — verify at
+        PACRA. The NGDR snapshot covers the first 5,000 of ~7,468 active records.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ TRADE ============ -->
+<section id="tab-trade" class="tab-panel">
+  <div class="card">
+    <h2>Mirror-trade gap: what Zambia reports vs. what its partners report</h2>
+    <p class="note">Zambia-reported exports (FOB) vs. the sum of all partner countries' reported imports from
+      Zambia (mostly CIF), by HS code. Persistent gaps are the classic leakage / misinvoicing signal
+      (GFI methodology) — but CIF/FOB differences, re-export hubs, and landlocked transit inject noise.
+      Source: UN Comtrade public preview API.</p>
+    <div class="controls">
+      <label for="mirror-code">HS code:</label>
+      <select id="mirror-code"></select>
+      <span id="mirror-summary" style="font-size:13px;color:var(--ink-2)"></span>
+    </div>
+    <div class="chart-wrap"><canvas id="mirror-chart"></canvas></div>
+  </div>
+
+  <div class="card" id="production-card" hidden>
+    <h2>Copper production by company — official EITI data</h2>
+    <p class="note">Company-level copper production from the Zambia EITI Fusion portal (2018–2023) cross-checked
+      against the ZEITI "Copper Production by Company 2023" file; 2023 USD values where published. 2024
+      by-company figures are not yet published — only national totals (821,874 t copper in 2024). Kalumbila =
+      the Sentinel operation (FQM Trident). Note: Chambishi Copper Smelter and Chambishi Metals report
+      <em>smelter/refinery</em> output, which includes feed from the mines listed — don't sum the bars.</p>
+    <div class="controls">
+      <label for="prod-year">Year:</label>
+      <select id="prod-year"></select>
+      <span id="prod-total" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <div class="chart-wrap" style="height:400px"><canvas id="prod-chart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h2>Unit-value spread: cathode vs. concentrate</h2>
+    <p class="note">Distribution of monthly partner-level unit values (USD/tonne), Zambian exports 2023–2024.
+      Cathode (7403.11) is grade-controlled — LME Grade A is a commodity — so its unit values should cluster
+      tightly. Concentrate (2603) varies in grade, contract and documentation, so its spread is wide.
+      Residual spread in the grade-controlled product is the suggestive signal for a documentation/legibility premium.</p>
+    <div class="chart-wrap"><canvas id="dist-chart"></canvas></div>
+    <div class="callout">
+      <strong>Correlational, not causal.</strong> Unit-value spread reflects grade, firm size, contract type,
+      destination and incoterms — not only paperwork. See Methodology for the causal DAG and the identification
+      strategy this MVP cannot yet run.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Annual unit-value spread across partners, by HS code</h2>
+    <p class="note">P10 / median / P90 of partner-level unit values (USD/t) in Zambia-reported exports.
+      Partners with &lt;20&nbsp;t excluded. The P90/P10 ratio is the "spread" — compare the grade-controlled
+      cathode row against concentrate.</p>
+    <div class="controls">
+      <label for="spread-year">Year:</label>
+      <select id="spread-year"></select>
+    </div>
+    <table class="data" id="spread-table"></table>
+  </div>
+</section>
+
+<!-- ============ METHODOLOGY ============ -->
+<section id="tab-method" class="tab-panel">
+  <div class="card">
+    <h2>The causal problem with the "certification spread"</h2>
+    <p class="note">The motivating claim — a trader's report of a ~2× price spread between no-paperwork and
+      clean-paper material — is a single-interview datapoint and confounded. Any spread computed from Comtrade
+      unit values is <strong>correlational</strong>. The DAG below shows the back-door paths.</p>
+    <div class="dag-wrap">
+      <svg viewBox="0 0 720 300" width="720" height="300" xmlns="http://www.w3.org/2000/svg" role="img"
+           aria-label="Causal DAG: documentation affects price, but grade, firm size, contract type and destination confound the relationship">
+        <defs>
+          <marker id="arr" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto">
+            <path d="M0,0 L9,4.5 L0,9 z" fill="#9aa7b6"/>
+          </marker>
+        </defs>
+        <!-- confounders -->
+        <g font-family="system-ui, sans-serif" font-size="13">
+          <ellipse cx="360" cy="50" rx="200" ry="34" fill="rgba(250,178,25,0.10)" stroke="#d9a114"/>
+          <text x="360" y="42" text-anchor="middle" fill="#dce5ee" font-weight="600">Confounders</text>
+          <text x="360" y="60" text-anchor="middle" fill="#9aa7b6">grade · firm size · contract (spot vs term) · destination · incoterms</text>
+          <!-- X and Y -->
+          <rect x="80" y="200" width="200" height="52" rx="10" fill="rgba(42,120,214,0.10)" stroke="#3987e5"/>
+          <text x="180" y="222" text-anchor="middle" font-weight="600" fill="#dce5ee">Documentation /</text>
+          <text x="180" y="240" text-anchor="middle" font-weight="600" fill="#dce5ee">certification status</text>
+          <rect x="460" y="200" width="180" height="52" rx="10" fill="rgba(27,175,122,0.10)" stroke="#22b381"/>
+          <text x="550" y="231" text-anchor="middle" font-weight="600" fill="#dce5ee">Realised price (USD/t)</text>
+          <!-- edges -->
+          <line x1="284" y1="226" x2="452" y2="226" stroke="#9aa7b6" stroke-width="2" marker-end="url(#arr)"/>
+          <text x="368" y="216" text-anchor="middle" fill="#9aa7b6" font-size="12">causal path of interest (?)</text>
+          <line x1="255" y1="82" x2="190" y2="194" stroke="#9aa7b6" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+          <line x1="465" y1="82" x2="540" y2="194" stroke="#9aa7b6" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#arr)"/>
+          <text x="360" y="140" text-anchor="middle" fill="#64718a" font-size="12">back-door paths (dashed) bias any naive spread</text>
+        </g>
+      </svg>
+    </div>
+    <p class="note">Clean identification would need a <strong>within-firm, within-grade before/after design</strong>:
+      the same seller, the same product, priced before and after obtaining certification. Comtrade aggregates cannot
+      support that design, so this MVP labels every spread it shows as suggestive.</p>
+  </div>
+
+  <div class="card">
+    <h2>Mirror-trade method (GFI)</h2>
+    <p class="note">Following Global Financial Integrity's trade-misinvoicing methodology: compare Zambia-reported
+      exports against partner-reported imports for the same HS code and period. GFI flags flows where mirror volumes
+      differ by &gt;2.5% and the import/export unit-value ratio falls outside 0.8–1.8. Positive gaps
+      (partners report more than Zambia) suggest export under-reporting. Known noise sources: CIF vs FOB valuation,
+      re-export hubs (Switzerland, UAE, Hong Kong), and Zambia's landlocked transit through Tanzania, South Africa,
+      Mozambique, Namibia and Angola.</p>
+  </div>
+
+  <div class="card">
+    <h2>Honest limitations</h2>
+    <ul class="sources">
+      <li><strong>Formal-economy bias (the central caveat):</strong> Comtrade, EITI, PACRA, the cadastre and the
+        clearing-agent list all see only the formal economy. The informal/artisanal streams where the arbitrage is
+        largest are invisible by construction — this map illuminates the formal shell and <em>infers</em> the void.</li>
+      <li><strong>Cadastre:</strong> the Landfolio portal's ArcGIS query endpoint is login-gated; license markers here
+        are illustrative, not cadastre records.</li>
+      <li><strong>Preview-tier trade data:</strong> the free Comtrade preview caps 500 records/query; any capped query
+        is flagged in the data file metadata.</li>
+      <li><strong>Corridors are schematic</strong> — waypoint polylines, not surveyed alignments.</li>
+      <li><strong>Legal transition:</strong> the Minerals Regulation Commission Act (No. 14 of 2024) may change portal
+        URLs/access; re-verify sources before publication.</li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Data sources &amp; attribution</h2>
+    <ul class="sources">
+      <li>UN Comtrade public preview API — trade values/quantities. Redistributable with attribution.</li>
+      <li>OpenStreetMap contributors — base map tiles (© OpenStreetMap, ODbL).</li>
+      <li>Corridor waypoints, operation markers, LME locations, clearing hubs — hand-authored from public sources
+        (Trafigura/LAR releases, TAZARA MoU coverage, ZRA clearing-agents list, LME approved-warehouse locations,
+        company disclosures). Illustrative.</li>
+      <li>Zambia EITI — production/export context (copper production 822,824 t in 2024).</li>
+      <li>GFI trade-misinvoicing methodology — mirror-analysis thresholds.</li>
+    </ul>
+    <footer class="attrib">Built as a research MVP. Not investment advice. Rebuild the trade data with
+      <code>pipeline/fetch_trade_data.ps1</code>.</footer>
+  </div>
+</section>
+
+</main>
+
+<script src="data/trade_data.js"></script>
+<script src="data/geo_layers.js"></script>
+<script src="data/legal_layers.js"></script>
+<script src="data/zambia_adm0.js"></script>
+<script src="data/licenses_points.js"></script>
+<script src="data/licenses_geo.js"></script>
+<script src="data/kyc_data.js"></script>
+<script src="data/kyc_court.js"></script>
+<script src="data/production_data.js"></script>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

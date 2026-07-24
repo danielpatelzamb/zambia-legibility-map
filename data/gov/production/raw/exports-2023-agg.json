@@ -1,0 +1,653 @@
+﻿[
+    {
+        "hs":  "74031110",
+        "desc":  "Electro-refined copper cathodes (High Purity)",
+        "kg":  615698336.68000007,
+        "zmw":  124052100440.29033,
+        "n":  34191
+    },
+    {
+        "hs":  "74020020",
+        "desc":  "Copper anodes for electrolytic refining",
+        "kg":  557300446,
+        "zmw":  107675882700.6299,
+        "n":  18453
+    },
+    {
+        "hs":  "26030029",
+        "desc":  "Other - copper concentrate ",
+        "kg":  386020967.5000003,
+        "zmw":  30091381902.049957,
+        "n":  21455
+    },
+    {
+        "hs":  "74031130",
+        "desc":  "Electro-won copper cathodes (High Purity)",
+        "kg":  113850660,
+        "zmw":  19918320177.72,
+        "n":  4341
+    },
+    {
+        "hs":  "25030000",
+        "desc":  "Sulphur of all kinds (excl. sublimed, precipitated and colloidal sulphur)",
+        "kg":  717423640.43000054,
+        "zmw":  7153161163.4498692,
+        "n":  38816
+    },
+    {
+        "hs":  "74020011",
+        "desc":  "Copper blister",
+        "kg":  35413816.93,
+        "zmw":  5724530094.0899916,
+        "n":  1504
+    },
+    {
+        "hs":  "25231000",
+        "desc":  "Cement clinkers",
+        "kg":  388758402,
+        "zmw":  3747848956.7799306,
+        "n":  12301
+    },
+    {
+        "hs":  "74031140",
+        "desc":  "Electro-won copper cathodes (Low Purity)",
+        "kg":  19889525,
+        "zmw":  3279600102.4399996,
+        "n":  754
+    },
+    {
+        "hs":  "26040000",
+        "desc":  "Nickel ores and concentrates",
+        "kg":  60829181.95,
+        "zmw":  2690425225.8500004,
+        "n":  1849
+    },
+    {
+        "hs":  "72023000",
+        "desc":  "Ferro-silico-manganese",
+        "kg":  113525300.12,
+        "zmw":  2098950247.5799987,
+        "n":  3987
+    },
+    {
+        "hs":  "74032910",
+        "desc":  "#NAME?",
+        "kg":  12819713,
+        "zmw":  1442477473.3900003,
+        "n":  561
+    },
+    {
+        "hs":  "26030022",
+        "desc":  "Copper concentrate mixed",
+        "kg":  24580649.599999994,
+        "zmw":  1369500092.639997,
+        "n":  1187
+    },
+    {
+        "hs":  "25221000",
+        "desc":  "Quicklime",
+        "kg":  295781350,
+        "zmw":  1041537335.8400034,
+        "n":  8754
+    },
+    {
+        "hs":  "71081310",
+        "desc":  "Bullion semi-manufactured forms",
+        "kg":  777.27,
+        "zmw":  925004860.33999991,
+        "n":  15
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Precious (excl. diamonds) or semi-precious stones, unworked",
+        "kg":  1749541.2099999995,
+        "zmw":  767019261.57000017,
+        "n":  245
+    },
+    {
+        "hs":  "71039100",
+        "desc":  "Rubies, sapphires and emeralds, worked but not set...",
+        "kg":  18399.92,
+        "zmw":  605826772.81999993,
+        "n":  57
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Emerald Rough---Low grade",
+        "kg":  5367.56,
+        "zmw":  542201177.14999986,
+        "n":  78
+    },
+    {
+        "hs":  "26030021",
+        "desc":  "Copper concentrate sulphide",
+        "kg":  10161781.780000001,
+        "zmw":  520284267.8300001,
+        "n":  464
+    },
+    {
+        "hs":  "25199000",
+        "desc":  "Magnesia and other magnesium oxide",
+        "kg":  14038656,
+        "zmw":  335277105.55000013,
+        "n":  789
+    },
+    {
+        "hs":  "25222000",
+        "desc":  "Slaked lime",
+        "kg":  109870009,
+        "zmw":  320279725.9199996,
+        "n":  3334
+    },
+    {
+        "hs":  "26030029",
+        "desc":  "Other - copper concentrate",
+        "kg":  3455730.8000000003,
+        "zmw":  270057668.35,
+        "n":  238
+    },
+    {
+        "hs":  "27011200",
+        "desc":  "Bituminous coal, not agglomerated",
+        "kg":  144608566,
+        "zmw":  267717339.92999521,
+        "n":  5790
+    },
+    {
+        "hs":  "72021100",
+        "desc":  "Ferro-manganese, containing by weight \u003e2% carbon",
+        "kg":  15487402,
+        "zmw":  259580120.24999893,
+        "n":  525
+    },
+    {
+        "hs":  "26030023",
+        "desc":  "Copper concentrate oxide",
+        "kg":  7414232.3,
+        "zmw":  250463632.95,
+        "n":  276
+    },
+    {
+        "hs":  "72022100",
+        "desc":  "Ferro-silicon, containing by weight \u003e55% silicon",
+        "kg":  7597337,
+        "zmw":  239747945.34,
+        "n":  266
+    },
+    {
+        "hs":  "74020019",
+        "desc":  "Other unrefined copper",
+        "kg":  3634020,
+        "zmw":  177528795.20000002,
+        "n":  125
+    },
+    {
+        "hs":  "71129910",
+        "desc":  "Anodic slimes",
+        "kg":  242871,
+        "zmw":  159998948.20000002,
+        "n":  13
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Emerald Rough---Medium grade",
+        "kg":  163.87,
+        "zmw":  133247480.44,
+        "n":  7
+    },
+    {
+        "hs":  "26030012",
+        "desc":  "Copper ore mixed sulphide and oxide",
+        "kg":  12974557.3,
+        "zmw":  101943982.96999986,
+        "n":  426
+    },
+    {
+        "hs":  "74032990",
+        "desc":  "Copper-cobalt alloy",
+        "kg":  743746,
+        "zmw":  93353461.000000015,
+        "n":  29
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Emerald Rough---High grade",
+        "kg":  29.299999999999997,
+        "zmw":  62066988.53,
+        "n":  5
+    },
+    {
+        "hs":  "26030013",
+        "desc":  "Copper ore oxide",
+        "kg":  7350161,
+        "zmw":  49351678.790000059,
+        "n":  244
+    },
+    {
+        "hs":  "26020000",
+        "desc":  "MANGANESE ORES/CONCENTRATES(INC.FERRUGINOUS), WITH MANGANESE CONT.OF=\u003e20%",
+        "kg":  39323091.6,
+        "zmw":  44333026.670000046,
+        "n":  1253
+    },
+    {
+        "hs":  "74031900",
+        "desc":  "Other refined Copper",
+        "kg":  282210,
+        "zmw":  36166145.53,
+        "n":  19
+    },
+    {
+        "hs":  "25223000",
+        "desc":  "Hydraulic lime",
+        "kg":  11279746,
+        "zmw":  33911698.870000049,
+        "n":  358
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Beryl 1, unworked",
+        "kg":  526.3,
+        "zmw":  32850690.86,
+        "n":  2
+    },
+    {
+        "hs":  "25292100",
+        "desc":  "Fluorspar containing by weight \u003c=97% of calcium fluoride",
+        "kg":  22707965,
+        "zmw":  32779095.630000025,
+        "n":  682
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Amethyst Rough---Low grade",
+        "kg":  1811688.93,
+        "zmw":  30273910.649999991,
+        "n":  114
+    },
+    {
+        "hs":  "27011900",
+        "desc":  "Other coal, not agglomerated, nes",
+        "kg":  14543420.28,
+        "zmw":  27923538.669999976,
+        "n":  395
+    },
+    {
+        "hs":  "72161000",
+        "desc":  "U, I or H sections of iron/steel, hot-rolled..., \u003c80mm high",
+        "kg":  1046004.0399999999,
+        "zmw":  23161920.560000002,
+        "n":  108
+    },
+    {
+        "hs":  "25161100",
+        "desc":  "Granite, crude or roughly trimmed",
+        "kg":  1912953,
+        "zmw":  21852564.900000006,
+        "n":  61
+    },
+    {
+        "hs":  "74031120",
+        "desc":  "Electro-refined copper cathodes (Low Purity)",
+        "kg":  108896,
+        "zmw":  17058521.96,
+        "n":  10
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Aquamarine Rough---Low grade",
+        "kg":  642385.92,
+        "zmw":  15841166.109999998,
+        "n":  63
+    },
+    {
+        "hs":  "71039100",
+        "desc":  "Worked Rubies---Low grade",
+        "kg":  17.25,
+        "zmw":  15751641.36,
+        "n":  4
+    },
+    {
+        "hs":  "25201000",
+        "desc":  "Gypsum; anhydrite",
+        "kg":  5697389,
+        "zmw":  12964731.400000013,
+        "n":  195
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Tourmaline Rough---Low grade",
+        "kg":  112735.47,
+        "zmw":  11585642.799999999,
+        "n":  27
+    },
+    {
+        "hs":  "25061000",
+        "desc":  "Quartz",
+        "kg":  522749.2,
+        "zmw":  8795896.22,
+        "n":  29
+    },
+    {
+        "hs":  "71123000",
+        "desc":  "Ash containing precious metal or precious metal compounds",
+        "kg":  2996,
+        "zmw":  8067886.52,
+        "n":  3
+    },
+    {
+        "hs":  "25051000",
+        "desc":  "Silica sands and quartz sands",
+        "kg":  5943709.33,
+        "zmw":  7983233.6699999906,
+        "n":  246
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Tourmaline Rough---Medium grade",
+        "kg":  887.3,
+        "zmw":  7580976.74,
+        "n":  1
+    },
+    {
+        "hs":  "26050020",
+        "desc":  "Cobalt concentrate",
+        "kg":  342150,
+        "zmw":  6534627.3900000006,
+        "n":  11
+    },
+    {
+        "hs":  "25171000",
+        "desc":  "Pebbles, gravel, shingle and flint",
+        "kg":  37675043.46,
+        "zmw":  5941502.76,
+        "n":  91
+    },
+    {
+        "hs":  "72181000",
+        "desc":  "Ingots and other primary forms, of stainless steel",
+        "kg":  517720,
+        "zmw":  5351441.33,
+        "n":  30
+    },
+    {
+        "hs":  "25120000",
+        "desc":  "Siliceous fossil meals (kieselguhr, tripolite, etc); siliceous earths",
+        "kg":  223990,
+        "zmw":  4554120.6899999995,
+        "n":  21
+    },
+    {
+        "hs":  "25061000",
+        "desc":  "Quartz - Low grade",
+        "kg":  1023038,
+        "zmw":  4268457.200000002,
+        "n":  58
+    },
+    {
+        "hs":  "25210000",
+        "desc":  "Limestone flux; limestone and other calcareous stone",
+        "kg":  2298000,
+        "zmw":  2816717.5599999996,
+        "n":  77
+    },
+    {
+        "hs":  "25161200",
+        "desc":  "Granite, merely cut into a square or rectangular shape",
+        "kg":  1922257,
+        "zmw":  2728843.6900000004,
+        "n":  72
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Kyanite, unworked",
+        "kg":  454454,
+        "zmw":  2335519.65,
+        "n":  22
+    },
+    {
+        "hs":  "25239000",
+        "desc":  "Other hydraulic cements, etc",
+        "kg":  1000000,
+        "zmw":  2298137.5,
+        "n":  1
+    },
+    {
+        "hs":  "26161000",
+        "desc":  "Silver ores and concentrates",
+        "kg":  606448.5,
+        "zmw":  2179315.3200000003,
+        "n":  18
+    },
+    {
+        "hs":  "25151200",
+        "desc":  "Marble and travertine merely cut into a square or rectangular shape",
+        "kg":  488130,
+        "zmw":  1962957.35,
+        "n":  19
+    },
+    {
+        "hs":  "25085000",
+        "desc":  "Andalusite, kyanite and sillimanite",
+        "kg":  342600,
+        "zmw":  1771760.2500000002,
+        "n":  17
+    },
+    {
+        "hs":  "71039900",
+        "desc":  "Precious or semi-precious stones, worked but not set..., nes",
+        "kg":  178632.16000000003,
+        "zmw":  1615369.3999999997,
+        "n":  26
+    },
+    {
+        "hs":  "74032100",
+        "desc":  "Brass, unwrought",
+        "kg":  15910.630000000001,
+        "zmw":  1344899.33,
+        "n":  5
+    },
+    {
+        "hs":  "71081200",
+        "desc":  "Unwrought gold (incl. gold plated with platinum), non-monetary",
+        "kg":  1000,
+        "zmw":  1249056.69,
+        "n":  1
+    },
+    {
+        "hs":  "25191000",
+        "desc":  "Natural magnesium carbonate (magnesite)",
+        "kg":  34000,
+        "zmw":  875415.66,
+        "n":  1
+    },
+    {
+        "hs":  "72071900",
+        "desc":  "Semi-products of iron or non-alloy steel, \u003c0.25% carbon, nes",
+        "kg":  13500,
+        "zmw":  757005.75,
+        "n":  3
+    },
+    {
+        "hs":  "26090000",
+        "desc":  "Tin ores and concentrates",
+        "kg":  28015,
+        "zmw":  703802.13,
+        "n":  3
+    },
+    {
+        "hs":  "25309000",
+        "desc":  "Other mineral substances, nes",
+        "kg":  67196.900000000023,
+        "zmw":  275663.25,
+        "n":  35
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Emeralds Flats---Low grade",
+        "kg":  18.490000000000002,
+        "zmw":  271519.18000000005,
+        "n":  2
+    },
+    {
+        "hs":  "26070000",
+        "desc":  "Lead ores and concentrates",
+        "kg":  78000,
+        "zmw":  194188.16,
+        "n":  3
+    },
+    {
+        "hs":  "25174900",
+        "desc":  "Granules, chippings and powder of stones (excl. marble)",
+        "kg":  818,
+        "zmw":  149292.81,
+        "n":  4
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Amazonite Rough",
+        "kg":  19000,
+        "zmw":  77830.2,
+        "n":  2
+    },
+    {
+        "hs":  "25233000",
+        "desc":  "Aluminous cement",
+        "kg":  30000,
+        "zmw":  76800,
+        "n":  1
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Morganite Rough---Low grade",
+        "kg":  3.85,
+        "zmw":  62811.400000000009,
+        "n":  5
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Iolite Rough---Low grade",
+        "kg":  7.16,
+        "zmw":  48472.71,
+        "n":  1
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Citrine Rough---Low grade",
+        "kg":  35.9,
+        "zmw":  43904.74,
+        "n":  3
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Topaz Rough---Low grade",
+        "kg":  43.6,
+        "zmw":  42704.22,
+        "n":  3
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Morganite Rough---Premium grade",
+        "kg":  8.23,
+        "zmw":  38421.45,
+        "n":  2
+    },
+    {
+        "hs":  "71069200",
+        "desc":  "Semi-manufactured silver (incl. silver plated with gold or platinum)",
+        "kg":  3.03,
+        "zmw":  32551.87,
+        "n":  1
+    },
+    {
+        "hs":  "25181000",
+        "desc":  "Dolomite not calcined or sintered.",
+        "kg":  90000,
+        "zmw":  31113.730000000003,
+        "n":  3
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Beryl 2, unworked",
+        "kg":  5000,
+        "zmw":  24218.88,
+        "n":  1
+    },
+    {
+        "hs":  "25020020",
+        "desc":  "Unroasted iron pyrite concentrate",
+        "kg":  800,
+        "zmw":  10368.21,
+        "n":  1
+    },
+    {
+        "hs":  "71039100",
+        "desc":  "Worked emeralds---Medium grade",
+        "kg":  0.01,
+        "zmw":  9638.92,
+        "n":  1
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Citrine Specimen",
+        "kg":  11,
+        "zmw":  8604.05,
+        "n":  1
+    },
+    {
+        "hs":  "26030011",
+        "desc":  "Copper ore sulphide",
+        "kg":  13.600000000000001,
+        "zmw":  5608.66,
+        "n":  4
+    },
+    {
+        "hs":  "25182000",
+        "desc":  "Calcined or sintered dolomite",
+        "kg":  30000,
+        "zmw":  3450.45,
+        "n":  1
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Citrine Rough---Medium Grade",
+        "kg":  16.1,
+        "zmw":  2824.49,
+        "n":  1
+    },
+    {
+        "hs":  "71031000",
+        "desc":  "Aquamarine Rough---High grade",
+        "kg":  0.53,
+        "zmw":  933.31,
+        "n":  1
+    },
+    {
+        "hs":  "25059000",
+        "desc":  "Natural sands, (excl. metal-bearing sands of chapter 26), nes",
+        "kg":  27,
+        "zmw":  280.37,
+        "n":  1
+    },
+    {
+        "hs":  "26050010",
+        "desc":  "Cobalt ore",
+        "kg":  11,
+        "zmw":  180.28,
+        "n":  1
+    },
+    {
+        "hs":  "25251000",
+        "desc":  "Crude mica and mica rifted into sheets or splittings",
+        "kg":  30,
+        "zmw":  157.89,
+        "n":  1
+    },
+    {
+        "hs":  "25131000",
+        "desc":  "Pumice stone",
+        "kg":  91,
+        "zmw":  80,
+        "n":  1
+    }
+]

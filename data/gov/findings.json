@@ -1,0 +1,190 @@
+{
+  "generated": "2026-07-23",
+  "notes": "All files referenced are relative to data/gov/. Extracted record arrays for large lists are stored in separate JSON files (see extractedRecordsFile) with a small inline sample here. No entries were fabricated; all records were parsed from official MMMD pages/PDFs. mmmd.gov.zm serves an invalid TLS certificate chain; downloads were made with certificate verification disabled.",
+  "revocations": [
+    {
+      "event": "Mass cancellation of non-compliant mining and non-mining rights by the Mining Licensing Committee (MLC), 78th meeting",
+      "date": "2024-04-02 (notice; cancellations decided at MLC 78th meeting, following default notices circulated 2023-10-24)",
+      "authority": "Mining Licensing Committee / Mining Cadastre Department, Ministry of Mines and Minerals Development (MMMD)",
+      "count": 2604,
+      "uniqueLicenseCodes": 2582,
+      "reason": "Non-compliance with conditions of grant of mining and non-mining rights (Section 72, Mines and Minerals Development Act No. 11 of 2015); holders failed to take remedial measures after 24 Oct 2023 default notices",
+      "listUrl": "https://www.mmmd.gov.zm/?p=2787",
+      "downloadedFile": "mmmd_p2787.html",
+      "hasCoordinates": false,
+      "listFields": ["S/N", "CODE (license number)", "PARTY (holder)", "MLC DECISION", "COMMENTS"],
+      "licenseTypeBreakdown": {"SEL": 1277, "LEL": 750, "SML": 416, "AMR": 69, "MPL": 52, "LML": 35, "LGL": 4, "other": 1},
+      "extractedRecordsFile": "mmmd_mlc78_cancellations_2024-04.json",
+      "extractedRecordsCount": 2604,
+      "extractedRecords": [
+        {"sn": 1, "code": "23189-HQ-LEL", "holder": "Helmet Metal Limited", "decision": "Cancelled", "comment": "Non Compliant"},
+        {"sn": 2, "code": "24330-HQ-LEL", "holder": "Chita Lodge Limited", "decision": "Cancelled", "comment": "Non Compliant"},
+        {"sn": 3, "code": "24352-HQ-LEL", "holder": "Cupriferious Resources Limited", "decision": "Cancelled", "comment": "Non Compliant"},
+        {"sn": 2605, "code": "8628-HQ-LML", "holder": "Suhails International Limited", "decision": "Cancelled", "comment": "Non Compliant"}
+      ]
+    },
+    {
+      "event": "Government press statement: 3,000 mining licenses cancelled for non-compliance since 2024 (cadastre clean-up ahead of Minerals Regulation Commission transition); 1,200 holders appealed",
+      "date": "2025-02-06",
+      "authority": "Ministry of Mines and Minerals Development / Mining Cadastre Department (Permanent Secretary Dr. Hapenga M. Kabeta)",
+      "count": 3000,
+      "reason": "Failure to meet conditions prescribed under the Mines and Minerals Development Act; part of reform/clean-up of the national mining register focused on critical minerals",
+      "listUrl": null,
+      "statementUrl": "https://www.mmmd.gov.zm/?p=6259",
+      "downloadedFile": "mmmd_p6259.html",
+      "hasCoordinates": false,
+      "extractedRecords": [],
+      "note": "Press statement only; no consolidated downloadable list of the 3,000 was published with it. The MLC 78th-meeting list (2,604 records, see above) is the largest published component of these cancellations."
+    },
+    {
+      "event": "Revocation of mining rights granted inside Mopani Copper Mines PLC large-scale mining licence 7073-HQ-LML, Mufulira District",
+      "date": "2025-02-24",
+      "authority": "Ministry of Mines and Minerals Development (announced by Principal Public Relations Officer Shamwinda Tembo)",
+      "count": "at least 3 named rights plus additional unspecified holders",
+      "reason": "Failure by affected licence holders to obtain required mining consents from Mopani Copper Mines PLC; holders ordered to surrender licences to Director of Mining Cadastre",
+      "listUrl": null,
+      "newsAnchor": "https://diggers.news/business/2025/02/24/govt-revokes-mining-rights-within-mopanis-licence/",
+      "downloadedFile": null,
+      "hasCoordinates": false,
+      "extractedRecords": [
+        {"code": "38443-HQ-SEL", "holder": "Digi Wave Branding Limited", "type": "Small-Scale Exploration Licence"},
+        {"code": "38444-HQ-AMR", "holder": "Zambia Federation of Co-operatives in Mining Society Limited", "type": "Artisanal Mining Right"},
+        {"code": "39380-HQ-AMR", "holder": "Febian Mubuyaeta", "type": "Artisanal Mining Right"}
+      ],
+      "note": "No official list found on mmmd.gov.zm; anchored via News Diggers report quoting the ministry statement."
+    },
+    {
+      "event": "PRECURSOR (default, not yet cancellation): Default notice for non-compliance to conditions of grant of mining and non-mining rights",
+      "date": "2023-10-24",
+      "authority": "Mining Cadastre Department, MMMD",
+      "count": 2812,
+      "uniqueLicenseCodes": 2810,
+      "reason": "Failure to register pegging certificates, pay area charges, submit annual reports / production returns / future programmes, commence operations (Section 72(2), MMDA 2015) - holders given 30 days to show cause; most were cancelled at MLC 78th meeting (see above)",
+      "listUrl": "https://www.mmmd.gov.zm/?p=2635",
+      "downloadedFile": "mmmd_p2635.html",
+      "hasCoordinates": false,
+      "extractedRecordsFile": "mmmd_default_notice_2023-10.json",
+      "extractedRecordsCount": 2812,
+      "extractedRecords": [
+        {"sn": 1, "code": "23189-HQ-LEL", "holder": "Helmet Metal Limited"}
+      ]
+    },
+    {
+      "event": "PRECURSOR (default, not yet cancellation): MLC defaults 3,429 mining and non-mining rights - final public default notice (30 days to show cause why licenses should not be revoked)",
+      "date": "2025-06-18",
+      "authority": "Mining Licensing Committee / Mining Cadastre Department, MMMD (Director Samuel C. Maango)",
+      "count": 3429,
+      "countByType": {"ArtisanalMiningRights": 1083, "SmallScaleMiningLicenses": 442, "LargeScaleMiningLicenses": 145, "SmallScaleExplorationLicenses": 783, "LargeScaleExplorationLicenses": 813, "MineralProcessingLicenses": 163},
+      "reason": "11 categories of breach incl. non-payment of area charges, non-registration of pegging certificate, non-submission of quarterly/annual reports and production returns, failure to commence operations, non-payment into Environmental Protection Fund (Section 72, MMDA 2015)",
+      "listUrl": "https://www.mmmd.gov.zm/wp-content/uploads/2025/06/Final-Public-Default-Notice_18062025-updated.pdf",
+      "downloadedFile": "Final-Public-Default-Notice_18062025.pdf",
+      "textExtract": "Final-Public-Default-Notice_18062025.txt",
+      "hasCoordinates": false,
+      "listFields": ["S/N", "LICENSE NUMBER", "LICENSE HOLDER", "breach section (A-E) parsed from PDF headings"],
+      "extractedRecordsFile": "mmmd_default_notice_2025-06-18.json",
+      "extractedRecordsCount": 4891,
+      "extractedRecordsNote": "4,891 rows parsed across 5 breach sections; 3,278 unique license codes (licenses in breach of multiple conditions appear in more than one section; official headline count is 3,429).",
+      "extractedRecords": [
+        {"sn": 1, "code": "07233-HQ-SML", "holder": "Gertina Mines Limited", "breachSection": "Non-payment of area charges (Section 77)"},
+        {"sn": 2, "code": "07318-HQ-SML", "holder": "Mangal Mine Limited", "breachSection": "Non-payment of area charges (Section 77)"}
+      ]
+    },
+    {
+      "event": "PRESS-ONLY ANCHOR: ~800 mine licences reported revoked (Daily Nation, Zambia)",
+      "date": "2020-01-20",
+      "authority": "Ministry of Mines and Minerals Development (reported)",
+      "count": 800,
+      "reason": "Idle/non-compliant licences (reported)",
+      "listUrl": null,
+      "newsAnchor": "https://www.pressreader.com/zambia/daily-nation-newspaper/20200120/281831465691562",
+      "downloadedFile": null,
+      "hasCoordinates": false,
+      "extractedRecords": [],
+      "note": "No official downloadable list found online; MMMD website archive does not go back that far."
+    }
+  ],
+  "revocationDataGaps": [
+    "No revocation/cancellation list published by the Minerals Regulation Commission (MRC, operational since June 2025) was found; mrc.gov.zm does not resolve and the MRC appears to have no standalone website as of July 2026. MRC-era actions surface only through MMMD pages and press.",
+    "No published list itemizing the full 3,000 licenses referenced in the 2025-02-06 press statement.",
+    "None of the published revocation/default lists include coordinates, districts, or commodity fields - only license code and holder name. Coordinates must be joined via the cadastre GIS layers using the license CODE field.",
+    "Government Gazette scans (gazettes.africa hosts Zambia gazettes through ~2025) were checked via search; no specific mining-licence revocation gazette PDF was identified.",
+    "MLC meeting results pages (e.g. https://www.mmmd.gov.zm/?p=2618, 75th meeting, 437 table rows) cover application grants/rejections/deferrals rather than revocations; downloaded (mmmd_p2618.html) but not extracted."
+  ],
+  "gisSources": [
+    {
+      "name": "Zambia Mining Cadastre Map Portal (MMMD, Trimble Landfolio)",
+      "url": "https://portals.landfolio.com/zambia/ (ArcGIS REST backend https://ags1.landfolio.com/arcgis/rest/services/ZambiaMapPortal/, token-protected but publicly reachable through the portal's session proxy portals.landfolio.com/zambia/proxy.ashx)",
+      "downloadedFile": "cadastre/*.geojson (17 layers)",
+      "format": "GeoJSON (EPSG:4326), paged ArcGIS REST query exports",
+      "contents": {
+        "active_small_scale_exploration_licences": 1750,
+        "active_large_scale_exploration_licences": 713,
+        "active_large_scale_mining_licences": 212,
+        "active_small_scale_mining_licences": 627,
+        "active_artisanal_mining_rights": 1570,
+        "active_mineral_processing_licences": 234,
+        "active_prospecting_permits_2008": 3,
+        "active_prospecting_licences_2008": 12,
+        "active_large_scale_gemstone_licences_2008": 2,
+        "applications_licence_applications": 4052,
+        "geology_geology": 2222,
+        "restrictedareas_amethyst_restricted_areas": 1,
+        "restrictedareas_emerald_restricted_areas": 1,
+        "restrictedareas_bidding_areas": 502,
+        "admin_national_parks": 17,
+        "admin_boundary": 1,
+        "petroleumlicences_petroleum_licenses": 14
+      },
+      "fields": "Code, Type, TypeCode, Status, StatusGrp, Parties (holder+%), ApplNo, DteApplied/DtePegged/DteGranted/DteExpires/DteRenewal, AreaValue/AreaUnit, Commodities, Region, polygon geometry (46 fields total)",
+      "terms": "Official public map portal of the Ministry of Mines; no explicit open-data license published. Portal front page notes Landfolio system upgrade v7.2->7.5 (Mar 2026)."
+    },
+    {
+      "name": "NGDR - National Geospatial Data Register / Public GIS Data Portal (Geological Survey Department, gsb.gov.zm)",
+      "url": "https://ngdr.gsb.gov.zm (open GeoServer WMS/WFS backend: https://geoserverprd.gsb.gov.zm/geoserver/wfs)",
+      "downloadedFile": "ngdr/*.geojson (5 layers)",
+      "format": "GeoJSON via WFS 2.0 (requested in EPSG:4326)",
+      "contents": {
+        "ngdr_active_mining_licenses (mmmd:00:activelicenses-mines, consolidated all license types, fresher than Landfolio - includes licenses granted June 2025+)": 7468,
+        "ngdr_applications (mmmd:10:ngdrapplications)": 157,
+        "ngdr_restricted_areas (mmmd:11:restricted-areas)": 17,
+        "ngdr_zambia_provinces (mlnr:zambia-provinces)": 9,
+        "ngdr_zambia_border (mlnr:zambia-border)": 1
+      },
+      "fields": "code, type, status (incl. 261 'Non-Compliant'), statusgrp, jurisdic, region, dteapplied/dtegranted/dteexpires, parties, commodities, MultiPolygon geometry",
+      "additionalLayersAvailableNotDownloaded": "forestry concessions/permits, national forests, Lusaka townships, wards, lakes, water pipes, MLNR lots (27 WFS feature types total)",
+      "terms": "Open WFS/WMS, no authentication, no explicit license text found."
+    },
+    {
+      "name": "MMMD website Downloads / Geological Maps pages",
+      "url": "https://www.mmmd.gov.zm/?page_id=3168 and ?page_id=2276 / ?page_id=2044",
+      "downloadedFile": null,
+      "format": "PDF only",
+      "contents": "Policy documents (National Critical Minerals Strategy 2024-2028, Mineral Resources Development Policy 2022, statistical bulletin, brochures). Geological maps pages list map products for purchase from Geological Survey - no open coordinate schedules or shapefiles.",
+      "terms": "Public documents; geological map sheets are sold, not openly downloadable."
+    },
+    {
+      "name": "Zambia Data Hub / NSDI ArcGIS Hub (Ministry of Lands and Natural Resources + ZamStats + GRID3)",
+      "url": "https://zambia-nsdi-mlnr.hub.arcgis.com/",
+      "downloadedFile": null,
+      "format": "was ArcGIS Hub (CSV/KML/Shapefile/GeoJSON downloads)",
+      "contents": "UNAVAILABLE as of 2026-07-23: hub returns 404 / 'SB_0005: Subscription is disabled'.",
+      "terms": "n/a"
+    },
+    {
+      "name": "Zambia NSDI portal (map.gov.zm) and ZNSDI GeoNetwork (znsdi.szi.gov.zm)",
+      "url": "https://www.map.gov.zm/ ; https://znsdi.szi.gov.zm/",
+      "downloadedFile": null,
+      "format": "web viewer / GeoNetwork catalogue",
+      "contents": "Both reachable (HTTP 200) but no mining/license/geology downloads located; GeoNetwork query for 'mining' returned no records.",
+      "terms": "unknown"
+    },
+    {
+      "name": "Non-existent / inaccessible portals checked",
+      "url": "data.gov.zm (DNS does not resolve); mrc.gov.zm (DNS does not resolve); zambia.opendataforafrica.org (HTTP 403)",
+      "downloadedFile": null,
+      "format": null,
+      "contents": "No Zambian central open-data portal currently online at data.gov.zm; the Minerals Regulation Commission has no discoverable website.",
+      "terms": "n/a"
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+# Reproducible cache — regenerate with pipeline/fetch_trade_data.ps1
+data/raw/
+
+# Landfolio cadastre snapshots fetched via the portal's session proxy.
+# The portal's terms don't permit wholesale republication — keep these local.
+# (The NGDR GeoServer snapshot in data/gov/ngdr/ is an open government WFS and stays in.)
+data/gov/cadastre/
+
+# Local scratch
+*.tmp
+Thumbs.db
