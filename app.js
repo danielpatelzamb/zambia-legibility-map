@@ -678,7 +678,38 @@ const KYC_ENGINE = (() => {
         if (e) e.court = rec;
       });
     }
+    // Commodity index — every mineral named on any license → the point rows that list it
+    window._mineralIndex = new Map();
+    if (window.LICENSES) {
+      LICENSES.points.forEach((pt, i) => {
+        (pt[5] || "").split(",").forEach((tok) => {
+          const m = tok.trim();
+          if (m.length < 2) return;
+          const key = m.toUpperCase();
+          if (!window._mineralIndex.has(key)) window._mineralIndex.set(key, { name: m, rows: [] });
+          window._mineralIndex.get(key).rows.push(i);
+        });
+      });
+    }
     return index;
+  }
+
+  // Mineral / commodity search — matches the query against commodity names on the
+  // register (Beryllium, Neodymium, Cobalt, …), returns matching minerals with
+  // holder/parcel counts.
+  function mineralSearch(q) {
+    build();
+    const nq = norm(q);
+    if (nq.length < 3 || !window._mineralIndex) return [];
+    const out = [];
+    for (const [key, rec] of window._mineralIndex) {
+      if (key.includes(nq)) {
+        const holders = new Set();
+        rec.rows.forEach((i) => splitParties(LICENSES.points[i][4]).forEach((h) => holders.add(norm(h))));
+        out.push({ mineral: rec.name, parcels: rec.rows.length, holders: holders.size, rows: rec.rows });
+      }
+    }
+    return out.sort((a, b) => b.parcels - a.parcels).slice(0, 8);
   }
 
   function search(q) {
@@ -812,7 +843,7 @@ const KYC_ENGINE = (() => {
     return { level, reasons, disputes, lics, cancelled, defaults, court };
   }
 
-  return { search, assess, build, similarNames };
+  return { search, assess, build, similarNames, mineralSearch };
 })();
 
 (function buildKycUI() {
@@ -828,6 +859,8 @@ const KYC_ENGINE = (() => {
       const q = input.value.trim();
       if (q.length < 2) { suggest.innerHTML = ""; countEl.textContent = ""; return; }
       const hits = KYC_ENGINE.search(q);
+      // Mineral / commodity matches (Beryllium, Neodymium, any listed mineral)
+      const minerals = KYC_ENGINE.mineralSearch(q);
       // Also offer dispute-index cases whose text mentions the query (e.g. "Vedanta"
       // appears in cases but holds no Zambian license under that name).
       const nq = q.toUpperCase();
@@ -837,13 +870,21 @@ const KYC_ENGINE = (() => {
         .slice(0, 6);
       // No exact match → surface near-spellings we DO know. "Metalex" vs
       // "Metalix" style confusion is a classic KYC trap — make it visible.
-      const similar = (!hits.length && q.length >= 5) ? KYC_ENGINE.similarNames(q) : [];
-      countEl.textContent = hits.length || caseHits.length
-        ? `${hits.length}${hits.length >= 30 ? "+" : ""} entities · ${caseHits.length} dispute case(s)`
-        : similar.length
-          ? "no exact match — similar names below (verify: these may be DIFFERENT entities)"
-          : "no matches in register, adverse lists, disputes index, or similar spellings";
-      suggest.innerHTML = (similar.length ? `
+      const similar = (!hits.length && !minerals.length && q.length >= 5) ? KYC_ENGINE.similarNames(q) : [];
+      const bits = [];
+      if (hits.length) bits.push(`${hits.length}${hits.length >= 30 ? "+" : ""} entities`);
+      if (minerals.length) bits.push(`${minerals.length} mineral(s)`);
+      if (caseHits.length) bits.push(`${caseHits.length} dispute case(s)`);
+      countEl.textContent = bits.length ? bits.join(" · ")
+        : similar.length ? "no exact match — similar names below (verify: these may be DIFFERENT entities)"
+        : "no matches in holders, license codes, minerals, disputes, or similar spellings";
+      suggest.innerHTML =
+        minerals.map((m) => `
+        <div class="kyc-suggestion kyc-mineral" data-mineral="${encodeURIComponent(m.mineral.toUpperCase())}" style="border-color:var(--s3)">
+          <span>⬡ ${m.mineral} <span style="color:var(--muted);font-weight:400">— show all licenses listing this mineral</span></span>
+          <span class="tags">${m.parcels.toLocaleString()} parcel(s) · ${m.holders.toLocaleString()} holder(s)</span>
+        </div>`).join("") +
+        (similar.length ? `
         <div style="font-size:11.5px;color:var(--warning);margin:2px 0 6px">⚠ No exact match for “${q.replace(/</g, "&lt;")}”.
         Similar names in the official data — a close spelling can be a different company entirely:</div>` : "") +
         similar.map((e) => `
@@ -872,7 +913,13 @@ const KYC_ENGINE = (() => {
           document.getElementById("map").scrollIntoView({ behavior: "smooth" });
         });
       });
-      suggest.querySelectorAll(".kyc-suggestion").forEach((div) => {
+      suggest.querySelectorAll(".kyc-mineral").forEach((div) => {
+        div.addEventListener("click", () => {
+          const key = decodeURIComponent(div.dataset.mineral);
+          showMineralOnMap(key);
+        });
+      });
+      suggest.querySelectorAll(".kyc-suggestion[data-key]").forEach((div) => {
         div.addEventListener("click", () => {
           const key = decodeURIComponent(div.dataset.key);
           const e = [...KYC_ENGINE.build().values()].find((x) => x.key === key);
@@ -881,6 +928,28 @@ const KYC_ENGINE = (() => {
       });
     }, 180);
   });
+
+  // Highlight every license parcel listing a given mineral, on the map tab.
+  function showMineralOnMap(mineralKey) {
+    const rec = window._mineralIndex && window._mineralIndex.get(mineralKey);
+    if (!rec) return;
+    document.querySelector('nav.tabs button[data-tab="map"]').click();
+    if (window._kycHighlight) window._leafletMap.removeLayer(window._kycHighlight);
+    const grp = L.layerGroup();
+    const bounds = [];
+    rec.rows.forEach((i) => {
+      const p = LICENSES.points[i];
+      bounds.push([p[1], p[0]]);
+      L.circleMarker([p[1], p[0]], {
+        radius: 5, color: "#22b381", weight: 1.5, fillColor: "#22b381", fillOpacity: 0.5,
+      }).bindPopup(`<b>${p[2]}</b><br>${p[4]}<br><span style="color:#9aa7b6">${p[5]}</span>`).addTo(grp);
+    });
+    grp.addTo(window._leafletMap);
+    window._kycHighlight = grp;
+    window._leafletMap.invalidateSize();
+    if (bounds.length) window._leafletMap.fitBounds(L.latLngBounds(bounds).pad(0.3), { maxZoom: 8 });
+    document.getElementById("map").scrollIntoView({ behavior: "smooth" });
+  }
 
   function renderReport(entity) {
     const a = KYC_ENGINE.assess(entity);
@@ -1619,5 +1688,135 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
       kq.value = chip.dataset.q;
       kq.dispatchEvent(new Event("input"));
     });
+  });
+})();
+
+
+/* ================================================================
+   ASK / EXPLAIN — grounded chat (bring-your-own Anthropic key)
+================================================================ */
+(function buildAsk() {
+  const input = document.getElementById("ask-input");
+  const sendBtn = document.getElementById("ask-send");
+  const log = document.getElementById("ask-log");
+  const keyEl = document.getElementById("ask-key");
+  const exWrap = document.getElementById("ask-examples");
+  if (!input || !sendBtn) return;
+
+  const EXAMPLES = [
+    "What does it mean that 45% of licenses are 'flagged'? Is that bad?",
+    "Difference between a show-cause default notice and a cancellation?",
+    "Why is there no LME warehouse in Zambia, and why does it matter?",
+    "How should I read a KYC result — what makes something high risk?",
+    "What does a mirror-trade gap tell me about smuggling?",
+    "Which minerals show up most on the register?",
+  ];
+  exWrap.innerHTML = EXAMPLES.map((e) => `<button class="ask-example"></button>`).join("");
+  [...exWrap.querySelectorAll(".ask-example")].forEach((b, i) => {
+    b.textContent = EXAMPLES[i];
+    b.addEventListener("click", () => { input.value = EXAMPLES[i]; send(); });
+  });
+
+  // Live figures from the loaded datasets so the model quotes real numbers.
+  function facts() {
+    const f = {};
+    if (window.LICENSES) {
+      const p = LICENSES.points;
+      f.licenses = p.length;
+      f.flagged = p.filter((x) => x[8] > 0).length;
+      f.repeatNonCompliance = p.filter((x) => x[8] === 3).length;
+      const byType = {};
+      p.forEach((x) => { byType[x[3]] = (byType[x[3]] || 0) + 1; });
+      f.byType = byType;
+    }
+    if (window.KYC_COURT) f.courtNamesChecked = KYC_COURT.meta;
+    if (window.PRODUCTION) f.producersWithData = PRODUCTION.companies.length;
+    if (window.LEGAL) f.disputeCases = LEGAL.cases.length;
+    if (window._mineralIndex) {
+      f.topMineralsByParcelCount = [...window._mineralIndex.entries()]
+        .map(([k, v]) => [v.name, v.rows.length]).sort((a, b) => b[1] - a[1]).slice(0, 12);
+    }
+    return f;
+  }
+
+  const SYSTEM = [
+    'You are the built-in analyst for the "Zambia Minerals Legibility Terminal", a research web app about the Zambian critical-minerals supply chain. Explain the DATA and the INTUITION behind it to mining, logistics, trade-finance and diligence users. Be concise, concrete, and honest about limits.',
+    '',
+    'WHAT THE APP CONTAINS (all official/open sources, joined):',
+    '- License register: the Geological Survey open NGDR GeoServer (WFS) — the ACTIVE mining/exploration register as of 18 Jun 2025. Every parcel shown is currently active. Types: SML/LML = production mining, SEL/LEL = exploration only, MPL = mineral processing (smelter/refinery), AMR = artisanal, SGL/LGL = gemstone, BA = bidding area.',
+    '- Flags come from two Ministry (MMMD) notices joined by license code:',
+    '  * Final Public Default Notice (18 Jun 2025): a Section-72 SHOW-CAUSE notice. It lists CURABLE breaches — unpaid annual area charges (s.77), unregistered pegging certificate (s.18(2)), or unsubmitted quarterly/annual/monthly reports (Regs 49/51) — with a 30-DAY remedy window. Being listed is NOT a cancellation and NOT proof of current bad standing; a holder still on the active register most likely cured it. Treat it as a paperwork/administrative "verify" flag.',
+    '  * MLC-78 cancellations (Apr 2024): mass use-it-or-lose-it dormancy cancellations. ~1,200 were appealed and many reinstated. A cancelled code STILL on the Jun-2025 active register = reinstated (adverse history, not current status).',
+    '  * In the app: amber = one such flag (verify); red = BOTH notices (repeat non-compliance). Nothing shown is currently cancelled.',
+    '- KYC check joins six sources by holder name / license code: the register, the two notices + a 2023 default notice, ZambiaLII court judgments (exact-phrase), EITI company production, and a hand-built disputes/fraud index (sourced cases: Vedanta/KCM liquidation, Glencore/Mopani, FQM $7.9B tax, Kangaluwi in a national park, SugiGate, Sino-Metals acid spill, fake-gold scams, etc.). Risk = HIGH (fraud-case mention, or an uncured/repeat cancellation) / CAUTION / NO ADVERSE FINDINGS. A curable show-cause listing alone does NOT raise risk.',
+    '- Trade tab: UN Comtrade — Zambia copper/cobalt exports, unit-value spreads (cathode is grade-controlled and clusters tightly; concentrate is wide), and MIRROR-TRADE gaps (partner-reported imports minus Zambia-reported exports; a persistent positive gap is a classic under-invoicing/smuggling signal, but CIF/FOB differences and re-export hubs add noise — correlational, not proof). Plus EITI copper production by company 2018-2023.',
+    '- Map: license areas shaded by type; five export corridors (Lobito, TAZARA/Dar, North-South/Durban, Beira, Walvis Bay); LME warehouses — all downstream, NONE in Zambia.',
+    '',
+    'THE THESIS ("legibility"): copper becomes bankable collateral only once it reaches a trusted LME warehouse, all of which are thousands of km downstream. Upstream in Zambia there is no LME-grade warehousing/assay node, so metal is hard to finance and easy to divert; the map makes that verification gap visible. Where verification is absent, disputes/fraud/informality fill in.',
+    '',
+    'RULES: Keep the show-cause-is-not-cancellation and reinstated-cancellation distinctions intact — never say a flagged active license is "cancelled" or "currently in default". Distinguish what the data shows from your interpretation. If asked something not in the data (a company beneficial owner, live prices, a specific unlisted mine), say so and point to the primary source (cadastre portal, PACRA, EITI, ZambiaLII). Prefer 2-4 short paragraphs or tight bullets. No preamble.',
+  ].join("\n");
+
+  const history = [];
+  function add(role, text, cls) {
+    const div = document.createElement("div");
+    div.className = "ask-msg " + (role === "user" ? "user" : "bot") + (cls ? " " + cls : "");
+    div.textContent = text;
+    log.appendChild(div);
+    div.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    return div;
+  }
+
+  async function send() {
+    const q = input.value.trim();
+    if (!q) return;
+    const key = keyEl.value.trim();
+    if (!key) { add("bot", "Enter your Anthropic API key above first (sk-ant-…). The request goes directly from your browser to Anthropic — nothing is stored or proxied.", "thinking"); return; }
+    input.value = "";
+    add("user", q);
+    history.push({ role: "user", content: q });
+    const pending = add("bot", "Thinking…", "thinking");
+    sendBtn.disabled = true;
+
+    try {
+      const resp = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-api-key": key,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true",
+        },
+        body: JSON.stringify({
+          model: "claude-opus-4-8",
+          max_tokens: 1024,
+          system: SYSTEM + "\n\nLIVE FIGURES from the currently loaded data (quote these, do not invent): " + JSON.stringify(facts()),
+          messages: history,
+        }),
+      });
+      if (!resp.ok) {
+        const err = await resp.text();
+        pending.className = "ask-msg bot thinking";
+        pending.textContent = "API error " + resp.status + ": " + err.slice(0, 300);
+        sendBtn.disabled = false;
+        return;
+      }
+      const data = await resp.json();
+      const text = data.stop_reason === "refusal"
+        ? "The model declined to answer that."
+        : (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n") || "(empty response)";
+      pending.className = "ask-msg bot";
+      pending.textContent = text;
+      history.push({ role: "assistant", content: text });
+    } catch (e) {
+      pending.className = "ask-msg bot thinking";
+      pending.textContent = "Request failed: " + e.message;
+    }
+    sendBtn.disabled = false;
+  }
+
+  sendBtn.addEventListener("click", send);
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); send(); }
   });
 })();

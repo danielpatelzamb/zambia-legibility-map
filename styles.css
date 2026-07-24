@@ -339,6 +339,27 @@ details summary { user-select: none; }
 .kyc-suggestion .tags .hit { color: var(--critical); font-weight: 700; }
 #kyc-external a { font-size: 12px; margin-right: 12px; }
 
+/* ---------- ask / explain chat ---------- */
+.ask-examples { display: flex; flex-wrap: wrap; gap: 7px; margin: 4px 0 12px; }
+.ask-example {
+  font-size: 11.5px; color: var(--ink-2); background: var(--panel-2);
+  border: 1px solid var(--grid); border-radius: 999px; padding: 4px 11px; cursor: pointer;
+  transition: all 0.12s;
+}
+.ask-example:hover { border-color: var(--amber); color: var(--amber); }
+#ask-log { display: flex; flex-direction: column; gap: 10px; margin: 6px 0 12px; }
+#ask-log:empty { display: none; }
+.ask-msg { max-width: 92%; padding: 10px 14px; border-radius: 10px; font-size: 13px; line-height: 1.55; white-space: pre-wrap; }
+.ask-msg.user { align-self: flex-end; background: rgba(245,166,35,0.12); border: 1px solid rgba(245,166,35,0.3); color: var(--ink); }
+.ask-msg.bot { align-self: flex-start; background: var(--panel-2); border: 1px solid var(--border); color: var(--ink-2); }
+.ask-msg.bot.thinking { color: var(--muted); font-style: italic; }
+.ask-inputrow { display: flex; gap: 8px; align-items: flex-end; }
+#ask-input {
+  flex: 1; font: inherit; font-size: 13.5px; padding: 9px 12px; resize: vertical;
+  border: 1px solid var(--baseline); border-radius: 8px; background: var(--panel-2); color: var(--ink);
+}
+#ask-input:focus { outline: none; border-color: var(--amber); box-shadow: 0 0 0 3px rgba(245,166,35,0.10); }
+
 /* ---------- methodology ---------- */
 .dag-wrap { overflow-x: auto; }
 .sources li { font-size: 12.5px; margin-bottom: 4px; color: var(--ink-2); }
