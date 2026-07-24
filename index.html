@@ -6,7 +6,7 @@
 <title>Zambia Minerals Legibility Terminal</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=202607240359">
+<link rel="stylesheet" href="styles.css?v=202607240409">
 </head>
 <body>
 
@@ -101,8 +101,8 @@
 <section id="tab-kyc" class="tab-panel">
   <div class="card">
     <h2>Counterparty check (KYC)</h2>
-    <p class="note">Search any company, holder, license code, <strong>or mineral</strong> (Beryllium, Neodymium,
-      Cobalt — any commodity on the register) across the official register and adverse lists: the full NGDR
+    <p class="note">Search any company, holder, license code, <strong>or mineral</strong> (Beryllium, Lithium,
+      Tantalum, Cobalt — any commodity on the register) across the official register and adverse lists: the full NGDR
       active-license register (7,468 records), the MLC-78 cancellation list (2,604), the 2023/2025 default notices
       (7,702), published <strong>ZambiaLII court judgments</strong> (2,789 holder names checked as exact phrases;
       158 with judgments), EITI company production, and this project's disputes index. A mineral match plots every
@@ -228,26 +228,22 @@
 <section id="tab-ask" class="tab-panel">
   <div class="card">
     <h2>Ask / Explain — the intuition behind the data</h2>
-    <p class="note">A grounded assistant that explains what's on this terminal and the reasoning behind it:
-      what a show-cause default notice actually means, why 45% of the register is flagged, why the LME "void"
-      matters, how to read a KYC result, what mirror-trade gaps signal. It answers from a briefing on this
-      project's own datasets and methodology. Bring your own Anthropic API key — the request goes straight from
-      your browser to Anthropic; nothing is stored or proxied.</p>
-    <div class="controls">
-      <input type="password" id="ask-key" placeholder="Anthropic API key (sk-ant-…)" style="min-width:300px">
-      <span style="font-size:11.5px;color:var(--muted)">stored only in this tab, this session</span>
-    </div>
+    <p class="note">Plain-language explainers for what's on this terminal and the reasoning behind it — what a
+      show-cause default notice actually means, why 45% of the register is flagged, why the LME "void" matters,
+      how to read a KYC result, what a mirror-trade gap signals. Pick a question or type a topic; answers are
+      built in and quote the live figures. Everything runs in your browser — no account, no key, nothing sent
+      anywhere.</p>
     <div class="ask-examples" id="ask-examples"></div>
     <div id="ask-log"></div>
     <div class="ask-inputrow">
-      <textarea id="ask-input" rows="2" placeholder="Ask about the licenses, flags, KYC logic, minerals, corridors, the methodology…"></textarea>
-      <button class="btn primary" id="ask-send">Ask</button>
+      <input type="text" id="ask-input" placeholder="Type a topic: flags, cancellation, LME, KYC, mirror gap, minerals, corridors, sources…">
+      <button class="btn primary" id="ask-send">Explain</button>
     </div>
     <div class="callout">
-      <strong>How it stays honest:</strong> the assistant is briefed on this project's data and told to
-      distinguish what the data shows from interpretation, to preserve the show-cause-≠-default and
-      reinstated-cancellation nuances, and to say when something isn't in the data rather than guess. It is not
-      a substitute for the primary sources — verify anything decision-critical.
+      <strong>How it stays honest:</strong> answers are written against this project's own data and preserve the
+      key distinctions — a show-cause notice is not a cancellation, a reinstated licence is not currently dead,
+      a mirror gap is correlational. This is an orientation aid, not a substitute for the primary sources; verify
+      anything decision-critical against the cadastre portal, PACRA, EITI or ZambiaLII.
     </div>
   </div>
 </section>
@@ -336,18 +332,18 @@
 
 </main>
 
-<script src="data/trade_data.js?v=202607240359"></script>
-<script src="data/geo_layers.js?v=202607240359"></script>
-<script src="data/legal_layers.js?v=202607240359"></script>
+<script src="data/trade_data.js?v=202607240409"></script>
+<script src="data/geo_layers.js?v=202607240409"></script>
+<script src="data/legal_layers.js?v=202607240409"></script>
 <script src="data/zambia_adm0.js"></script>
-<script src="data/licenses_points.js?v=202607240359"></script>
-<script src="data/licenses_geo.js?v=202607240359"></script>
-<script src="data/kyc_data.js?v=202607240359"></script>
-<script src="data/kyc_court.js?v=202607240359"></script>
-<script src="data/production_data.js?v=202607240359"></script>
+<script src="data/licenses_points.js?v=202607240409"></script>
+<script src="data/licenses_geo.js?v=202607240409"></script>
+<script src="data/kyc_data.js?v=202607240409"></script>
+<script src="data/kyc_court.js?v=202607240409"></script>
+<script src="data/production_data.js?v=202607240409"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=202607240359"></script>
+<script src="app.js?v=202607240409"></script>
 </body>
 </html>

@@ -1693,130 +1693,110 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
 
 
 /* ================================================================
-   ASK / EXPLAIN — grounded chat (bring-your-own Anthropic key)
+   ASK / EXPLAIN — built-in local explainer (no key, no network)
 ================================================================ */
 (function buildAsk() {
   const input = document.getElementById("ask-input");
   const sendBtn = document.getElementById("ask-send");
   const log = document.getElementById("ask-log");
-  const keyEl = document.getElementById("ask-key");
   const exWrap = document.getElementById("ask-examples");
   if (!input || !sendBtn) return;
 
+  // Live figures so answers quote real, current numbers.
+  function facts() {
+    const f = { licenses: 0, flagged: 0, pctFlagged: 0, repeat: 0, byType: {} };
+    if (window.LICENSES) {
+      const p = LICENSES.points;
+      f.licenses = p.length;
+      f.flagged = p.filter((x) => x[8] > 0).length;
+      f.pctFlagged = p.length ? Math.round((100 * f.flagged) / p.length) : 0;
+      f.repeat = p.filter((x) => x[8] === 3).length;
+      p.forEach((x) => { f.byType[x[3]] = (f.byType[x[3]] || 0) + 1; });
+    }
+    if (window.KYC_COURT) { f.courtChecked = KYC_COURT.meta.namesQueried; f.courtHits = KYC_COURT.meta.namesWithHits; }
+    if (window.PRODUCTION) f.producers = PRODUCTION.companies.length;
+    if (window.LEGAL) f.cases = LEGAL.cases.length;
+    if (window._mineralIndex) f.topMinerals = [...window._mineralIndex.entries()]
+      .map(([k, v]) => [v.name, v.rows.length]).sort((a, b) => b[1] - a[1]).slice(0, 10);
+    return f;
+  }
+
+  const KB = [
+    { id: "flagged", kw: ["flag", "45", "percent", "%", "compliant", "non-compliant", "how bad", "is that bad"],
+      a: (f) => `About ${f.pctFlagged}% of the ${f.licenses.toLocaleString()} active licenses (${f.flagged.toLocaleString()}) appear on an official Ministry notice. That sounds alarming, but read it carefully: almost all of it is the 18 Jun 2025 "Default Notice", a Section-72 SHOW-CAUSE notice — a list of curable administrative breaches (unpaid annual area charges, or unsubmitted quarterly/annual/monthly reports) with a 30-day window to fix them.\n\nEvery license shown is on the ACTIVE register, so being listed does not mean the license is dead or the holder is in bad standing — a holder still on the register most likely cured it. The app treats a single flag as "verify" (amber). Only ${f.repeat} licenses carry BOTH the 2024 cancellation list and the 2025 notice (repeat non-compliance) — those are the red ones worth real attention.\n\nTakeaway: the high flag rate mostly says Zambia's compliance paperwork is widely unfiled, not that half the industry is being shut down.` },
+    { id: "showcause", kw: ["show-cause", "show cause", "default notice", "vs cancellation", "difference between", "cancelled", "cancellation", "revoked", "revocation"],
+      a: () => `Two different things, kept apart on purpose:\n\n• A DEFAULT / SHOW-CAUSE notice (the 18 Jun 2025 one) is a warning. Under Section 72 it lists holders in breach of curable obligations — unpaid area charges, missing reports, an unregistered pegging certificate — and gives 30 days to remedy or explain. Being on it is not a cancellation and not proof of current default.\n\n• A CANCELLATION (the Apr 2024 MLC-78 list) actually terminates the right. But ~1,200 were appealed and many reinstated — so where a "cancelled" licence still sits on the current active register, the cancellation did not stick. The app shows those as reinstated (adverse history), not dead.\n\nSo nothing on the map is currently cancelled. Amber = one notice (verify). Red = both (repeat non-compliance).` },
+    { id: "lme", kw: ["lme", "warehouse", "void", "verification", "why does that matter", "bankable", "collateral", "downstream"],
+      a: () => `Copper becomes bankable collateral — something a lender will advance against — only once it sits in a trusted, audited warehouse that can issue a warrant, in practice an LME-approved warehouse. Every one is thousands of kilometres downstream (Rotterdam, Antwerp, Singapore, Dubai…). There is none in Zambia, and none on the export corridors until the metal reaches a port.\n\nThat gap is the "legibility void": upstream in the Copperbelt there is no LME-grade warehousing or independent assay node, so metal is hard to finance and easy to divert or mis-declare in transit. The map places the LME endpoints far downstream to make that distance visible. The terminal's thesis: where verification is absent, disputes, informality and leakage fill in — which is why the disputes layer and the mirror-trade gaps sit alongside the licence map.` },
+    { id: "kyc", kw: ["kyc", "risk", "how do i read", "high risk", "smell test", "counterparty", "diligence", "caution", "no adverse"],
+      a: (f) => `The KYC check joins six official/open sources by holder name and licence code: the active register, three Ministry notices (2024 cancellation + 2023/2025 defaults), ZambiaLII court judgments (${f.courtChecked ? f.courtChecked.toLocaleString() + " names checked, " + f.courtHits + " with cases" : "exact-phrase"}), EITI company production, and a hand-built disputes/fraud index.\n\nReading the badge:\n• HIGH RISK — a possible fraud/scam-case mention, or a cancellation that appears to have stuck (not reinstated). Verify identity, then treat seriously.\n• CAUTION — reinstated cancellations, or repeat administrative flags; look, don't panic.\n• NO ADVERSE FINDINGS — nothing in these sources. A curable show-cause listing alone does NOT raise the level.\n\nTwo habits it enforces: a curable paperwork breach is not a red flag; and a near-spelling can be a different company (search "Metalex" vs "Metalix"), so confirm identity before acting. First-pass smell test — not a substitute for PACRA/EITI and the primary filings.` },
+    { id: "mirror", kw: ["mirror", "gap", "smuggl", "under-invoic", "misinvoic", "leakage", "trade gap", "comtrade"],
+      a: () => `A mirror-trade gap compares what Zambia reports EXPORTING against what its partners report IMPORTING from Zambia, same product and year. If partners consistently report receiving more than Zambia reports sending, the difference is a classic signal of under-invoicing or unrecorded outflow — value leaving the country off the books.\n\nThe Trade tab shows this for copper and cobalt. Treat it as correlational, not proof: CIF-vs-FOB valuation, timing, and re-export hubs (Switzerland, UAE, China) inject noise, and landlocked transit muddies attribution. It is a place to look, not a verdict — and it ties back to the thesis: the same missing upstream verification anchor that makes metal hard to finance also makes it easy to mis-declare on the way out.` },
+    { id: "minerals", kw: ["mineral", "commodit", "beryllium", "lithium", "cobalt", "rare earth", "which minerals", "what minerals", "tantalum", "uranium", "niobium", "critical"],
+      a: (f) => `Search any commodity in the search bar and it plots every licence listing it. The register tags the full critical-minerals suite — copper and cobalt dominate, but there is meaningful licensing over lithium, tantalum, niobium, rare-earth elements, uranium, vanadium, tungsten, titanium, beryllium, manganese and gold.\n\n${f.topMinerals ? "Most-listed right now: " + f.topMinerals.slice(0, 6).map(([m, c]) => m + " (" + c.toLocaleString() + ")").join(", ") + "." : ""}\n\nData quirk: many rare earths are tagged collectively as "Rare Earths Elements", not by individual element — so "Neodymium" returns nothing while "Rare Earths" works. That is the register's own labelling, not a search gap.` },
+    { id: "corridors", kw: ["corridor", "route", "export route", "lobito", "tazara", "durban", "beira", "walvis", "port", "logistics", "tidewater"],
+      a: () => `Zambia is landlocked, so every tonne leaves on one of five corridors to a seaport: Lobito (west, to Angola — newly rehabilitated with US/DFC + DBSA financing), TAZARA/Dar es Salaam (east, being revived under a China MoU), the North–South corridor to Durban (the historic workhorse, longest and most congested), Beira (shortest to tidewater but draft-limited), and Walvis Bay (a niche western road option).\n\nCorridor choice is itself a bankability and leakage variable: more borders and longer transit mean more handoffs where documentation, assay and custody can slip. On the map the corridors are schematic — straight lines between real waypoint cities, not surveyed alignments — so distances understate true route length.` },
+    { id: "types", kw: ["sml", "lel", "sel", "lml", "mpl", "amr", "licen", "type", "exploration", "artisanal", "processing"],
+      a: (f) => `Licence types on the register (counts live):\n• SML / LML — small/large-scale MINING (actual production). ${f.byType ? "SML " + (f.byType.SML || 0) + ", LML " + (f.byType.LML || 0) : ""}\n• SEL / LEL — small/large-scale EXPLORATION only (no production; the bulk of the register). ${f.byType ? "SEL " + (f.byType.SEL || 0) + ", LEL " + (f.byType.LEL || 0) : ""}\n• MPL — mineral PROCESSING (smelters/refineries). ${f.byType ? f.byType.MPL || 0 : ""}\n• AMR — artisanal. ${f.byType ? f.byType.AMR || 0 : ""}\n• SGL/LGL — gemstone; BA — areas gazetted for bidding.\n\nUse the type pills under the map to isolate production from paperwork — exploration licences vastly outnumber operating mines, so filtering to SML/LML/MPL shows the part of the industry that actually digs and ships.` },
+    { id: "sources", kw: ["source", "where does", "how current", "provenance", "ngdr", "official", "how do you know", "up to date", "data from", "accurate"],
+      a: (f) => `Everything is official or open, joined by this project — no commercial-vendor scraping, no invented numbers. The licence layer is the Geological Survey's open NGDR GeoServer (active register, dated 18 Jun 2025, ${f.licenses ? f.licenses.toLocaleString() : "~7,468"} records). Flags are the Ministry's own published cancellation/default notices. Trade data is UN Comtrade; company production is Zambia EITI; court records are ZambiaLII judgments; the disputes index is hand-built from reputable reporting with a source on each case.\n\nIt is a snapshot, not a live feed — statuses change and the register is one date. For anything decision-critical, confirm against the primary source: the cadastre portal (current licence status), PACRA (ownership), EITI (production).` },
+    { id: "production", kw: ["production", "eiti", "output", "tonnes", "how much copper", "produce", "kansanshi", "biggest", "largest"],
+      a: (f) => `Company-level copper production comes from the Zambia EITI Fusion portal, 2018–2023, for ${f.producers || "the major"} operations — Kansanshi, Sentinel/Kalumbila, Lumwana, KCM, Mopani, NFCA and others (Trade tab chart, plus map popups and KYC). 2024-by-company is not published yet; only national totals exist (≈822kt copper in 2024).\n\nEITI-verified production is the strongest POSITIVE signal in a KYC check — a real, reporting, taxed operation — which is why it sits right beside any adverse findings in a company's report.` },
+    { id: "disputes", kw: ["dispute", "fraud", "scam", "litigation", "court", "case", "vedanta", "mopani", "sino", "gold scam", "sugilite"],
+      a: (f) => `The disputes layer maps ${f.cases || "20"} documented cases across five categories — corporate/tax fights (Vedanta/KCM liquidation, Glencore/Mopani, First Quantum's $7.9bn tax assessment), licence disputes, fraud/scams (the fake-gold jet at the airport, Lusaka bullion scams), illegal mining (SugiGate, the Kikonge rush, Black Mountain), and environmental litigation (Kangaluwi in a national park, the 2025 Sino-Metals acid spill). Each carries dates and a linked source.\n\nSeparately, the KYC check cross-references ${f.courtChecked ? f.courtChecked.toLocaleString() : "~2,800"} holder names against ZambiaLII court judgments. Together they are the "where verification is absent, disputes fill in" half of the thesis.` },
+    { id: "what", kw: ["what is this", "what does this", "overview", "explain the app", "how to use", "what can", "purpose", "about"],
+      a: (f) => `This terminal joins Zambia's official, open minerals data into one screen so you can size up the sector and run a first-pass counterparty check. It has: a MAP of the full active licence register (${f.licenses ? f.licenses.toLocaleString() : "~7,468"} parcels) shaded by type, with named mines/refiners and export corridors; a KYC check that screens any holder, licence code or mineral against six sources; a TRADE tab (Comtrade unit-value spreads and mirror gaps, EITI production); and this explainer.\n\nStart by searching a company or mineral in the top bar, or open the KYC tab. Ask me here about any concept — flags, cancellations, the LME void, mirror gaps, licence types, sources.` },
+  ];
+
+  function localAnswer(q) {
+    const s = q.toLowerCase();
+    let best = null, score = 0;
+    for (const t of KB) {
+      let sc = 0;
+      for (const k of t.kw) if (s.includes(k)) sc += (k.length > 5 ? 2 : 1);
+      if (sc > score) { score = sc; best = t; }
+    }
+    return score >= 2 ? best : null;
+  }
+
   const EXAMPLES = [
-    "What does it mean that 45% of licenses are 'flagged'? Is that bad?",
-    "Difference between a show-cause default notice and a cancellation?",
+    "What does it mean that 45% of licenses are flagged? Is that bad?",
+    "Show-cause default notice vs a cancellation — what's the difference?",
     "Why is there no LME warehouse in Zambia, and why does it matter?",
     "How should I read a KYC result — what makes something high risk?",
     "What does a mirror-trade gap tell me about smuggling?",
-    "Which minerals show up most on the register?",
+    "Which minerals are on the register?",
   ];
-  exWrap.innerHTML = EXAMPLES.map((e) => `<button class="ask-example"></button>`).join("");
+  exWrap.innerHTML = EXAMPLES.map(() => `<button class="ask-example"></button>`).join("");
   [...exWrap.querySelectorAll(".ask-example")].forEach((b, i) => {
     b.textContent = EXAMPLES[i];
     b.addEventListener("click", () => { input.value = EXAMPLES[i]; send(); });
   });
 
-  // Live figures from the loaded datasets so the model quotes real numbers.
-  function facts() {
-    const f = {};
-    if (window.LICENSES) {
-      const p = LICENSES.points;
-      f.licenses = p.length;
-      f.flagged = p.filter((x) => x[8] > 0).length;
-      f.repeatNonCompliance = p.filter((x) => x[8] === 3).length;
-      const byType = {};
-      p.forEach((x) => { byType[x[3]] = (byType[x[3]] || 0) + 1; });
-      f.byType = byType;
-    }
-    if (window.KYC_COURT) f.courtNamesChecked = KYC_COURT.meta;
-    if (window.PRODUCTION) f.producersWithData = PRODUCTION.companies.length;
-    if (window.LEGAL) f.disputeCases = LEGAL.cases.length;
-    if (window._mineralIndex) {
-      f.topMineralsByParcelCount = [...window._mineralIndex.entries()]
-        .map(([k, v]) => [v.name, v.rows.length]).sort((a, b) => b[1] - a[1]).slice(0, 12);
-    }
-    return f;
+  function add(role, text) {
+    const wrap = document.createElement("div");
+    wrap.className = "ask-msg " + (role === "user" ? "user" : "bot");
+    const body = document.createElement("div");
+    body.className = "ask-body";
+    body.textContent = text;
+    wrap.appendChild(body);
+    log.appendChild(wrap);
+    wrap.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }
 
-  const SYSTEM = [
-    'You are the built-in analyst for the "Zambia Minerals Legibility Terminal", a research web app about the Zambian critical-minerals supply chain. Explain the DATA and the INTUITION behind it to mining, logistics, trade-finance and diligence users. Be concise, concrete, and honest about limits.',
-    '',
-    'WHAT THE APP CONTAINS (all official/open sources, joined):',
-    '- License register: the Geological Survey open NGDR GeoServer (WFS) — the ACTIVE mining/exploration register as of 18 Jun 2025. Every parcel shown is currently active. Types: SML/LML = production mining, SEL/LEL = exploration only, MPL = mineral processing (smelter/refinery), AMR = artisanal, SGL/LGL = gemstone, BA = bidding area.',
-    '- Flags come from two Ministry (MMMD) notices joined by license code:',
-    '  * Final Public Default Notice (18 Jun 2025): a Section-72 SHOW-CAUSE notice. It lists CURABLE breaches — unpaid annual area charges (s.77), unregistered pegging certificate (s.18(2)), or unsubmitted quarterly/annual/monthly reports (Regs 49/51) — with a 30-DAY remedy window. Being listed is NOT a cancellation and NOT proof of current bad standing; a holder still on the active register most likely cured it. Treat it as a paperwork/administrative "verify" flag.',
-    '  * MLC-78 cancellations (Apr 2024): mass use-it-or-lose-it dormancy cancellations. ~1,200 were appealed and many reinstated. A cancelled code STILL on the Jun-2025 active register = reinstated (adverse history, not current status).',
-    '  * In the app: amber = one such flag (verify); red = BOTH notices (repeat non-compliance). Nothing shown is currently cancelled.',
-    '- KYC check joins six sources by holder name / license code: the register, the two notices + a 2023 default notice, ZambiaLII court judgments (exact-phrase), EITI company production, and a hand-built disputes/fraud index (sourced cases: Vedanta/KCM liquidation, Glencore/Mopani, FQM $7.9B tax, Kangaluwi in a national park, SugiGate, Sino-Metals acid spill, fake-gold scams, etc.). Risk = HIGH (fraud-case mention, or an uncured/repeat cancellation) / CAUTION / NO ADVERSE FINDINGS. A curable show-cause listing alone does NOT raise risk.',
-    '- Trade tab: UN Comtrade — Zambia copper/cobalt exports, unit-value spreads (cathode is grade-controlled and clusters tightly; concentrate is wide), and MIRROR-TRADE gaps (partner-reported imports minus Zambia-reported exports; a persistent positive gap is a classic under-invoicing/smuggling signal, but CIF/FOB differences and re-export hubs add noise — correlational, not proof). Plus EITI copper production by company 2018-2023.',
-    '- Map: license areas shaded by type; five export corridors (Lobito, TAZARA/Dar, North-South/Durban, Beira, Walvis Bay); LME warehouses — all downstream, NONE in Zambia.',
-    '',
-    'THE THESIS ("legibility"): copper becomes bankable collateral only once it reaches a trusted LME warehouse, all of which are thousands of km downstream. Upstream in Zambia there is no LME-grade warehousing/assay node, so metal is hard to finance and easy to divert; the map makes that verification gap visible. Where verification is absent, disputes/fraud/informality fill in.',
-    '',
-    'RULES: Keep the show-cause-is-not-cancellation and reinstated-cancellation distinctions intact — never say a flagged active license is "cancelled" or "currently in default". Distinguish what the data shows from your interpretation. If asked something not in the data (a company beneficial owner, live prices, a specific unlisted mine), say so and point to the primary source (cadastre portal, PACRA, EITI, ZambiaLII). Prefer 2-4 short paragraphs or tight bullets. No preamble.',
-  ].join("\n");
-
-  const history = [];
-  function add(role, text, cls) {
-    const div = document.createElement("div");
-    div.className = "ask-msg " + (role === "user" ? "user" : "bot") + (cls ? " " + cls : "");
-    div.textContent = text;
-    log.appendChild(div);
-    div.scrollIntoView({ behavior: "smooth", block: "nearest" });
-    return div;
-  }
-
-  async function send() {
+  function send() {
     const q = input.value.trim();
     if (!q) return;
-    const key = keyEl.value.trim();
-    if (!key) { add("bot", "Enter your Anthropic API key above first (sk-ant-…). The request goes directly from your browser to Anthropic — nothing is stored or proxied.", "thinking"); return; }
     input.value = "";
     add("user", q);
-    history.push({ role: "user", content: q });
-    const pending = add("bot", "Thinking…", "thinking");
-    sendBtn.disabled = true;
-
-    try {
-      const resp = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-          "x-api-key": key,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true",
-        },
-        body: JSON.stringify({
-          model: "claude-opus-4-8",
-          max_tokens: 1024,
-          system: SYSTEM + "\n\nLIVE FIGURES from the currently loaded data (quote these, do not invent): " + JSON.stringify(facts()),
-          messages: history,
-        }),
-      });
-      if (!resp.ok) {
-        const err = await resp.text();
-        pending.className = "ask-msg bot thinking";
-        pending.textContent = "API error " + resp.status + ": " + err.slice(0, 300);
-        sendBtn.disabled = false;
-        return;
-      }
-      const data = await resp.json();
-      const text = data.stop_reason === "refusal"
-        ? "The model declined to answer that."
-        : (data.content || []).filter((b) => b.type === "text").map((b) => b.text).join("\n") || "(empty response)";
-      pending.className = "ask-msg bot";
-      pending.textContent = text;
-      history.push({ role: "assistant", content: text });
-    } catch (e) {
-      pending.className = "ask-msg bot thinking";
-      pending.textContent = "Request failed: " + e.message;
+    const hit = localAnswer(q);
+    if (hit) {
+      add("bot", hit.a(facts()));
+    } else {
+      add("bot", "I can explain any of these built-in topics — tap a chip above, or ask about: the flags and what they mean, show-cause vs cancellation, the LME / verification void, how to read a KYC result, mirror-trade gaps, the minerals on the register, export corridors, licence types, data sources, production, or the disputes index. For a specific company or mineral, use the search bar at the top or the KYC tab.");
     }
-    sendBtn.disabled = false;
   }
 
   sendBtn.addEventListener("click", send);
-  input.addEventListener("keydown", (e) => {
-    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); send(); }
-  });
+  input.addEventListener("keydown", (e) => { if (e.key === "Enter") { e.preventDefault(); send(); } });
 })();
