@@ -759,8 +759,8 @@ const KYC_ENGINE = (() => {
 
     // MLC-78 (Apr 2024) cancellations vs the Jun-2025 ACTIVE register: a code still
     // on the register means the cancellation didn't stick (reinstated on appeal).
-    // The register snapshot is partial (first 5,000 of ~7,468), so absence is only
-    // "not found", never proof of cancellation.
+    // Absence from the register is only "not currently active", never proof the
+    // cancellation was executed — statuses change and the snapshot is one date.
     if (!window._activeCodeSet && window.LICENSES) {
       window._activeCodeSet = new Set(LICENSES.points.map((pt) => pt[2]));
     }
@@ -772,7 +772,7 @@ const KYC_ENGINE = (() => {
     if (unresolved.length) {
       // still-operating entities (active licenses on the register) get CAUTION, not HIGH RISK
       level = entity.licenses.length ? "amber" : "red";
-      reasons.push(`${entity.licenses.length ? "⚠" : "✖"} ${unresolved.length} license(s) cancelled at MLC-78 (Apr 2024) and not found on the Jun-2025 register snapshot (snapshot covers the first 5,000 of ~7,468 — verify current status on the cadastre portal).`);
+      reasons.push(`${entity.licenses.length ? "⚠" : "✖"} ${unresolved.length} license(s) cancelled at MLC-78 (Apr 2024) and not on the Jun-2025 active register — the cancellation appears to have stuck (verify current status on the cadastre portal).`);
     }
     if (reinstated.length) {
       if (level === "green") level = "amber";
