@@ -141,14 +141,22 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
     SGL: ["Gemstone", "#d55181"], LGL: ["Gemstone", "#d55181"], LPL: ["Gemstone", "#d55181"],
     BA: ["Bidding area", "#8b98a5"],
   };
-  // IMPORTANT: this license is ON the Jun-2025 ACTIVE register. An MLC-78 (Apr 2024)
-  // cancellation therefore did NOT stick — ~1,200 of those were appealed and many
-  // reinstated. Flag 2 is adverse HISTORY, not current status.
+  // IMPORTANT: every license shown is ON the Jun-2025 ACTIVE register, so none is
+  // currently cancelled. The flags are point-in-time official NOTICES about
+  // curable or historical matters — not proof of current bad standing:
+  //  - The "Final Public Default Notice" (18 Jun 2025) is a Section-72 SHOW-CAUSE
+  //    notice: it lists curable breaches (unpaid area charges, unsubmitted
+  //    quarterly/annual reports, unregistered pegging certificate) with a 30-DAY
+  //    remedy window. A holder still on the active register most likely cured it.
+  //  - An MLC-78 (Apr 2024) cancellation on an active-register license did NOT
+  //    stick (~1,200 appealed; many reinstated) — adverse history, not status.
+  // Amber = single flag (verify). Red = BOTH (repeat non-compliance).
   const FLAG_TEXT = {
-    1: "⚠ Listed in the Final Public Default Notice (18 Jun 2025)",
-    2: "◉ Was cancelled at MLC-78 (Apr 2024) but is on the Jun-2025 active register — likely reinstated on appeal",
-    3: "⚠ In the Jun-2025 default notice; also has an MLC-78 (Apr 2024) cancellation in its history",
+    1: "◉ Listed in the 18 Jun 2025 default (show-cause) notice — a curable compliance breach with a 30-day remedy window. Still on the active register: verify, not proof of current default.",
+    2: "◉ Cancelled at MLC-78 (Apr 2024) but on the Jun-2025 active register — reinstated. Adverse history, not current status.",
+    3: "⚠ Repeat non-compliance: an MLC-78 (Apr 2024) cancellation AND the Jun-2025 show-cause notice. Still on the active register — verify.",
   };
+  const isRed = (f) => f === 3; // red only for repeat non-compliance
   if (window.LICENSES_GEO && LICENSES_GEO.features.length) {
     const licCanvas = L.canvas({ padding: 0.4 });
     const GROUP_META = {
@@ -174,7 +182,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
         (p.h ? `<br>${p.h}` : "") +
         (p.m ? `<br><span style="color:#9aa7b6">${p.m}</span>` : "") +
         (p.e ? `<br>Expires: ${p.e}` : "") + (p.a ? ` · ${Number(p.a).toLocaleString()} ha` : "") +
-        (p.f ? `<br><b style="color:${(p.f & 1) ? "#f85149" : "#f5a623"}">${FLAG_TEXT[p.f]}</b>` : "") +
+        (p.f ? `<br><b style="color:${isRed(p.f) ? "#f85149" : "#f5a623"}">${FLAG_TEXT[p.f]}</b>` : "") +
         `<br><span style="color:#8b98a5">License parcel — NGDR GeoServer snapshot (active register, Jun 2025).</span>`;
     };
 
@@ -216,7 +224,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
         flagPolyLayer[g][b] = flagged.length
           ? L.geoJSON({ type: "FeatureCollection", features: flagged }, {
               renderer: licCanvas, smoothFactor: 1.1,
-              style: (f) => (f.properties.f & 1)
+              style: (f) => isRed(f.properties.f)
                 ? { color: "#f85149", weight: 1.3, opacity: 0.95, fillColor: "#f85149", fillOpacity: 0.35 }
                 : { color: "#f5a623", weight: 1.3, opacity: 0.95, fillColor: "#f5a623", fillOpacity: 0.3 },
               onEachFeature: (f, layer) => layer.bindPopup(() => polyPopup(f.properties)),
@@ -257,7 +265,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
         const color = GROUP_META[g].color;
         arr.forEach((l) => l && l.setStyle({ color, weight: w, opacity: 0.95, fillColor: color, fillOpacity: fo }));
       });
-      const flagStyle = (f) => (f.properties.f & 1)
+      const flagStyle = (f) => isRed(f.properties.f)
         ? { color: "#f85149", weight: w, opacity: 0.95, fillColor: "#f85149", fillOpacity: Math.min(0.65, fo + 0.05) }
         : { color: "#f5a623", weight: w, opacity: 0.95, fillColor: "#f5a623", fillOpacity: fo };
       Object.values(flagPolyLayer).forEach((arr) => arr.forEach((l) => l && l.setStyle(flagStyle)));
@@ -290,7 +298,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
           }) : null,
           flag: flagged.length ? L.geoJSON({ type: "FeatureCollection", features: flagged }, {
             renderer: licCanvas, smoothFactor: 1.1,
-            style: (f) => (f.properties.f & 1)
+            style: (f) => isRed(f.properties.f)
               ? { color: "#f85149", weight: w, opacity: 0.95, fillColor: "#f85149", fillOpacity: Math.min(0.65, fo + 0.05) }
               : { color: "#f5a623", weight: w, opacity: 0.95, fillColor: "#f5a623", fillOpacity: fo },
             onEachFeature: (f, layer) => layer.bindPopup(() => polyPopup(f.properties)),
@@ -318,7 +326,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
     applyZoomStyle(); // apply the current zoom band's style at load, not just on first zoom
 
     overlays["Active license areas (filters below)"] = licContainer.addTo(map);
-    overlays["⚑ Flagged areas: in default (red) / past cancellation (amber)"] = flagContainer.addTo(map);
+    overlays["⚑ Flagged in an official notice (verify — not current cancellation)"] = flagContainer.addTo(map);
     window._licLayers = { licContainer, flagContainer, groups, state, refreshLicenses, polyLayer };
 
     // Filter bar: type pills + size pills
@@ -414,8 +422,8 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
     [badge("R", "#9a7fd1", "border-radius:50%;"), "Refiner / smelter"],
     [badge("D", "#22b381", "border-radius:3px;border-style:dashed;"), "Development project"],
     ['<span class="swatch" style="background:rgba(224,106,58,0.45);border:1.5px solid #e06a3a"></span>', "License area (shaded by type; filled at low zoom)"],
-    ['<span class="swatch" style="background:rgba(248,81,73,0.5);border:1.5px solid #f85149"></span>', "In current default notice (Jun 2025)"],
-    ['<span class="swatch" style="background:rgba(245,166,35,0.45);border:1.5px solid #f5a623"></span>', "Past MLC-78 cancellation — reinstated"],
+    ['<span class="swatch" style="background:rgba(248,81,73,0.5);border:1.5px solid #f85149"></span>', "Repeat non-compliance (2024 cancellation + 2025 notice)"],
+    ['<span class="swatch" style="background:rgba(245,166,35,0.45);border:1.5px solid #f5a623"></span>', "Flagged in an official notice — show-cause default or reinstated cancellation (verify)"],
     ['<span class="swatch dot" style="background:rgba(34,179,129,0.25);border:2px solid #22b381"></span>', "Clearing-agent hub (size = concentration)"],
     ['<span class="swatch dot" style="background:#fcfcfb;border:2px solid #0b0b0b"></span>', "Seaport"],
     ['<span class="swatch line" style="background:#e4572e"></span>', "Lobito (rail)"],
@@ -772,8 +780,13 @@ const KYC_ENGINE = (() => {
     }
     if (fraudDisputes.length) { level = "red"; reasons.push(`✖ Possible mention in fraud/scam case(s): ${fraudDisputes.map((c) => c.name).join("; ")} — verify identity match.`); }
     if (defaults.length) {
-      if (level !== "red") level = "amber";
-      reasons.push(`⚠ ${defaults.length} entry(ies) on official default notices (non-payment of area charges / non-compliance).`);
+      // Show-cause default notices list CURABLE breaches (unpaid area charges,
+      // unsubmitted reports) with a 30-day remedy window. A holder still on the
+      // active register most likely cured it — a note to verify, not proof of
+      // bad standing, and NOT a reason to raise the risk level on its own.
+      const reportOnly = defaults.every((d) => /report|submission|pegging|program/i.test(d.detail || ""));
+      const breachKind = reportOnly ? "unsubmitted reports / paperwork" : "unpaid area charges or compliance breaches";
+      reasons.push(`◉ ${defaults.length} license(s) listed in an official show-cause default notice (${breachKind}) — curable, 30-day remedy window; the license(s) remain on the active register. Verify current standing; not proof of default.`);
     }
     if (expired.length) {
       if (level === "green") level = "amber";
@@ -896,8 +909,9 @@ const KYC_ENGINE = (() => {
           <td style="text-align:left;font-weight:600">${p[2]}</td><td style="text-align:left">${p[3]}</td>
           <td style="text-align:left;max-width:280px">${p[5]}</td>
           <td>${Number(p[7]).toLocaleString()}</td><td>${p[6]}${p[6] && p[6] < "2026-07" ? " ⚠" : ""}</td>
-          <td style="text-align:left;color:${(p[8] & 1) ? "var(--critical)" : p[8] ? "var(--warning)" : "var(--good)"}">${
-            (p[8] & 1) ? "In default notice (Jun 2025)" + ((p[8] & 2) ? " · past cancellation" : "")
+          <td style="text-align:left;color:${p[8] === 3 ? "var(--critical)" : p[8] ? "var(--warning)" : "var(--good)"}">${
+            p[8] === 3 ? "Active — repeat non-compliance (MLC-78 + Jun-2025 notice)"
+            : (p[8] & 1) ? "Active — in Jun-2025 show-cause notice (verify)"
             : (p[8] & 2) ? "Active — reinstated after MLC-78"
             : "Active"}</td>
         </tr>`).join("") + "</tbody>";
@@ -974,15 +988,17 @@ const KYC_ENGINE = (() => {
   document.getElementById("licenses-card").hidden = false;
   const n = LICENSES.points.length;
   const nDefault = LICENSES.points.filter((p) => p[8] & 1).length;
-  const nCancelled = LICENSES.points.filter((p) => p[8] === 2).length; // past-cancellation only (amber set)
+  const nRepeat = LICENSES.points.filter((p) => p[8] === 3).length; // both notices
   const nFlag = LICENSES.points.filter((p) => p[8] > 0).length;
   document.getElementById("licenses-note").innerHTML =
     `<strong>${n.toLocaleString()} active license records mapped</strong> from the Geological Survey's open ` +
-    `GeoServer (snapshot ${LICENSES.meta.snapshot}). <strong style="color:var(--critical)">${nDefault.toLocaleString()} ` +
-    `(${Math.round((100 * nDefault) / n)}%) are in the current Final Public Default Notice (18 Jun 2025)</strong> — drawn red. ` +
-    `A further <strong style="color:var(--amber)">${nCancelled.toLocaleString()} carry an Apr-2024 MLC-78 cancellation in their ` +
-    `history</strong> — but since they sit on the Jun-2025 <em>active</em> register, those cancellations were likely reversed on ` +
-    `appeal (the Ministry reported ~1,200 appeals); they are drawn amber as adverse history, not current status. ` +
+    `GeoServer (snapshot ${LICENSES.meta.snapshot}). Every record shown is on the <em>active</em> register, so none is ` +
+    `currently cancelled — the flags are point-in-time official notices, not current status. ` +
+    `<strong style="color:var(--amber)">${nDefault.toLocaleString()} (${Math.round((100 * nDefault) / n)}%) are listed in the ` +
+    `18 Jun 2025 Final Public Default Notice</strong> — a Section-72 <em>show-cause</em> notice for curable breaches ` +
+    `(unpaid area charges, unsubmitted reports) with a 30-day remedy window; a holder still on the active register most ` +
+    `likely cured it. <strong style="color:var(--critical)">${nRepeat.toLocaleString()}</strong> carry <em>both</em> that notice ` +
+    `and an Apr-2024 MLC-78 cancellation (repeat non-compliance, drawn red). Treat flags as "verify," not "in default." ` +
     `Click any shaded parcel for code, holder, commodities and expiry.`;
   const groups = {};
   LICENSES.points.forEach((p) => {
