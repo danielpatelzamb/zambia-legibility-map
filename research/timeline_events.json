@@ -1,0 +1,462 @@
+[
+  {
+    "year": 1964,
+    "date": "1964-10",
+    "event": "Zambia gains independence on 24 October 1964 with the copper industry entirely in the hands of the Anglo American Corporation / Roan Selection Trust duopoly and mineral rights newly transferred from the British South Africa Company to the state.",
+    "category": "other",
+    "entities": ["Anglo American Corporation", "Roan Selection Trust", "British South Africa Company", "Government of Zambia"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), 'Copper Mining in Zambia - History and Future', SAIMM Copper Cobalt Africa conference",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 1967,
+    "date": "1967-06",
+    "event": "Zambia co-founds the Intergovernmental Council of Copper Exporting Countries (CIPEC) with Chile, Peru and Congo-Kinshasa, headquartered around coordinating copper export policy; the US Bureau of Mines recorded its formal joint council activity in 1969.",
+    "category": "policy",
+    "entities": ["CIPEC", "Government of Zambia", "Chile", "Peru", "DR Congo"],
+    "source_name": "Wikipedia, 'Intergovernmental Council of Copper Exporting Countries'; US Bureau of Mines Minerals Yearbook 1969 Vol. IV Zambia chapter",
+    "source_url": "https://en.wikipedia.org/wiki/Intergovernmental_Council_of_Copper_Exporting_Countries",
+    "note": "fetched (Wikipedia article text and MYB 1969 full text both retrieved)"
+  },
+  {
+    "year": 1968,
+    "date": "1968-04",
+    "event": "Mulungushi reforms give the Zambian government 51% ownership of major industries (excluding the mines) under the parastatal INDECO, the first step of the state-control era.",
+    "category": "policy",
+    "entities": ["Government of Zambia", "INDECO"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), 'Copper Mining in Zambia - History and Future', SAIMM",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 1969,
+    "date": "1969-08",
+    "event": "Matero declaration: President Kaunda announces the state takeover of 51% of the copper mines from Anglo American and RST, to be held through MINDECO, alongside the new Mines and Minerals Act (law from 1 January 1970) replacing royalties with a 51% mineral tax on profits.",
+    "category": "nationalization",
+    "entities": ["Government of Zambia", "MINDECO", "Anglo American Corporation", "Roan Selection Trust"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), SAIMM; US Bureau of Mines Minerals Yearbook 1969 Vol. IV, Zambia chapter",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 1970,
+    "date": "1970-01",
+    "event": "The 51% state takeover becomes effective 1 January 1970: Roan Selection Trust becomes Roan Consolidated Mines (RCM) and Anglo American's assets become Nchanga Consolidated Copper Mines (NCCM).",
+    "category": "nationalization",
+    "entities": ["Roan Consolidated Mines", "Nchanga Consolidated Copper Mines", "Government of Zambia"],
+    "source_name": "US Bureau of Mines, Minerals Yearbook 1969 Vol. IV Area Reports: International, Zambia chapter (pp. 815-820)",
+    "source_url": "https://archive.org/details/pub_usgov-minerals-yearbook_1969_4",
+    "note": "fetched (full text via archive.org)"
+  },
+  {
+    "year": 1970,
+    "date": "1970-09",
+    "event": "Mufulira mine disaster: on 25 September 1970 nearly a million tonnes of liquefied tailings flow into the underground workings, killing 89 miners in Zambia's worst mining accident and temporarily crippling one of its largest mines.",
+    "category": "disaster",
+    "entities": ["Mufulira mine", "Roan Consolidated Mines"],
+    "source_name": "Tailings.info case study, 'Mufulira tailings breach, Zambia'",
+    "source_url": "http://www.tailings.info/casestudies/mufulira.htm",
+    "note": "URL verified live (HTTP 200); page content not fully fetched - death toll of 89 is the standard documented figure"
+  },
+  {
+    "year": 1973,
+    "date": null,
+    "event": "Government redeems the outstanding ZIMCO bonds owed to Anglo American and RST and takes management control, completing nationalization; RCM and NCCM fall under the parastatal ZIMCO as Zambia becomes a one-party state.",
+    "category": "nationalization",
+    "entities": ["ZIMCO", "Roan Consolidated Mines", "Nchanga Consolidated Copper Mines", "Government of Zambia"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), 'Copper Mining in Zambia - History and Future', SAIMM",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 1975,
+    "date": null,
+    "event": "World copper price collapses after the 1973-74 oil shock and stays depressed for two decades, beginning the long squeeze in which state-owned mines are undercapitalized while financing national programmes.",
+    "category": "other",
+    "entities": ["ZIMCO", "Government of Zambia"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), SAIMM, Figure 2 (GDP growth and copper prices 1960-2010, after Roe et al. 2014/ICMM)",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 1975,
+    "date": "1975-10",
+    "event": "The Chinese-built TAZARA railway to Dar es Salaam is completed, giving landlocked Zambia a copper export route that bypasses white-ruled Rhodesia and South Africa.",
+    "category": "other",
+    "entities": ["TAZARA", "Government of Zambia", "Tanzania", "China"],
+    "source_name": "Wikipedia, 'TAZARA Railway'",
+    "source_url": "https://en.wikipedia.org/wiki/TAZARA_Railway",
+    "note": "URL verified live (HTTP 200); article text not fetched in this session"
+  },
+  {
+    "year": 1982,
+    "date": null,
+    "event": "RCM and NCCM are merged into a single state giant, Zambia Consolidated Copper Mines (ZCCM), which is progressively drained to finance national programmes while output and copper grades decline.",
+    "category": "nationalization",
+    "entities": ["Zambia Consolidated Copper Mines", "Government of Zambia"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), 'Copper Mining in Zambia - History and Future', SAIMM",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 1991,
+    "date": "1991-11",
+    "event": "Multi-party elections bring the MMD government of Frederick Chiluba to power on a promise to privatize the mines after two decades of decline, in a process overseen by the IMF and World Bank.",
+    "category": "policy",
+    "entities": ["MMD", "Government of Zambia", "ZCCM", "IMF", "World Bank"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), SAIMM; Fraser & Lungu (2007), 'For Whom the Windfalls?'",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 1996,
+    "date": null,
+    "event": "Privatization of ZCCM begins with the unbundling of the conglomerate into separate asset packages, with smaller mines sold first; the process runs until 2000.",
+    "category": "privatization",
+    "entities": ["ZCCM", "Zambia Privatisation Agency"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), 'Copper Mining in Zambia - History and Future', SAIMM",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 1997,
+    "date": null,
+    "event": "Chibuluma mine (Kalulushi) is sold to South Africa's Metorex consortium as Chibuluma Mines Plc, one of the first ZCCM packages privatized.",
+    "category": "privatization",
+    "entities": ["Chibuluma Mines Plc", "Metorex", "ZCCM"],
+    "source_name": "Fraser & Lungu (2007), 'For Whom the Windfalls? Winners and losers in the privatisation of Zambia's copper mines'",
+    "source_url": "https://sarpn.org/documents/d0002403/Zambia_copper-mines_Lungu_Fraser.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 1997,
+    "date": "1997-10",
+    "event": "Luanshya/Baluba mines are sold to the India-linked Binani Group (85%) as Roan Antelope Mining Corporation of Zambia (RAMCOZ), a purchase the new owners quickly under-invest in.",
+    "category": "privatization",
+    "entities": ["RAMCOZ", "Binani Group", "Luanshya mine", "Baluba mine", "ZCCM"],
+    "source_name": "Fraser & Lungu (2007), 'For Whom the Windfalls?'",
+    "source_url": "https://sarpn.org/documents/d0002403/Zambia_copper-mines_Lungu_Fraser.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 1998,
+    "date": null,
+    "event": "China Non-Ferrous Metal Mining Co. (CNMC) buys the mothballed Chambishi mine for about US$20 million through NFC Africa - the first major Chinese mining acquisition in Zambia - and returns it to production in 2003.",
+    "category": "privatization",
+    "entities": ["NFC Africa Mining", "CNMC", "Chambishi mine", "ZCCM"],
+    "source_name": "Human Rights Watch (2011), 'You'll Be Fired If You Refuse: Labor Abuses in Zambia's Chinese State-owned Copper Mines'",
+    "source_url": "https://www.hrw.org/report/2011/11/04/youll-be-fired-if-you-refuse/labor-abuses-zambias-chinese-state-owned-copper",
+    "note": "URL verified live (HTTP 200); report content not fully fetched this session"
+  },
+  {
+    "year": 2000,
+    "date": "2000-03",
+    "event": "Konkola Copper Mines (Nchanga, Konkola, Nampundwe and part of Nkana) - the crown jewels of ZCCM - is sold to a consortium led by Anglo American, marking the effective completion of the giant packages' privatization.",
+    "category": "privatization",
+    "entities": ["Konkola Copper Mines", "Anglo American", "ZCCM", "Government of Zambia"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), SAIMM; Fraser & Lungu (2007)",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 2000,
+    "date": "2000-04",
+    "event": "Mopani Copper Mines (Nkana and Mufulira assets) is transferred on 1 April 2000 to Glencore (majority) with First Quantum Minerals as minority partner; the residual state vehicle ZCCM Investments Holdings (ZCCM-IH) retains minority stakes across the industry.",
+    "category": "privatization",
+    "entities": ["Mopani Copper Mines", "Glencore", "First Quantum Minerals", "ZCCM-IH"],
+    "source_name": "Wikipedia, 'Mopani Copper Mines'; Sikamo et al. (2015), SAIMM",
+    "source_url": "https://en.wikipedia.org/wiki/Mopani_Copper_Mines",
+    "note": "fetched (Wikipedia article wikitext and SAIMM PDF both retrieved)"
+  },
+  {
+    "year": 2000,
+    "date": "2000-11",
+    "event": "RAMCOZ collapses into receivership as Binani abandons its investment, throwing Luanshya's mines into years of instability and mass layoffs.",
+    "category": "closure",
+    "entities": ["RAMCOZ", "Binani Group", "Luanshya mine"],
+    "source_name": "Fraser & Lungu (2007), 'For Whom the Windfalls?'",
+    "source_url": "https://sarpn.org/documents/d0002403/Zambia_copper-mines_Lungu_Fraser.pdf",
+    "note": "fetched (PDF text extracted); precise receivership month from secondary literature"
+  },
+  {
+    "year": 2002,
+    "date": "2002-01",
+    "event": "Anglo American announces its withdrawal from Konkola Copper Mines, handing the flagship privatized asset back to the government barely two years after buying it, with copper near its historic price low.",
+    "category": "closure",
+    "entities": ["Anglo American", "Konkola Copper Mines", "Government of Zambia"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), 'Copper Mining in Zambia - History and Future', SAIMM",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 2004,
+    "date": "2004-11",
+    "event": "Vedanta Resources of India acquires a 51% controlling stake in Konkola Copper Mines from the government, later raising its interest to 79.4% in 2008.",
+    "category": "acquisition",
+    "entities": ["Vedanta Resources", "Konkola Copper Mines", "Government of Zambia", "Zambia Copper Investments"],
+    "source_name": "Sikamo et al. (2015), SAIMM; USGS Minerals Yearbook, Zambia 2008 chapter",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched (both sources)"
+  },
+  {
+    "year": 2005,
+    "date": "2005-04",
+    "event": "First Quantum's Kansanshi mine near Solwezi begins production in April 2005 - the first large greenfield copper mine of the post-privatization era, opening up North-Western Province as the 'new Copperbelt'.",
+    "category": "opening",
+    "entities": ["Kansanshi Mining Plc", "First Quantum Minerals", "ZCCM-IH"],
+    "source_name": "Mining Technology, 'Kansanshi Copper Mine' project profile",
+    "source_url": "https://www.mining-technology.com/projects/kansanshi/",
+    "note": "fetched"
+  },
+  {
+    "year": 2005,
+    "date": "2005-04",
+    "event": "An explosion at the Chinese-owned BGRIMM explosives plant serving the Chambishi mine kills 46 Zambian workers, the deadliest industrial accident of the new mining era and a lasting flashpoint in Zambia-China labor relations.",
+    "category": "disaster",
+    "entities": ["BGRIMM Explosives", "NFC Africa Mining", "Chambishi"],
+    "source_name": "Wikipedia, 'Chambishi'; Human Rights Watch (2011) report on Zambia's Chinese state-owned copper mines",
+    "source_url": "https://en.wikipedia.org/wiki/Chambishi",
+    "note": "fetched (Wikipedia article wikitext retrieved; HRW report URL verified live)"
+  },
+  {
+    "year": 2008,
+    "date": "2008-04",
+    "event": "Zambia introduces a 25% windfall tax on base metal revenues (triggered at copper prices above about US$5,512/t) plus a variable profits tax, scrapping the low-royalty development agreements of the privatization era.",
+    "category": "policy",
+    "entities": ["Government of Zambia", "Zambia Revenue Authority"],
+    "source_name": "USGS Minerals Yearbook 2008, Zambia chapter",
+    "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2008/myb3-2008-za.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 2008,
+    "date": "2008-06",
+    "event": "Gemfields acquires 75% of the Kagem emerald mine (with the state retaining 25%), beginning the formalization of Zambia's emerald sector; Kagem produced 20.9 million carats of emerald and beryl in 2008.",
+    "category": "acquisition",
+    "entities": ["Gemfields", "Kagem Mining", "ZCCM-IH"],
+    "source_name": "USGS Minerals Yearbook 2009, Zambia chapter (Gemfields/Kagem production and ownership)",
+    "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2009/myb3-2009-za.pdf",
+    "note": "fetched (PDF text extracted); acquisition month from company records"
+  },
+  {
+    "year": 2008,
+    "date": "2008-12",
+    "event": "Equinox Minerals produces first concentrate at the US$800m+ Lumwana mine in December 2008, then the largest new copper mine in Africa, targeting about 172,000 t/yr of copper.",
+    "category": "opening",
+    "entities": ["Lumwana Mining Company", "Equinox Minerals"],
+    "source_name": "USGS Minerals Yearbook 2008, Zambia chapter",
+    "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2008/myb3-2008-za.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 2008,
+    "date": "2008-12",
+    "event": "As copper prices crash in the global financial crisis, Luanshya Copper Mines suspends the Mulyashi project and puts the Baluba mine on care-and-maintenance, and the Chambishi copper roaster is idled.",
+    "category": "closure",
+    "entities": ["Luanshya Copper Mines", "Baluba mine", "Chambishi Metals", "Enya Holdings"],
+    "source_name": "USGS Minerals Yearbook 2008, Zambia chapter",
+    "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2008/myb3-2008-za.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 2009,
+    "date": "2009-03",
+    "event": "Parliament abolishes the 25% windfall tax barely a year after its introduction, citing the collapse in copper prices during the global economic crisis.",
+    "category": "policy",
+    "entities": ["Government of Zambia", "National Assembly of Zambia"],
+    "source_name": "USGS Minerals Yearbook 2009, Zambia chapter",
+    "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2009/myb3-2009-za.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 2009,
+    "date": "2009-06",
+    "event": "China's CNMC acquires 85% of Luanshya Copper Mines from Enya Holdings for about US$50 million and restarts the Baluba mine in December 2009, extending the Chinese wave on the Copperbelt.",
+    "category": "acquisition",
+    "entities": ["CNMC Luanshya Copper Mines", "CNMC", "Enya Holdings", "Baluba mine", "Government of Zambia"],
+    "source_name": "USGS Minerals Yearbook 2009, Zambia chapter",
+    "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2009/myb3-2009-za.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 2009,
+    "date": null,
+    "event": "The CNMC/Yunnan Copper joint-venture Chambishi Copper Smelter is commissioned inside the Chambishi Multi-Facility Economic Zone (China's first African SEZ), processing about 350,000 t/yr of concentrate into copper anode.",
+    "category": "opening",
+    "entities": ["Chambishi Copper Smelter", "CNMC", "Yunnan Copper", "Zambia-China Economic and Trade Cooperation Zone"],
+    "source_name": "USGS Minerals Yearbook 2009, Zambia chapter",
+    "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2009/myb3-2009-za.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 2010,
+    "date": "2010-10",
+    "event": "Chinese managers at the Collum coal mine in Sinazongwe shoot and wound at least 13 striking miners during a pay protest, an emblem of labor tensions at Chinese-run operations.",
+    "category": "other",
+    "entities": ["Collum Coal Mine", "Government of Zambia"],
+    "source_name": "Reuters, 'Zambian miners shot, injured during pay protest' (15 Oct 2010), cited in Wikipedia 'Collum Coal Mine'",
+    "source_url": "https://www.reuters.com/article/zambia-mining-shooting-idUKLDE69E1NZ20101015",
+    "note": "URL taken from Wikipedia citation (wikitext fetched); Reuters blocks automated access so not fetched directly"
+  },
+  {
+    "year": 2011,
+    "date": "2011-07",
+    "event": "Barrick Gold acquires Equinox Minerals for about C$7.3 billion, taking ownership of the Lumwana copper mine.",
+    "category": "acquisition",
+    "entities": ["Barrick Gold", "Equinox Minerals", "Lumwana mine"],
+    "source_name": "USGS Minerals Yearbook 2011, Zambia chapter",
+    "source_url": "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2011/myb3-2011-za.pdf",
+    "note": "fetched (PDF text extracted); deal value from contemporaneous reporting"
+  },
+  {
+    "year": 2012,
+    "date": "2012-09",
+    "event": "Zambia is declared fully compliant with the Extractive Industries Transparency Initiative (EITI), having joined as a candidate in May 2009.",
+    "category": "policy",
+    "entities": ["ZEITI", "Government of Zambia"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), 'Copper Mining in Zambia - History and Future', SAIMM",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched"
+  },
+  {
+    "year": 2015,
+    "date": "2015-01",
+    "event": "The 2015 budget replaces corporate income tax with sharply higher mineral royalties (20% open-pit / 8% underground), triggering an investment standoff and production drops before the regime is rolled back within the year.",
+    "category": "policy",
+    "entities": ["Government of Zambia", "Zambia Chamber of Mines"],
+    "source_name": "Sikamo, Mwanza & Mweemba (2015), SAIMM (conclusion on the 2015 Mineral Royalty Tax regime); royalty rates from contemporaneous coverage",
+    "source_url": "https://www.saimm.co.za/Conferences/BM2015/001-Sikamo.pdf",
+    "note": "fetched (SAIMM paper documents the 2013-15 fiscal instability and 2015 MRT uncertainty)"
+  },
+  {
+    "year": 2015,
+    "date": "2015-08",
+    "event": "First Quantum's US$2 billion+ Sentinel mine (Trident project, Kalumbila) extracts first product in August 2015, adding a third giant to North-Western Province alongside Kansanshi and Lumwana.",
+    "category": "opening",
+    "entities": ["Sentinel mine", "First Quantum Minerals", "FQM Trident"],
+    "source_name": "Wikipedia, 'Sentinel mine'",
+    "source_url": "https://en.wikipedia.org/wiki/Sentinel_mine",
+    "note": "fetched (Wikipedia article wikitext retrieved: construction from June 2012, first product August 2015, full-scale production November 2016)"
+  },
+  {
+    "year": 2019,
+    "date": "2019-01",
+    "event": "A new mining tax regime takes effect: sliding-scale royalties rise to 5.5-7.5% (10% above US$7,500/t copper), royalties become non-deductible, and an export duty is imposed on precious metals and gemstones - the tenth major tax change since privatization.",
+    "category": "policy",
+    "entities": ["Government of Zambia", "Zambia Revenue Authority"],
+    "source_name": "USGS Minerals Yearbook 2019, Zambia chapter",
+    "source_url": "https://pubs.usgs.gov/myb/vol3/2019/myb3-2019-zambia.pdf",
+    "note": "fetched (PDF text extracted)"
+  },
+  {
+    "year": 2019,
+    "date": "2019-05",
+    "event": "The Zambian state, via ZCCM-IH, appoints a provisional liquidator to wind up Vedanta's Konkola Copper Mines over alleged breaches, seizing de facto control and triggering years of arbitration with Vedanta.",
+    "category": "policy",
+    "entities": ["Konkola Copper Mines", "ZCCM-IH", "Vedanta Resources", "Government of Zambia"],
+    "source_name": "Reuters coverage of the KCM liquidation (May 2019), cited in Wikipedia 'Konkola Copper Mines'; see also DW analysis",
+    "source_url": "https://www.dw.com/en/zambia-vs-vedanta-could-the-government-be-paving-the-way-for-a-chinese-buyer/a-49041353",
+    "note": "DW URL verified live (HTTP 200); Reuters URL (idUKJ8N22M02Q) from Wikipedia citation is bot-blocked. Not fully fetched"
+  },
+  {
+    "year": 2021,
+    "date": "2021-01",
+    "event": "Glencore agrees to hand its 90% of Mopani Copper Mines to state-owned ZCCM-IH for US$1 plus US$1.5 billion in transaction debt repaid from future output, completing its exit from Zambia by 31 March 2021.",
+    "category": "acquisition",
+    "entities": ["Glencore", "Mopani Copper Mines", "ZCCM-IH", "Carlisa Investments"],
+    "source_name": "Reuters (19 Jan 2021), cited in Wikipedia 'Mopani Copper Mines'/'Konkola Copper Mines'",
+    "source_url": "https://www.reuters.com/article/us-zambia-mining-vedanta-idUSKBN29O1EL",
+    "note": "URL taken from Wikipedia citation (wikitext fetched); Reuters blocks automated access so not fetched directly"
+  },
+  {
+    "year": 2021,
+    "date": "2021-08",
+    "event": "Hakainde Hichilema wins the presidency on a pro-investment platform; his government later launches a national strategy to more than triple copper production to 3 million tonnes a year by 2031.",
+    "category": "policy",
+    "entities": ["Government of Zambia", "Hakainde Hichilema", "Ministry of Mines and Minerals Development"],
+    "source_name": "British Geological Survey news, 'Zambia: the copper mining powerhouse looking towards a safer, low-carbon future'",
+    "source_url": "https://www.bgs.ac.uk/news/zambia-the-copper-mining-powerhouse-looking-towards-a-safer-low-carbon-future/",
+    "note": "URL verified live (HTTP 200); 3 Mt/2031 target confirmed in search results; page not fully fetched"
+  },
+  {
+    "year": 2022,
+    "date": "2022-04",
+    "event": "Zambia and the DR Congo sign a cooperation agreement (29 April 2022, facilitated by UNECA) to jointly develop an electric-vehicle battery value chain, including cross-border special economic zones for battery precursor manufacturing.",
+    "category": "policy",
+    "entities": ["Government of Zambia", "DR Congo", "UNECA", "Zambia-DRC Battery Council"],
+    "source_name": "Lusaka Times, 'Congo and Zambia to build up battery supply chain' (1 June 2022)",
+    "source_url": "https://www.lusakatimes.com/2022/06/01/congo-and-zambia-to-build-up-battery-supply-chain/",
+    "note": "URL from GDELT news index (search-snippet basis); site intermittently unreachable during verification"
+  },
+  {
+    "year": 2022,
+    "date": "2022-12",
+    "event": "KoBold Metals, the AI-driven exploration company backed by Breakthrough Energy Ventures, commits about US$150 million to the Mingomba deposit near Chililabombwe - which it now describes as one of the best copper deposits ever found and a future world-scale mine.",
+    "category": "other",
+    "entities": ["KoBold Metals", "Mingomba", "EMR Capital", "ZCCM-IH"],
+    "source_name": "KoBold Metals, Mingomba project page",
+    "source_url": "https://koboldmetals.com/mingomba/",
+    "note": "fetched (koboldmetals.com homepage/project page); $150m figure and Dec 2022 date from contemporaneous reporting (search-snippet basis)"
+  },
+  {
+    "year": 2023,
+    "date": "2023-11",
+    "event": "ZCCM-IH and Vedanta Resources sign the settlement returning Konkola Copper Mines to Vedanta's control, ending the 2019 liquidation saga; Vedanta commits over US$1 billion to revive Konkola and pays about US$250 million to creditors, with full handback completed in 2024.",
+    "category": "acquisition",
+    "entities": ["Vedanta Resources", "Konkola Copper Mines", "ZCCM-IH", "Government of Zambia"],
+    "source_name": "The Telegraph (India), 'Vedanta Resources and Zambian govt finalise agreement to restore ownership of Konkola Copper Mines' (Nov 2023)",
+    "source_url": "https://www.telegraphindia.com/business/vedanta-resources-and-zambian-govt-finalise-agreement-to-restore-ownership-of-konkola-copper-mines/cid/1978431",
+    "note": "URL from GDELT news index (search-snippet basis); site blocks automated fetch (HTTP 403)"
+  },
+  {
+    "year": 2024,
+    "date": "2024-03",
+    "event": "Abu Dhabi's International Resources Holding (IRH) completes a US$1.1 billion deal for 51% of Mopani Copper Mines, recapitalizing the mines ZCCM-IH took over from Glencore and bringing Gulf capital into the Copperbelt for the first time.",
+    "category": "acquisition",
+    "entities": ["International Resources Holding", "International Holding Company", "Mopani Copper Mines", "ZCCM-IH"],
+    "source_name": "Forbes Middle East, 'International Holding Company's IRH completes acquisition of Mopani Copper Mines' (March 2024)",
+    "source_url": "https://www.forbesmiddleeast.com/industry/business/international-holding-companys-irh-completes-acquisition-of-mopani-copper-mines",
+    "note": "URL verified live (HTTP 200), found via Wikipedia citation; corroborated by MENAFN/Lusaka Times items in news index"
+  },
+  {
+    "year": 2024,
+    "date": "2024-07",
+    "event": "China's JCHX Mining completes its purchase of an 80% stake in the loss-making Lubambe copper mine from EMR Capital and commits about US$300 million, including a new shaft, to turn the operation around.",
+    "category": "acquisition",
+    "entities": ["JCHX Mining", "Lubambe Copper Mine", "EMR Capital", "ZCCM-IH"],
+    "source_name": "Reuters via Mining.com, 'Zambia says China's JCHX will invest $300m in Lubambe copper mine' (11 July 2024)",
+    "source_url": "https://www.mining.com/web/zambia-says-chinas-jchx-will-invest-300m-in-lubambe-copper-mine/",
+    "note": "fetched (search-result page with title/summary retrieved; URL verified HTTP 200)"
+  },
+  {
+    "year": 2025,
+    "date": "2025-02",
+    "event": "A tailings dam at Sino-Metals Leach Zambia's Chambishi operation fails on 18 February 2025, releasing some 50 million litres of acidic effluent into the Mwambashi River and the Kafue system, cutting water supply to Kitwe and becoming a national test case for mining-environmental accountability.",
+    "category": "disaster",
+    "entities": ["Sino-Metals Leach Zambia", "CNMC", "Kafue River", "Kitwe"],
+    "source_name": "Mining.com, 'Acid spill from Chinese-owned copper mine contaminates vital waterway in Zambia'; Human Rights Watch, 'Zambia: Acid Spill Jeopardizes Residents' Health' (11 Sep 2025)",
+    "source_url": "https://www.mining.com/acid-spill-from-chinese-owned-copper-mine-contaminates-vital-waterway-in-zambia/",
+    "note": "both URLs verified live (HTTP 200); HRW listing fetched via hrw.org country page: https://www.hrw.org/news/2025/09/11/zambia-acid-spill-jeopardizes-residents-health"
+  },
+  {
+    "year": 2025,
+    "date": null,
+    "event": "First Quantum commissions the US$1.25 billion S3 expansion at Kansanshi, the anchor project of Zambia's push toward its 3-million-tonne target.",
+    "category": "opening",
+    "entities": ["First Quantum Minerals", "Kansanshi Mining Plc"],
+    "source_name": "Mining.com, 'First Quantum commissions $1.25B Zambia copper expansion amid debt push'",
+    "source_url": "https://www.mining.com/first-quantum-commissions-1-25b-zambia-copper-expansion-amid-debt-push/",
+    "note": "URL verified live (HTTP 200) via mining.com article index; article body not fetched - confirm commissioning date before publication"
+  },
+  {
+    "year": 2025,
+    "date": null,
+    "event": "Zambia's copper production reaches 890,346 tonnes in 2025 (ministry figures), up 8% and the highest in over five decades, but misses the government's 1-million-tonne target.",
+    "category": "other",
+    "entities": ["Ministry of Mines and Minerals Development", "Government of Zambia"],
+    "source_name": "Reuters via Mining.com, 'Zambia's 2025 copper production up 8%, misses target' (27 Jan 2026)",
+    "source_url": "https://www.mining.com/web/zambias-2025-copper-production-up-8-misses-target/",
+    "note": "fetched"
+  }
+]

@@ -6,7 +6,7 @@
 <title>Zambia Minerals Legibility Terminal</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=202607240431">
+<link rel="stylesheet" href="styles.css?v=202607290400">
 </head>
 <body>
 
@@ -24,6 +24,7 @@
   <nav class="tabs">
     <button data-tab="map" class="active">Legibility Map</button>
     <button data-tab="kyc">KYC Check</button>
+    <button data-tab="register">Register &amp; Ownership</button>
     <button data-tab="trade">Trade Analysis</button>
     <button data-tab="method">Methodology &amp; Caveats</button>
   </nav>
@@ -162,6 +163,178 @@
         PACRA. The NGDR snapshot covers the full active register (~7,468 records).
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ============ REGISTER & OWNERSHIP ============ -->
+<section id="tab-register" class="tab-panel">
+  <div class="hero-stats" id="reg-hero"></div>
+
+  <div class="card">
+    <h2>Who owns the ground — and who won't say</h2>
+    <p class="note">Every organisational holder on the register (2,716) queried against
+      <strong>PACRA's public companies-registry API</strong>, which returns statutory standing per company:
+      whether beneficial ownership has been declared, whether annual returns are filed, and whether the company
+      meets the minimum share capital. This is the layer the KYC tab used to have to send you to PACRA for.</p>
+    <div class="chart-wrap" style="height:300px"><canvas id="reg-compliance-chart"></canvas></div>
+    <div class="callout">
+      <strong>One number was corrected downward.</strong> An earlier pass counted 559 holders as absent from the
+      companies registry. PACRA's search cannot handle ampersands — <em>VS Construction &amp; Mining Services
+      Limited</em> returns nothing while <em>VS Construction</em> returns it (registered 2008, active). Of the 559,
+      229 are cooperatives that register with the Registrar of Cooperatives instead, and 116 were registered all
+      along. <strong>214 are genuinely unexplained.</strong> 121 further companies are excluded from the
+      declared-business figures because the registry returned several candidate entities and the match was left
+      unresolved rather than guessed.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Declared business vs mineral rights</h2>
+    <p class="note">What licence holders told the companies registry they do for a living. <strong>732 of 2,128</strong>
+      declared something other than mining — wholesale trade, building construction, road freight, mixed farming —
+      while holding <strong>10.9 million hectares, about 30% of all licensed ground</strong>. Not a legibility gap
+      in our data: a disagreement between two of the state's own registers.</p>
+    <div class="chart-wrap" style="height:340px"><canvas id="reg-mismatch-chart"></canvas></div>
+    <h3 style="margin:18px 0 6px">Largest holdings on a non-mining declaration</h3>
+    <table class="data" id="reg-mismatch-table"></table>
+  </div>
+
+  <div class="card">
+    <h2>Which minerals sit under a non-mining declaration</h2>
+    <p class="note">The join worth staring at. A holder's line of business comes from the companies
+      registry; the minerals come from the licence register. Where the two disagree, this is what it looks
+      like — <strong>1,015 copper</strong> and <strong>911 gold</strong> licence-commodity entries are held
+      by companies that told the state they are in wholesale trade, construction, freight or farming.
+      Hover any bar for its share of all holders of that mineral.</p>
+    <div class="controls">
+      <label for="reg-mineral-sort">Rank by:</label>
+      <select id="reg-mineral-sort">
+        <option value="nm">Count under a non-mining declaration</option>
+        <option value="sh">Share of that mineral's holders</option>
+      </select>
+      <span style="font-size:12.5px;color:var(--muted)">minerals with ≥20 such entries</span>
+    </div>
+    <div class="chart-wrap" style="height:420px"><canvas id="reg-mineral-chart"></canvas></div>
+    <div class="callout">
+      Read this as a <em>flag, not a finding</em>. A construction firm can legitimately hold a limestone
+      right, and a farming company can own ground with copper under it. What the chart shows is where the
+      state's two registers describe the same company differently — which is exactly where a counterparty
+      check should slow down.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Legibility by licence type — who can even be found</h2>
+    <p class="note">The register is not uniformly opaque. Production and processing licences are held by
+      companies you can mostly identify and sometimes reach; exploration is thinner; the artisanal tier is
+      effectively dark. The <strong>Bidding area</strong> row is the giveaway — 1,442 licences held by 4
+      holders, because gazetted blocks sit with the state until they are allocated.</p>
+    <table class="data" id="reg-buckets-table"></table>
+  </div>
+
+  <div class="card">
+    <h2>Gemstones: 28 licences, or 2,056?</h2>
+    <p class="note">Both, and the gap is the point. Only <strong>28</strong> licences were ever issued under
+      a dedicated <em>Gemstone Licence</em> type — a 2008-era category that has effectively lapsed. But
+      <strong>2,056</strong> licences actually list a gem commodity, held by <strong>1,459 distinct
+      holders</strong>. Gemstones in Zambia are mined under ordinary exploration, artisanal and small-scale
+      licences, so counting the licence type understates the sector by roughly seventy-fold.</p>
+    <div class="chart-wrap" style="height:300px"><canvas id="reg-gem-chart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h2>The 189 processing licence holders</h2>
+    <p class="note">Mineral Processing Licences — 195 licences, 189 distinct holders. These are the plants:
+      smelters, refineries, leach and SX-EW circuits, gemstone cutting. <strong>152 of the 195 appear in the
+      18 June 2025 default notice</strong> and 35 carry a 2024 cancellation flag. They are already plotted
+      on the Legibility Map under the purple <em>Processing</em> filter.</p>
+    <div class="controls">
+      <label for="reg-proc-filter">Show:</label>
+      <select id="reg-proc-filter">
+        <option value="all">All processing holders</option>
+        <option value="def">Only those in the 2025 default notice</option>
+        <option value="nm">Only those declaring a non-mining business</option>
+      </select>
+      <span id="reg-proc-count" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <table class="data" id="reg-proc-table"></table>
+  </div>
+
+  <div class="card">
+    <h2>Copper, 1964–2025 — the whole arc</h2>
+    <p class="note">National copper output from independence to now (USGS / BGS), with the structural events that
+      bent the curve. 748,000 t at the 1969 state takeover, down to <strong>249,000 t by 2000</strong>, back to
+      890,000 t in 2025. Hover any year for the tonnage and what happened. Cobalt is on the same series switch.</p>
+    <div class="controls">
+      <label for="reg-commodity">Commodity:</label>
+      <select id="reg-commodity">
+        <option value="cu">Copper (1964–2025)</option>
+        <option value="co">Cobalt (1970–2024)</option>
+      </select>
+      <span id="reg-spine-summary" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <div class="chart-wrap" style="height:360px"><canvas id="reg-spine-chart"></canvas></div>
+    <table class="data" id="reg-events-table"></table>
+  </div>
+
+  <div class="card">
+    <h2>What the Licensing Committee actually decided</h2>
+    <p class="note">16,120 holder mentions mined from 60 official documents — Mining Licensing Committee meetings
+      70 to 91, the extraordinary sitting of October 2023, the 2023 and 2025 default notices and the 2024
+      cancellation notice. This makes the licensing system itself legible: how much ground churns, how often the
+      committee defers.</p>
+    <div class="chart-wrap" style="height:260px"><canvas id="reg-decisions-chart"></canvas></div>
+  </div>
+
+  <div class="card">
+    <h2>Where the money moves — offtakes, prepayments and corridors</h2>
+    <p class="note">31 documented supply-chain arrangements with disclosed value where published. This is the layer
+      shipment manifests cannot see: Zambia is landlocked, so no ocean bill of lading is ever issued here and the
+      shipper on a Durban or Dar manifest is a forwarder, not the mine.</p>
+    <div class="controls">
+      <label for="reg-chain-filter">Type:</label>
+      <select id="reg-chain-filter"><option value="all">All arrangements</option></select>
+    </div>
+    <table class="data" id="reg-chain-table"></table>
+  </div>
+
+  <div class="card">
+    <h2>Value addition: announced vs built</h2>
+    <p class="note">28 policy instruments, zones, international initiatives and state vehicles aimed at moving
+      Zambia beyond cathode — with announced programme value where published. Read against the geolocated
+      facilities that actually exist.</p>
+    <table class="data" id="reg-va-table"></table>
+  </div>
+
+  <div class="card">
+    <h2>How to reach them</h2>
+    <p class="note">The register names 3,622 distinct holders. Published contact channels exist for a small
+      fraction, and for the 229 mining cooperatives, for <strong>none at all</strong> — four independent sweeps of
+      the full licensing archive found no phone, email or address for any of them. The route in is institutional:
+      82 reachable offices below, from the national federation down to district councils.</p>
+    <div class="controls">
+      <label for="reg-chan-filter">Province:</label>
+      <select id="reg-chan-filter"><option value="all">All provinces</option></select>
+      <label for="reg-chan-cat">Type:</label>
+      <select id="reg-chan-cat"><option value="all">All types</option></select>
+      <span id="reg-chan-count" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <table class="data" id="reg-chan-table"></table>
+    <div class="callout">
+      <strong>Why the cooperative column is zero.</strong> These societies register with the Registrar of
+      Cooperatives — resolved to sit under the <strong>Ministry of Small and Medium Enterprise Development</strong>,
+      not Commerce — so no companies-registry record exists. Their artisanal rights, roughly 2 to 33 hectares, fall
+      below the environmental-filing threshold, so they never lodge the documents that would carry a proponent
+      contact. 186 of 229 are located to district, which is what makes the provincial route usable.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Mining cooperatives by province</h2>
+    <p class="note">229 societies holding artisanal and small-scale rights. Central Province alone holds 53 — and
+      the Mkushi Regional Mining Bureau and Mkushi District Council share a town, which makes it the single most
+      efficient point of contact for that cohort.</p>
+    <div class="chart-wrap" style="height:280px"><canvas id="reg-coop-chart"></canvas></div>
   </div>
 </section>
 
@@ -307,18 +480,19 @@
 
 </main>
 
-<script src="data/trade_data.js?v=202607240431"></script>
-<script src="data/geo_layers.js?v=202607240431"></script>
-<script src="data/legal_layers.js?v=202607240431"></script>
+<script src="data/trade_data.js?v=202607290400"></script>
+<script src="data/geo_layers.js?v=202607290400"></script>
+<script src="data/legal_layers.js?v=202607290400"></script>
 <script src="data/zambia_adm0.js"></script>
-<script src="data/licenses_points.js?v=202607240431"></script>
-<script src="data/licenses_geo.js?v=202607240431"></script>
-<script src="data/kyc_data.js?v=202607240431"></script>
-<script src="data/kyc_court.js?v=202607240431"></script>
-<script src="data/production_data.js?v=202607240431"></script>
+<script src="data/licenses_points.js?v=202607290400"></script>
+<script src="data/licenses_geo.js?v=202607290400"></script>
+<script src="data/kyc_data.js?v=202607290400"></script>
+<script src="data/kyc_court.js?v=202607290400"></script>
+<script src="data/production_data.js?v=202607290400"></script>
+<script src="data/register_data.js?v=202607290400"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=202607240431"></script>
+<script src="app.js?v=202607290400"></script>
 </body>
 </html>

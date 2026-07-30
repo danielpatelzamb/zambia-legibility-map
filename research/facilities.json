@@ -1,0 +1,357 @@
+[
+  {
+    "name": "Chambishi Copper Smelter (CCS)",
+    "operator": "CNMC / Yunnan Copper JV (Chambishi Copper Smelter Ltd)",
+    "type": "smelter",
+    "products": "blister/anode copper, sulphuric acid",
+    "latitude": -12.6560,
+    "longitude": 28.0478,
+    "coordinate_source": "OSM man_made=works polygon cluster southwest of Chambishi town (approximate, via Overpass API)",
+    "town": "Chambishi",
+    "status": "operating",
+    "capacity": "approx. 250,000 t/y blister/anode copper",
+    "sources": [
+      "https://cnmcl.net/en/about-us/company-profile/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Chambishi Metals Plc refinery",
+    "operator": "Eurasian Resources Group (ERG, 90%) / ZCCM-IH (10%)",
+    "type": "refinery",
+    "products": "cobalt metal, copper cathode",
+    "latitude": -12.6346,
+    "longitude": 28.0665,
+    "coordinate_source": "Chambishi town centroid approximation (Nominatim); plant adjoins the Chambishi mine area",
+    "town": "Chambishi",
+    "status": "care & maintenance",
+    "capacity": "nominal 6,800 t/y cobalt metal and 55,000 t/y copper cathode",
+    "sources": [
+      "https://www.ergafrica.com/cobalt-copper-division/chambishi-metals/",
+      "https://www.mining.com/web/erg-suspends-zambia-refinery-on-shortage-of-cobalt-copper-concentrates-2/"
+    ]
+  },
+  {
+    "name": "Sino-Metals Leach Zambia (Chambishi leach plant)",
+    "operator": "Sino-Metals Leach Zambia Ltd (CNMC subsidiary)",
+    "type": "SX-EW",
+    "products": "copper cathode (from tailings, low-grade and oxide ores)",
+    "latitude": -12.6346,
+    "longitude": 28.0665,
+    "coordinate_source": "Chambishi town centroid approximation (Nominatim); plant is in the Chambishi industrial area",
+    "town": "Chambishi",
+    "status": "operating (operations disrupted by February 2025 tailings dam failure and Kafue tributary acid spill)",
+    "capacity": "approx. 10,000 t/y copper cathode (reported)",
+    "sources": [
+      "https://www.dailymaverick.co.za/article/2025-03-04-chambishi-tailings-failure-a-canary-in-zambias-copperbelt/",
+      "https://global.chinadaily.com.cn/a/202409/05/WS66d90d0ba3108f29c1fca3f2.html",
+      "https://cnmcl.net/en/about-us/company-profile/"
+    ]
+  },
+  {
+    "name": "NFC Africa Mining Chambishi mine concentrators (West Ore Body and South East Ore Body)",
+    "operator": "NFC Africa Mining Plc (CNMC 85% / ZCCM-IH 15%)",
+    "type": "concentrator",
+    "products": "copper concentrate",
+    "latitude": -12.6476,
+    "longitude": 28.0424,
+    "coordinate_source": "OSM man_made=works polygons at the Chambishi mine site (approximate, via Overpass API)",
+    "town": "Chambishi",
+    "status": "operating",
+    "capacity": "South East Ore Body concentrator approx. 3.3 Mt/y ore (reported)",
+    "sources": [
+      "https://cnmcl.net/en/about-us/company-profile/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Chambishi Multi-Facility Economic Zone (Zambia-China Economic and Trade Cooperation Zone)",
+    "operator": "ZCCZ Development Co. (CNMC)",
+    "type": "MFEZ",
+    "products": "zone hosting copper smelting, leaching and downstream processing tenants (incl. Chambishi Copper Smelter and Sino-Metals Leach Zambia)",
+    "latitude": -12.6346,
+    "longitude": 28.0665,
+    "coordinate_source": "Chambishi town centroid approximation (Nominatim); zone surrounds the town to the south and west",
+    "town": "Chambishi",
+    "status": "operating",
+    "capacity": null,
+    "sources": [
+      "https://cnmcl.net/en/about-us/company-profile/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Kansanshi copper smelter",
+    "operator": "Kansanshi Mining Plc (First Quantum Minerals 80% / ZCCM-IH 20%)",
+    "type": "smelter",
+    "products": "copper anode, sulphuric acid",
+    "latitude": -12.0849,
+    "longitude": 26.4004,
+    "coordinate_source": "OSM man_made=works polygon at the Kansanshi mine site (via Overpass API)",
+    "town": "Solwezi",
+    "status": "operating",
+    "capacity": "approx. 1.2 Mt/y concentrate throughput; ~300,000 t/y anode copper",
+    "sources": [
+      "https://www.first-quantum.com/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Kansanshi mine concentrators and SX-EW plant (incl. S3 expansion)",
+    "operator": "Kansanshi Mining Plc (First Quantum Minerals 80% / ZCCM-IH 20%)",
+    "type": "concentrator",
+    "products": "copper concentrate, copper cathode (SX-EW), gold",
+    "latitude": -12.0849,
+    "longitude": 26.4004,
+    "coordinate_source": "OSM man_made=works polygon at the Kansanshi mine site (via Overpass API); plants share the mine industrial area",
+    "town": "Solwezi",
+    "status": "operating (S3 expansion concentrator commissioned 2025)",
+    "capacity": "S3 standalone concentrator approx. 25 Mt/y ore (reported)",
+    "sources": [
+      "https://www.first-quantum.com/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Mopani Mufulira smelter (ISASMELT)",
+    "operator": "Mopani Copper Mines Plc (International Resources Holding 51% / ZCCM-IH 49%)",
+    "type": "smelter",
+    "products": "copper anode, sulphuric acid",
+    "latitude": -12.5591,
+    "longitude": 28.2737,
+    "coordinate_source": "OSM man_made=works polygon at the Mufulira mine site (approximate, via Overpass API)",
+    "town": "Mufulira",
+    "status": "operating",
+    "capacity": "approx. 280,000 t/y anode copper (nominal)",
+    "sources": [
+      "https://mopani.com.zm/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Mopani Mufulira copper refinery",
+    "operator": "Mopani Copper Mines Plc (International Resources Holding 51% / ZCCM-IH 49%)",
+    "type": "refinery",
+    "products": "copper cathode (electrorefined)",
+    "latitude": -12.5591,
+    "longitude": 28.2737,
+    "coordinate_source": "OSM man_made=works polygon at the Mufulira mine site (approximate, via Overpass API); refinery shares the smelter complex",
+    "town": "Mufulira",
+    "status": "operating",
+    "capacity": "approx. 225,000 t/y copper cathode (nominal)",
+    "sources": [
+      "https://mopani.com.zm/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Mopani Nkana concentrator and cobalt plant",
+    "operator": "Mopani Copper Mines Plc (International Resources Holding 51% / ZCCM-IH 49%)",
+    "type": "concentrator",
+    "products": "copper concentrate, cobalt-bearing concentrate",
+    "latitude": -12.8138,
+    "longitude": 28.1981,
+    "coordinate_source": "OSM industrial feature within the Nkana mine complex, Kitwe (approximate, via Nominatim)",
+    "town": "Kitwe",
+    "status": "operating",
+    "capacity": null,
+    "sources": [
+      "https://mopani.com.zm/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "KCM Nkana copper refinery",
+    "operator": "Konkola Copper Mines Plc (Vedanta Resources / ZCCM-IH)",
+    "type": "refinery",
+    "products": "copper cathode (electrorefined)",
+    "latitude": -12.8138,
+    "longitude": 28.1981,
+    "coordinate_source": "OSM industrial feature within the Nkana mine complex, Kitwe (approximate, via Nominatim); refinery is inside the Nkana complex",
+    "town": "Kitwe",
+    "status": "operating (Vedanta regained control of KCM in 2024 after provisional liquidation)",
+    "capacity": null,
+    "sources": [
+      "https://kcm.co.zm/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "KCM Nchanga smelter",
+    "operator": "Konkola Copper Mines Plc (Vedanta Resources / ZCCM-IH)",
+    "type": "smelter",
+    "products": "blister/anode copper, sulphuric acid",
+    "latitude": -12.5095,
+    "longitude": 27.8670,
+    "coordinate_source": "OSM 'Nchanga Mines' industrial polygon, Chingola (via Nominatim); smelter is within the Nchanga complex",
+    "town": "Chingola",
+    "status": "operating",
+    "capacity": "311,000 t/y copper (direct-to-blister flash smelter, nominal)",
+    "sources": [
+      "https://kcm.co.zm/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "KCM Nchanga Tailings Leach Plant (TLP)",
+    "operator": "Konkola Copper Mines Plc (Vedanta Resources / ZCCM-IH)",
+    "type": "SX-EW",
+    "products": "copper cathode (from tailings leaching)",
+    "latitude": -12.5095,
+    "longitude": 27.8670,
+    "coordinate_source": "OSM 'Nchanga Mines' industrial polygon, Chingola (via Nominatim); TLP is within the Nchanga complex",
+    "town": "Chingola",
+    "status": "operating (intermittent throughput in recent years)",
+    "capacity": null,
+    "sources": [
+      "https://kcm.co.zm/",
+      "https://www.researchgate.net/publication/292140013_Copper_solvent_extraction_Status_operating_practices_and_challenges_in_the_African_Copper_Belt"
+    ]
+  },
+  {
+    "name": "KCM Konkola concentrator",
+    "operator": "Konkola Copper Mines Plc (Vedanta Resources / ZCCM-IH)",
+    "type": "concentrator",
+    "products": "copper concentrate",
+    "latitude": -12.3650,
+    "longitude": 27.8285,
+    "coordinate_source": "Chililabombwe town centroid approximation; concentrator is at the Konkola mine adjacent to town",
+    "town": "Chililabombwe",
+    "status": "operating",
+    "capacity": null,
+    "sources": [
+      "https://kcm.co.zm/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "CNMC Luanshya Muliashi SX-EW plant",
+    "operator": "CNMC Luanshya Copper Mines Plc (CNMC 80% / ZCCM-IH 20%)",
+    "type": "SX-EW",
+    "products": "copper cathode",
+    "latitude": -13.0773,
+    "longitude": 28.3434,
+    "coordinate_source": "OSM 'Muliashi Mine' industrial polygon, Luanshya (via Nominatim)",
+    "town": "Luanshya",
+    "status": "operating",
+    "capacity": "approx. 40,000 t/y copper cathode (commissioned 2012)",
+    "sources": [
+      "https://news.metal.com/newscontent/103881963-Focusing-on-Ex-China-Copper-Industry-SMM-Visited-CNMC-Luanshya-Copper-Mines-PLC",
+      "https://www.zccm-ih.com.zm/investments/mining-assets/cnmc-luanshya-copper-mines-plc/"
+    ]
+  },
+  {
+    "name": "Mimbula SX-EW plant",
+    "operator": "Mimbula Minerals Ltd (Moxico Resources 93%)",
+    "type": "SX-EW",
+    "products": "copper cathode (LME Grade A, heap leach SX-EW)",
+    "latitude": -12.6227,
+    "longitude": 27.8524,
+    "coordinate_source": "OSM 'Mimbula Mine' industrial polygon, ~10 km southeast of Chingola (via Nominatim)",
+    "town": "Chingola (district)",
+    "status": "ramp-up (Phase 1 producing since Dec 2022; Phase 2 expansion under construction)",
+    "capacity": "56,000 t/y copper cathode at full Phase 2 capacity (mid-2026 target); 14,000 t produced in 2024",
+    "sources": [
+      "https://www.moxicoresources.com/projects/republic-of-zambia/operations",
+      "https://www.miningweekly.com/article/ecora-enters-into-50m-copper-stream-agreement-over-zambia-project-2025-02-27"
+    ]
+  },
+  {
+    "name": "ZAMEFA copper rod and cable plant (Metal Fabricators of Zambia Plc)",
+    "operator": "Metal Fabricators of Zambia Plc (Reunert Ltd 75%, LuSE-listed)",
+    "type": "fabricator",
+    "products": "copper rod, copper and aluminium cables and electrical conductors",
+    "latitude": -13.1450,
+    "longitude": 28.4155,
+    "coordinate_source": "OSM man_made=works polygon in the Luanshya industrial area (approximate, via Overpass API); plant is on Kafubu Road, Luanshya",
+    "town": "Luanshya",
+    "status": "operating",
+    "capacity": null,
+    "sources": [
+      "https://www.zamefa.com/about-zamefa/",
+      "https://www.luse.co.zm/wp-content/uploads/2024/05/ZAMEFA-Annual-Report-2023.pdf",
+      "https://upcast.com/reference/zambian-copper-rod-valued-all-over-africa/"
+    ]
+  },
+  {
+    "name": "Kafue Steel plant (Universal Mining and Chemical Industries Ltd, UMCIL)",
+    "operator": "UMCIL (Trade Kings Group)",
+    "type": "steel plant",
+    "products": "steel billets, rebar and rolled products from local iron ore and scrap (integrated DRI plant)",
+    "latitude": -15.7445,
+    "longitude": 28.1755,
+    "coordinate_source": "Kafue town centroid approximation (Nominatim); plant is in the Kafue heavy-industrial area",
+    "town": "Kafue",
+    "status": "operating",
+    "capacity": "approx. 250,000 t/y design capacity (steel products)",
+    "sources": [
+      "https://www.umcil.co.zm/about-us/",
+      "https://www.steeltimesint.com/news/zambia-develops-iron-ore-for-dri"
+    ]
+  },
+  {
+    "name": "Sentinel concentrator (Trident project)",
+    "operator": "Kalumbila Minerals Ltd (First Quantum Minerals)",
+    "type": "concentrator",
+    "products": "copper concentrate",
+    "latitude": -12.2805,
+    "longitude": 25.2985,
+    "coordinate_source": "OSM industrial feature at the Sentinel mine plant site, Kalumbila (via Nominatim)",
+    "town": "Kalumbila",
+    "status": "operating",
+    "capacity": "approx. 55 Mt/y ore throughput; ~230,000-260,000 t/y copper in concentrate",
+    "sources": [
+      "https://www.first-quantum.com/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Enterprise nickel concentrator (Trident project)",
+    "operator": "Kalumbila Minerals Ltd (First Quantum Minerals)",
+    "type": "concentrator",
+    "products": "nickel concentrate (Zambia's first nickel mine, first production 2023)",
+    "latitude": -12.1900,
+    "longitude": 25.2400,
+    "coordinate_source": "approximation ~12 km northwest of the Sentinel plant; not anchored to a mapped OSM feature",
+    "town": "Kalumbila",
+    "status": "operating (ramp-up since 2023)",
+    "capacity": "up to approx. 30,000 t/y nickel in concentrate",
+    "sources": [
+      "https://www.first-quantum.com/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Lumwana concentrator",
+    "operator": "Lumwana Mining Company Ltd (Barrick Mining Corporation)",
+    "type": "concentrator",
+    "products": "copper concentrate",
+    "latitude": -12.2439,
+    "longitude": 25.8643,
+    "coordinate_source": "OSM 'Lumwana Mine' industrial polygon (via Nominatim)",
+    "town": "Lumwana / Kalumbila District",
+    "status": "operating (Super Pit expansion underway)",
+    "capacity": "approx. 120,000 t/y copper, expanding toward ~240,000 t/y under Super Pit expansion (target ~2028)",
+    "sources": [
+      "https://www.barrick.com/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  },
+  {
+    "name": "Lubambe concentrator",
+    "operator": "Lubambe Copper Mine Ltd (JCHX Mining 80% / ZCCM-IH 20%)",
+    "type": "concentrator",
+    "products": "copper concentrate",
+    "latitude": -12.2963,
+    "longitude": 27.7685,
+    "coordinate_source": "OSM 'Lubambe Copper Mine Ltd' industrial polygon, Konkola area (via Nominatim)",
+    "town": "Chililabombwe",
+    "status": "operating (JCHX acquired 80% in 2024)",
+    "capacity": "approx. 2.5 Mt/y ore throughput",
+    "sources": [
+      "https://lubambe.com/",
+      "https://www.zccm-ih.com.zm/",
+      "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf"
+    ]
+  }
+]

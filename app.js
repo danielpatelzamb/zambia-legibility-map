@@ -409,7 +409,8 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
     window._disputeLayer = dispLayer;
   }
 
-  L.control.layers(null, overlays, { collapsed: false }).addTo(map);
+  // exposed so later modules can register overlays (see ECONOMIC LINKAGE)
+  window._leafletLayerControl = L.control.layers(null, overlays, { collapsed: false }).addTo(map);
 
   // Legend
   const legend = document.getElementById("map-legend");
@@ -1689,4 +1690,603 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
       kq.dispatchEvent(new Event("input"));
     });
   });
+})();
+
+/* ================================================================
+   REGISTER & OWNERSHIP
+   Companies-registry standing, declared business vs mineral rights,
+   the 1964-2025 production arc, licensing decisions, supply-chain
+   arrangements, value addition, and the institutional routes to the
+   holders who publish nothing. Data: data/register_data.js.
+================================================================ */
+(function registerTab() {
+  const R = window.REGISTER;
+  if (!R) return;
+  const S = R.STATS;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const fmtHa = (n) => n >= 1e6 ? (n / 1e6).toFixed(2) + "M ha" : n >= 1e3 ? Math.round(n / 1e3) + "k ha" : n + " ha";
+  const usd = (v) => v == null ? "" :
+    v >= 1e9 ? "$" + (v / 1e9).toFixed(v / 1e9 >= 10 ? 1 : 2) + "bn" :
+    v >= 1e6 ? "$" + Math.round(v / 1e6) + "m" : "$" + fmt(v);
+  const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const link = (u, t) => u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(t || "source") + '</a>' : "";
+
+  /* ----- hero counters ----- */
+  const pctGround = Math.round((100 * S.nonMiningHa) / S.allHa);
+  document.getElementById("reg-hero").innerHTML = [
+    [fmt(S.pacraMatched), "holders matched to the companies registry", "var(--s1)"],
+    [fmt(S.boUndeclared), "have never declared beneficial owners", "var(--critical)"],
+    [pctGround + "%", "of licensed ground on a non-mining declaration", "var(--serious)"],
+    [fmt(S.noRegistry), "companies with no registry record at all", "var(--warning)"],
+    [fmt(S.reachable), "organisations reachable by any channel", "var(--s3)"],
+    ["0", "of " + fmt(S.coops) + " cooperatives with a contact", "var(--critical)"],
+  ].map(([num, lbl, color]) =>
+    '<div class="hero-stat"><div class="num" style="color:' + color + '">' + num + '</div><div class="lbl">' + lbl + '</div></div>'
+  ).join("");
+
+  /* ----- companies-registry standing ----- */
+  new Chart(document.getElementById("reg-compliance-chart"), {
+    type: "bar",
+    data: {
+      labels: ["Beneficial owners undeclared", "Annual returns unfiled", "Below minimum share capital",
+               "Declared a non-mining trade", "No registry record at all"],
+      datasets: [{
+        label: "Companies",
+        data: [S.boUndeclared, S.returnsUnfiled, S.belowCapital, S.nonMining, S.noRegistry],
+        backgroundColor: ["#f85149", "#ec835a", "#d29922", "#d55181", "#64718a"],
+        borderRadius: 4, borderSkipped: false,
+      }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          label: (c) => fmt(c.parsed.y) + " of " + fmt(S.pacraMatched) + " matched companies",
+        } },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 22, minRotation: 0 } },
+        y: { beginAtZero: true, grid: { color: "#1b2330" }, ticks: { callback: (v) => fmt(v) } },
+      },
+    },
+  });
+
+  /* ----- declared business vs rights ----- */
+  const mis = R.MISMATCH.filter((m) => m.b && !/^System/.test(m.b)).slice(0, 10);
+  new Chart(document.getElementById("reg-mismatch-chart"), {
+    type: "bar",
+    data: {
+      labels: mis.map((m) => m.b.length > 42 ? m.b.slice(0, 40) + "..." : m.b),
+      datasets: [{
+        label: "Companies holding mineral rights",
+        data: mis.map((m) => m.n),
+        backgroundColor: "#3987e5", borderRadius: 4, borderSkipped: false,
+      }],
+    },
+    options: {
+      indexAxis: "y", responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          title: (it) => mis[it[0].dataIndex].b,
+          label: (c) => fmt(c.parsed.x) + " companies, holding " + fmtHa(mis[c.dataIndex].ha),
+        } },
+      },
+      scales: {
+        x: { beginAtZero: true, grid: { color: "#1b2330" } },
+        y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+      },
+    },
+  });
+
+  document.getElementById("reg-mismatch-table").innerHTML =
+    "<thead><tr><th>Holder</th><th>Licensed ground</th><th>Declared line of business</th>" +
+    "<th>Beneficial owners</th><th>In 2025 default notice</th></tr></thead><tbody>" +
+    R.MISMATCH_BIG.map((m) => {
+      const boCell = m.bo === "0" ? '<span style="color:var(--critical)">undeclared</span>'
+                   : m.bo === "1" ? '<span style="color:var(--good)">declared</span>'
+                   : '<span style="color:var(--muted)">unresolved</span>';
+      const dfn = Number(m.df) || 0;
+      return '<tr>' +
+        '<td style="font-weight:600">' + esc(m.h) + '</td>' +
+        '<td style="white-space:nowrap;font-family:var(--mono)">' + fmt(m.ha) + '</td>' +
+        '<td style="text-align:left">' + esc(m.b) + '</td>' +
+        '<td style="white-space:nowrap">' + boCell + '</td>' +
+        '<td style="white-space:nowrap">' + (dfn > 0
+          ? '<span style="color:var(--serious)">' + dfn + ' licence' + (dfn > 1 ? "s" : "") + '</span>'
+          : "&ndash;") + '</td>' +
+      '</tr>';
+    }).join("") + "</tbody>";
+
+  /* ----- the production arc ----- */
+  const evByYear = {};
+  R.EVENTS.forEach((e) => { (evByYear[e.y] = evByYear[e.y] || []).push(e); });
+  let spineChart = null;
+  function drawSpine(which) {
+    const series = which === "co" ? R.CO : R.CU;
+    const unit = which === "co" ? "t cobalt" : "t copper";
+    const colour = which === "co" ? "#22b381" : "#3987e5";
+    const peak = series.reduce((a, b) => (b.v > a.v ? b : a));
+    const trough = series.reduce((a, b) => (b.v < a.v ? b : a));
+    const last = series[series.length - 1];
+    document.getElementById("reg-spine-summary").textContent =
+      "peak " + fmt(peak.v) + " (" + peak.y + ") · trough " + fmt(trough.v) + " (" + trough.y +
+      ") · latest " + fmt(last.v) + " (" + last.y + ")";
+    if (spineChart) spineChart.destroy();
+    spineChart = new Chart(document.getElementById("reg-spine-chart"), {
+      type: "line",
+      data: {
+        labels: series.map((p) => p.y),
+        datasets: [{
+          label: unit, data: series.map((p) => p.v),
+          borderColor: colour, backgroundColor: colour + "22",
+          borderWidth: 2, fill: true, tension: 0.15,
+          pointRadius: (c) => (series[c.dataIndex] && evByYear[series[c.dataIndex].y]) ? 4 : 0,
+          pointBackgroundColor: colour, pointBorderColor: "#0a0e14", pointBorderWidth: 1.5,
+          pointHoverRadius: 6,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        interaction: { mode: "index", intersect: false },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (c) => fmt(c.parsed.y) + " " + unit,
+              afterBody: (it) => {
+                const yr = series[it[0].dataIndex].y;
+                return (evByYear[yr] || []).slice(0, 3).map((e) => "• " + e.e);
+              },
+            },
+          },
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { maxTicksLimit: 14, font: { size: 11 } } },
+          y: { beginAtZero: true, grid: { color: "#1b2330" },
+               ticks: { callback: (v) => v >= 1000 ? (v / 1000) + "k" : v } },
+        },
+      },
+    });
+  }
+  document.getElementById("reg-commodity").addEventListener("change", (e) => drawSpine(e.target.value));
+  drawSpine("cu");
+
+  const CATCOL = {
+    nationalization: "var(--critical)", privatization: "var(--s2)", acquisition: "var(--s1)",
+    policy: "var(--s4)", opening: "var(--good)", closure: "var(--serious)",
+    disaster: "var(--critical)", other: "var(--muted)",
+  };
+  document.getElementById("reg-events-table").innerHTML =
+    "<thead><tr><th>Year</th><th>Category</th><th>Structural event</th><th>Source</th></tr></thead><tbody>" +
+    R.EVENTS.map((e) => '<tr>' +
+      '<td style="white-space:nowrap;font-family:var(--mono)">' + e.y + '</td>' +
+      '<td style="white-space:nowrap;color:' + (CATCOL[e.c] || "var(--muted)") + '">' + tc(e.c) + '</td>' +
+      '<td style="text-align:left">' + esc(e.e) + '</td>' +
+      '<td style="text-align:left;white-space:nowrap">' + link(e.u) + '</td>' +
+    '</tr>').join("") + "</tbody>";
+
+  /* ----- licensing decisions ----- */
+  const DECCOL = { granted: "#3fb950", default: "#ec835a", cancelled: "#f85149", deferred: "#d29922", refused: "#d55181" };
+  new Chart(document.getElementById("reg-decisions-chart"), {
+    type: "bar",
+    data: {
+      labels: R.DECISIONS.map((d) => tc(d.d)),
+      datasets: [{
+        label: "Holder mentions", data: R.DECISIONS.map((d) => d.n),
+        backgroundColor: R.DECISIONS.map((d) => DECCOL[d.d] || "#64718a"),
+        borderRadius: 4, borderSkipped: false,
+      }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (c) => fmt(c.parsed.y) + " of " + fmt(S.docMentions) + " mentions" } },
+      },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, grid: { color: "#1b2330" }, ticks: { callback: (v) => fmt(v) } },
+      },
+    },
+  });
+
+  /* ----- supply-chain arrangements ----- */
+  (function chain() {
+    const sel = document.getElementById("reg-chain-filter");
+    Array.from(new Set(R.CHAIN.map((c) => c.t))).sort().forEach((t) => {
+      const o = document.createElement("option"); o.value = t; o.textContent = tc(t); sel.appendChild(o);
+    });
+    const render = () => {
+      const f = sel.value;
+      const rows = R.CHAIN.filter((c) => f === "all" || c.t === f).sort((a, b) => (b.v || 0) - (a.v || 0));
+      document.getElementById("reg-chain-table").innerHTML =
+        "<thead><tr><th>Entity</th><th>Counterparty</th><th>Type</th><th>Disclosed value</th>" +
+        "<th>Volume</th><th>Arrangement</th><th>Source</th></tr></thead><tbody>" +
+        rows.map((c) => '<tr>' +
+          '<td style="font-weight:600;white-space:nowrap">' + esc(c.e) + '</td>' +
+          '<td style="white-space:nowrap">' + esc(c.c) + '</td>' +
+          '<td style="white-space:nowrap;color:var(--s1)">' + tc(c.t) + '</td>' +
+          '<td style="white-space:nowrap;font-family:var(--mono)">' +
+            (c.v ? usd(c.v) : '<span style="color:var(--muted)">not disclosed</span>') + '</td>' +
+          '<td style="white-space:nowrap">' + esc(c.vol) + '</td>' +
+          '<td style="text-align:left;max-width:460px">' + esc(c.d) + '</td>' +
+          '<td style="text-align:left;white-space:nowrap">' + link(c.u) + '</td>' +
+        '</tr>').join("") + "</tbody>";
+    };
+    sel.addEventListener("change", render);
+    render();
+  })();
+
+  /* ----- value addition ----- */
+  document.getElementById("reg-va-table").innerHTML =
+    "<thead><tr><th>Initiative</th><th>Category</th><th>From</th><th>Status</th><th>Announced value</th><th>Source</th></tr></thead><tbody>" +
+    R.VALUE_ADD.slice().sort((a, b) => (b.v || 0) - (a.v || 0)).map((v) => '<tr>' +
+      '<td style="font-weight:600;text-align:left;max-width:420px">' + esc(v.n) + '</td>' +
+      '<td style="white-space:nowrap;color:var(--s3)">' + tc(v.c) + '</td>' +
+      '<td style="white-space:nowrap;font-family:var(--mono)">' + esc(v.y) + '</td>' +
+      '<td style="white-space:nowrap">' + esc(v.st) + '</td>' +
+      '<td style="white-space:nowrap;font-family:var(--mono)">' +
+        (v.v ? usd(v.v) : '<span style="color:var(--muted)">&ndash;</span>') + '</td>' +
+      '<td style="text-align:left;white-space:nowrap">' + link(v.u) + '</td>' +
+    '</tr>').join("") + "</tbody>";
+
+  /* ----- institutional routes ----- */
+  (function channels() {
+    const pSel = document.getElementById("reg-chan-filter");
+    const cSel = document.getElementById("reg-chan-cat");
+    Array.from(new Set(R.CHANNELS.map((c) => c.pr).filter(Boolean))).sort().forEach((p) => {
+      const o = document.createElement("option"); o.value = p; o.textContent = p; pSel.appendChild(o);
+    });
+    Array.from(new Set(R.CHANNELS.map((c) => c.cat).filter(Boolean))).sort().forEach((c) => {
+      const o = document.createElement("option"); o.value = c; o.textContent = tc(c); cSel.appendChild(o);
+    });
+    const render = () => {
+      const p = pSel.value, cat = cSel.value;
+      const rows = R.CHANNELS.filter((c) => (p === "all" || c.pr === p) && (cat === "all" || c.cat === cat));
+      document.getElementById("reg-chan-count").textContent =
+        rows.length + " of " + R.CHANNELS.length + " offices (contact details held privately)";
+      document.getElementById("reg-chan-table").innerHTML =
+        "<thead><tr><th>Office</th><th>Type</th><th>Level</th><th>Province / district</th></tr></thead><tbody>" +
+        rows.map((c) => '<tr>' +
+          '<td style="font-weight:600;text-align:left;max-width:340px">' + esc(c.n) +
+            (c.r ? '<div style="font-weight:400;font-size:11.5px;color:var(--muted)">' + esc(c.r) + '</div>' : "") + '</td>' +
+          '<td style="white-space:nowrap;color:var(--s3)">' + tc(c.cat) + '</td>' +
+          '<td style="white-space:nowrap">' + esc(c.l) + '</td>' +
+          '<td style="white-space:nowrap">' + (esc(c.pr) || esc(c.di) || "&ndash;") + '</td>' +
+        '</tr>').join("") + "</tbody>";
+    };
+    pSel.addEventListener("change", render);
+    cSel.addEventListener("change", render);
+    render();
+  })();
+
+  /* ----- cooperatives by province ----- */
+  new Chart(document.getElementById("reg-coop-chart"), {
+    type: "bar",
+    data: {
+      labels: R.COOP_PROV.map((p) => p.p),
+      datasets: [{
+        label: "Societies", data: R.COOP_PROV.map((p) => p.n),
+        backgroundColor: "#d55181", borderRadius: 4, borderSkipped: false,
+      }],
+    },
+    options: {
+      indexAxis: "y", responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: (c) => fmt(c.parsed.x) + " societies, none publishes a contact" } },
+      },
+      scales: {
+        x: { beginAtZero: true, grid: { color: "#1b2330" } },
+        y: { grid: { display: false } },
+      },
+    },
+  });
+
+  /* These charts are built while the panel is display:none, so Chart.js measures the canvas at
+     0x0 and does not recover on its own. Resize them when the tab is actually shown — the same
+     shape as the map's invalidateSize() hook. */
+  const regBtn = document.querySelector('nav.tabs button[data-tab="register"]');
+  if (regBtn) {
+    regBtn.addEventListener("click", () => {
+      requestAnimationFrame(() => {
+        document.querySelectorAll("#tab-register canvas").forEach((cv) => {
+          const ch = Chart.getChart(cv);
+          if (ch) ch.resize();
+        });
+      });
+    });
+  }
+})();
+
+/* ================================================================
+   KYC ENRICHMENT
+   Adds two cards to the existing counterparty report: companies-registry
+   standing (the thing the old caveat told you to go to PACRA for) and any
+   published contact channel. Observes the searched/not-researched
+   distinction so a blank never reads as a verified absence.
+================================================================ */
+(function kycEnrich() {
+  const R = window.REGISTER;
+  if (!R) return;
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const norm = (n) => String(n || "").toUpperCase().replace(/[^A-Z0-9 ]/g, " ")
+    .replace(/\b(LIMITED|LTD|PLC|COMPANY|CO|INCORPORATED|INC|THE)\b/g, " ")
+    .replace(/\s+/g, " ").trim();
+
+  const host = document.getElementById("kyc-report");
+  if (!host) return;
+
+  const regCard = document.createElement("div");
+  regCard.className = "card"; regCard.id = "kyc-registry-card"; regCard.hidden = true;
+  const conCard = document.createElement("div");
+  conCard.className = "card"; conCard.id = "kyc-contact-card"; conCard.hidden = true;
+  // sit these directly under the licence table, before the adverse lists
+  const licCard = document.getElementById("kyc-lic-card");
+  if (licCard && licCard.parentNode) {
+    licCard.parentNode.insertBefore(regCard, licCard.nextSibling);
+    regCard.parentNode.insertBefore(conCard, regCard.nextSibling);
+  } else {
+    host.appendChild(regCard); host.appendChild(conCard);
+  }
+
+  function flag(v, okText, badText) {
+    if (v === 1) return '<span style="color:var(--good)">' + okText + '</span>';
+    if (v === 0) return '<span style="color:var(--critical)">' + badText + '</span>';
+    return '<span style="color:var(--muted)">not resolved</span>';
+  }
+
+  function paint(name) {
+    const k = norm(name);
+    // R.CONTACTS is intentionally absent from the shipped payload - see the privacy note below.
+    const reg = R.REG[k], coop = R.COOPS[k];
+
+    if (reg && reg.s === "ok") {
+      regCard.hidden = false;
+      regCard.innerHTML =
+        '<h3 style="margin-top:0">Companies-registry standing (PACRA)</h3>' +
+        '<p class="note">Statutory status straight from the public companies registry. Beneficial ownership is ' +
+        'the field the old KYC caveat sent you to PACRA for &mdash; it is now in the check.</p>' +
+        '<table class="data"><tbody>' +
+        '<tr><td style="text-align:left;width:210px">Registered name</td><td style="text-align:left;font-weight:600">' + esc(reg.n) + '</td></tr>' +
+        '<tr><td style="text-align:left">Registration number</td><td style="text-align:left;font-family:var(--mono)">' + esc(reg.no) + '</td></tr>' +
+        '<tr><td style="text-align:left">Registered</td><td style="text-align:left;font-family:var(--mono)">' + esc(reg.d) + '</td></tr>' +
+        '<tr><td style="text-align:left">Status</td><td style="text-align:left">' + esc(reg.st) + '</td></tr>' +
+        '<tr><td style="text-align:left">Declared line of business</td><td style="text-align:left">' +
+          (reg.b ? esc(reg.b) : '<span style="color:var(--muted)">several candidate entities &mdash; not resolved</span>') + '</td></tr>' +
+        '<tr><td style="text-align:left">Beneficial ownership</td><td style="text-align:left">' +
+          flag(reg.bo, "declared", "NOT declared") + '</td></tr>' +
+        '<tr><td style="text-align:left">Annual returns</td><td style="text-align:left">' +
+          flag(reg.ar, "filed", "not filed") + '</td></tr>' +
+        '<tr><td style="text-align:left">Minimum share capital</td><td style="text-align:left">' +
+          flag(reg.nc, "met", "below the K20,000 floor") + '</td></tr>' +
+        '</tbody></table>';
+    } else if (reg && reg.s === "none") {
+      regCard.hidden = false;
+      regCard.innerHTML =
+        '<h3 style="margin-top:0">Companies-registry standing (PACRA)</h3>' +
+        '<div class="callout"><strong>Searched, no registry record found.</strong> This holder did not match the ' +
+        'public companies registry. Read it carefully: cooperatives register with the Registrar of Cooperatives ' +
+        'instead, and the registry search cannot handle ampersands, so a punctuated name can fail to match a ' +
+        'company that is in fact registered. Absence here is a prompt to check by hand, not a finding.</div>';
+    } else if (coop) {
+      regCard.hidden = false;
+      regCard.innerHTML =
+        '<h3 style="margin-top:0">Cooperative society</h3>' +
+        '<p class="note">Registers with the Registrar of Cooperatives (Ministry of Small and Medium Enterprise ' +
+        'Development), not the companies registry, so no company record exists by design.</p>' +
+        '<table class="data"><tbody>' +
+        '<tr><td style="text-align:left;width:210px">District</td><td style="text-align:left">' + (esc(coop.d) || "&ndash;") + '</td></tr>' +
+        '<tr><td style="text-align:left">Province</td><td style="text-align:left">' + (esc(coop.p) || "&ndash;") + '</td></tr>' +
+        '<tr><td style="text-align:left">Licence reference</td><td style="text-align:left;font-family:var(--mono)">' + (esc(coop.lr) || "&ndash;") + '</td></tr>' +
+        '</tbody></table>' +
+        '<div class="callout">No mining cooperative in this register publishes a phone, email or address. Reach ' +
+        'them through the Zambia Federation of Cooperatives in Mining or the provincial cooperative office &mdash; ' +
+        'see the Register &amp; Ownership tab.</div>';
+    } else {
+      regCard.hidden = true;
+    }
+
+    // PRIVACY: company contact details are held locally in private/ and are deliberately not
+    // shipped in data/register_data.js, so this card states the route rather than the number.
+    conCard.hidden = false;
+    conCard.innerHTML =
+      '<h3 style="margin-top:0">Contacting this holder</h3>' +
+      '<div class="callout">Contact details are <strong>held privately and not published with this app</strong>. ' +
+      'Where a channel was found it came from the company'+"'"+'s own published sources; those records live in ' +
+      '<code>private/</code> alongside the dataset and are excluded from the repository. For the artisanal and ' +
+      'cooperative population no contact exists in any public source at all &mdash; the route there is the ' +
+      'institutional one listed under <strong>Register &amp; Ownership</strong>.</div>';
+  }
+
+  // The KYC engine rewrites #kyc-name on every search; watch it and repaint.
+  const nameEl = document.getElementById("kyc-name");
+  if (!nameEl) return;
+  let lastName = "";
+  new MutationObserver(() => {
+    const n = nameEl.textContent.trim();
+    if (n && n !== lastName) { lastName = n; paint(n); }
+  }).observe(nameEl, { childList: true, characterData: true, subtree: true });
+})();
+
+/* ================================================================
+   ECONOMIC LINKAGE
+   The joins between the two state registers: which minerals sit under
+   a non-mining declared business, how findable each licence tier is,
+   the gemstone licence-type vs commodity gap, and the processing
+   cohort. Also shades non-mining-declared holders on the map.
+================================================================ */
+(function economicLinkage() {
+  const R = window.REGISTER;
+  if (!R || !R.MINERAL_LINK) return;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  /* ----- minerals under a non-mining declaration ----- */
+  let mineralChart = null;
+  function drawMineral(sortBy) {
+    const rows = R.MINERAL_LINK.slice()
+      .sort((a, b) => sortBy === "sh" ? b.sh - a.sh : b.nm - a.nm)
+      .slice(0, 20);
+    if (mineralChart) mineralChart.destroy();
+    mineralChart = new Chart(document.getElementById("reg-mineral-chart"), {
+      type: "bar",
+      data: {
+        labels: rows.map((r) => r.m),
+        datasets: [{
+          label: sortBy === "sh" ? "Share of that mineral's entries (%)" : "Licence-commodity entries",
+          data: rows.map((r) => sortBy === "sh" ? r.sh : r.nm),
+          backgroundColor: "#d55181", borderRadius: 4, borderSkipped: false,
+        }],
+      },
+      options: {
+        indexAxis: "y", responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: {
+            label: (c) => {
+              const r = rows[c.dataIndex];
+              return fmt(r.nm) + " of " + fmt(r.all) + " entries (" + r.sh + "%) held on a non-mining declaration";
+            },
+          } },
+        },
+        scales: {
+          x: { beginAtZero: true, grid: { color: "#1b2330" },
+               ticks: { callback: (v) => sortBy === "sh" ? v + "%" : fmt(v) } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        },
+      },
+    });
+  }
+  const msel = document.getElementById("reg-mineral-sort");
+  if (msel) { msel.addEventListener("change", (e) => drawMineral(e.target.value)); drawMineral("nm"); }
+
+  /* ----- legibility by licence tier ----- */
+  const bt = document.getElementById("reg-buckets-table");
+  if (bt) {
+    bt.innerHTML =
+      "<thead><tr><th>Licence tier</th><th>Licences</th><th>Distinct holders</th><th>Researched</th>" +
+      "<th>Reachable</th><th>Reach rate</th><th>In 2025 default notice</th><th>Declared non-mining</th></tr></thead><tbody>" +
+      R.BUCKETS.filter((b) => b.b !== "Portal / test").map((b) => {
+        const pct = b.h ? Math.round((100 * b.rch) / b.h) : 0;
+        const col = pct >= 15 ? "var(--good)" : pct > 0 ? "var(--warning)" : "var(--critical)";
+        return '<tr>' +
+          '<td style="font-weight:600;text-align:left">' + esc(b.b) + '</td>' +
+          '<td class="num" style="font-family:var(--mono)">' + fmt(b.lic) + '</td>' +
+          '<td style="font-family:var(--mono)">' + fmt(b.h) + '</td>' +
+          '<td style="font-family:var(--mono)">' + fmt(b.res) + '</td>' +
+          '<td style="font-family:var(--mono)">' + fmt(b.rch) + '</td>' +
+          '<td style="font-family:var(--mono);color:' + col + '">' + pct + '%</td>' +
+          '<td style="font-family:var(--mono);color:var(--serious)">' + fmt(b.def) + '</td>' +
+          '<td style="font-family:var(--mono);color:var(--s5)">' + fmt(b.nmh) + '</td>' +
+        '</tr>';
+      }).join("") + "</tbody>";
+  }
+
+  /* ----- gemstone: licence type vs commodity ----- */
+  if (R.GEM && document.getElementById("reg-gem-chart")) {
+    const g = R.GEM.byType.slice(0, 10);
+    new Chart(document.getElementById("reg-gem-chart"), {
+      type: "bar",
+      data: {
+        labels: g.map((x) => x.t.replace(" Licence", "").replace(" (2008)", "")),
+        datasets: [{
+          label: "Licences listing a gem commodity",
+          data: g.map((x) => x.n),
+          backgroundColor: g.map((x) => /Gemstone/.test(x.t) ? "#d55181" : "#3987e5"),
+          borderRadius: 4, borderSkipped: false,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: {
+            title: (it) => g[it[0].dataIndex].t,
+            label: (c) => fmt(c.parsed.y) + " licences list a gem commodity" +
+              (/Gemstone/.test(g[c.dataIndex].t) ? " (dedicated gemstone type)" : ""),
+          } },
+        },
+        scales: {
+          x: { grid: { display: false }, ticks: { font: { size: 10.5 }, maxRotation: 30 } },
+          y: { beginAtZero: true, grid: { color: "#1b2330" } },
+        },
+      },
+    });
+  }
+
+  /* ----- the processing cohort ----- */
+  (function processors() {
+    const sel = document.getElementById("reg-proc-filter");
+    const tbl = document.getElementById("reg-proc-table");
+    if (!sel || !tbl) return;
+    const render = () => {
+      const f = sel.value;
+      const rows = R.PROCESSORS.filter((p) =>
+        f === "all" ? true : f === "def" ? p.def > 0 : !!p.nm);
+      document.getElementById("reg-proc-count").textContent =
+        rows.length + " of " + R.PROCESSORS.length + " holders";
+      tbl.innerHTML =
+        "<thead><tr><th>Holder</th><th>MPLs</th><th>Commodities</th><th>Flags</th>" +
+        "<th>Declared business (if not mining)</th></tr></thead><tbody>" +
+        rows.map((p) => {
+          const flags = [];
+          if (p.def > 0) flags.push('<span style="color:var(--serious)">default ' + p.def + '</span>');
+          if (p.can > 0) flags.push('<span style="color:var(--critical)">cancelled ' + p.can + '</span>');
+          return '<tr' + (p.lat && p.lng ? ' style="cursor:pointer" data-lat="' + p.lat + '" data-lng="' + p.lng + '"' : '') + '>' +
+            '<td style="font-weight:600;text-align:left">' + esc(p.h) + '</td>' +
+            '<td style="font-family:var(--mono)">' + p.n + '</td>' +
+            '<td style="text-align:left;max-width:330px;font-size:12px">' + esc(p.comm) + '</td>' +
+            '<td style="white-space:nowrap">' + (flags.join(" · ") || "&ndash;") + '</td>' +
+            '<td style="text-align:left;color:var(--s5)">' + (p.nm ? esc(p.nm) : "&ndash;") + '</td>' +
+          '</tr>';
+        }).join("") + "</tbody>";
+      // clicking a processor flies the map to its plant
+      tbl.querySelectorAll("tbody tr[data-lat]").forEach((tr) => {
+        tr.addEventListener("click", () => {
+          if (!window._leafletMap) return;
+          document.querySelector('nav.tabs button[data-tab="map"]').click();
+          window._leafletMap.invalidateSize();
+          window._leafletMap.setView([Number(tr.dataset.lat), Number(tr.dataset.lng)], 11);
+          document.getElementById("map").scrollIntoView({ behavior: "smooth" });
+        });
+      });
+    };
+    sel.addEventListener("change", render);
+    render();
+  })();
+
+  /* ----- map overlay: shade licences whose holder declared a non-mining business ----- */
+  (function mapOverlay() {
+    if (!window.LICENSES || !window._leafletMap || !R.NM_HOLDERS) return;
+    const norm = (n) => String(n || "").toUpperCase().replace(/\s*\(\d+(\.\d+)?%\)/g, "")
+      .replace(/[^A-Z0-9 ]/g, " ")
+      .replace(/\b(LIMITED|LTD|PLC|COMPANY|CO|INCORPORATED|INC|THE)\b/g, " ")
+      .replace(/\s+/g, " ").trim();
+    const nm = new Set(R.NM_HOLDERS);
+    const layer = L.layerGroup();
+    let n = 0;
+    LICENSES.points.forEach((pt) => {
+      // point shape: [lat, lng, code, type, holder, ...]
+      const holders = String(pt[4] || "").split(/\s*;\s*|\s*\/\s*/);
+      if (!holders.some((h) => nm.has(norm(h)))) return;
+      n++;
+      L.circleMarker([pt[0], pt[1]], {
+        radius: 4, color: "#d55181", weight: 1.4, fillColor: "#d55181", fillOpacity: 0.35,
+      }).bindPopup(
+        '<strong>' + esc(pt[4]) + '</strong><br>' + esc(pt[2]) + ' &middot; ' + esc(pt[3]) +
+        '<br><em style="color:#d55181">Holder declared a non-mining line of business at PACRA</em>'
+      ).addTo(layer);
+    });
+    if (n) {
+      window._nmLayer = layer;
+      // register with the existing layer control if one is exposed
+      if (window._leafletLayerControl && window._leafletLayerControl.addOverlay) {
+        window._leafletLayerControl.addOverlay(layer, "Holder declared non-mining (" + fmt(n) + ")");
+      }
+    }
+  })();
 })();

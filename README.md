@@ -68,11 +68,41 @@ monthly 2023–2024 exports for 740311 and 2603.
 | `data/legal_layers.js` | 20 sourced disputes/fraud cases + verified dataset index |
 | `data/licenses_points.js` | Generated: 5,000 real license centroids (NGDR open WFS) joined with MMMD revocation lists |
 | `data/zambia_adm0.js` | Zambia boundary (geoBoundaries, CC BY 4.0) |
+| `data/register_data.js` | Generated: companies-registry standing, declared business, published contacts, 1964–2025 production, licensing decisions, cooperatives, institutional channels — powers the **Register & Ownership** tab and enriches KYC |
 | `data/gov/` | Downloaded official data: NGDR GeoServer license polygons, cadastre proxy snapshots, MMMD cancellation/default lists (see `findings.json`) |
 | `data/raw/*.json` | Raw Comtrade responses (resume cache) |
+| `dataset/*.csv` | The analysis-ready CSV package (29 tables) — see `dataset/DATA_MAP.md` |
 | `pipeline/fetch_trade_data.ps1` | Comtrade data pipeline |
 | `pipeline/build_license_layer.ps1` | Joins NGDR license polygons with MMMD revocation lists → web layer |
+| `pipeline/build_analysis_dataset.ps1` | Flattens repo data into `dataset/` CSVs |
+| `pipeline/merge_research_outputs.ps1` | Folds `research/*.json` into `dataset/` |
+| `pipeline/fetch_pacra_registry.ps1` | Queries PACRA's public registry API for every holder (resumable) |
+| `pipeline/build_register_layer.ps1` | Builds `data/register_data.js` from `dataset/` |
 | `serve.ps1` | Tiny PowerShell static server |
+
+## Register & Ownership tab
+
+Answers the question the KYC caveat used to defer to PACRA: **who owns this, and have they said so?**
+All 2,716 organisational holders were queried against PACRA's public companies-registry API, which
+returns statutory standing per company — beneficial-ownership declaration, annual-return filing and
+minimum share capital. The tab also carries the 1964–2025 production arc, what the Mining Licensing
+Committee actually decided across meetings 70–91, supply-chain offtakes and corridors with disclosed
+values, value-addition commitments, and the institutional routes to holders who publish nothing.
+
+Three findings worth reading before quoting anything:
+
+- **732 of 2,128** holders told the companies registry they do something other than mining —
+  wholesale trade, construction, road freight, mixed farming — while holding **10.9M hectares, ~30%
+  of all licensed ground**. Two of the state's own registers disagreeing, not a gap in this data.
+- **746** have never declared beneficial owners; **1,428** have not filed annual returns.
+- **214** companies have no registry record at all. An earlier pass said 559: PACRA's search cannot
+  handle ampersands, so 116 were registered all along, and 229 were cooperatives that register with
+  the Registrar of Cooperatives (under the Ministry of Small and Medium Enterprise Development)
+  instead. `pipeline/pacra_requery_normalised.ps1` performs the corrected retry.
+
+Contact coverage is deliberately honest: `search_coverage` separates "searched, nothing published"
+from "not researched", so a blank never reads as a verified absence. No mining cooperative in the
+register publishes any contact — the route is ZFCM and the provincial cooperative offices.
 
 ## Official license & revocation data
 

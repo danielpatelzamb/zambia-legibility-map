@@ -9,3 +9,20 @@ data/gov/cadastre/
 # Local scratch
 *.tmp
 Thumbs.db
+
+# generated dataset bundles
+zambia_minerals_dataset_*.zip
+
+# Contact data and individual-level records - kept local, never published
+private/
+
+# Excel-locked copies that could not be moved into private/ at scrub time.
+# Canonical copies live in private/dataset/.
+dataset/holder_contacts.csv
+dataset/holder_contacts_v2.csv
+dataset/outreach_targets.csv
+dataset/individual_holders.csv
+dataset/sector_directory.csv
+dataset/entity_contacts.csv
+dataset/asm_outreach_channels.csv
+dataset/novel_source_contacts.csv

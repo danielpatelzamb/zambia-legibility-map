@@ -1,0 +1,1154 @@
+[
+    {
+        "commodity":  "cobalt",
+        "year":  1994,
+        "production_tonnes":  2480,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1993,
+        "production_tonnes":  4211,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1996,
+        "production_tonnes":  4799,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1995,
+        "production_tonnes":  2934,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1990,
+        "production_tonnes":  4614,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1989,
+        "production_tonnes":  4488,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1992,
+        "production_tonnes":  4610,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1991,
+        "production_tonnes":  4817,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2002,
+        "production_tonnes":  6144,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2001,
+        "production_tonnes":  4665,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2004,
+        "production_tonnes":  5791,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2003,
+        "production_tonnes":  6620,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1998,
+        "production_tonnes":  5011,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1997,
+        "production_tonnes":  3949,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2000,
+        "production_tonnes":  3342,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1999,
+        "production_tonnes":  3946,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1978,
+        "production_tonnes":  2063,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1977,
+        "production_tonnes":  1704,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1980,
+        "production_tonnes":  3310,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1979,
+        "production_tonnes":  3176,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1974,
+        "production_tonnes":  3000,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1973,
+        "production_tonnes":  4900,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1976,
+        "production_tonnes":  2175,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1975,
+        "production_tonnes":  4900,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1986,
+        "production_tonnes":  4344,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1985,
+        "production_tonnes":  4415,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1988,
+        "production_tonnes":  5025,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1987,
+        "production_tonnes":  4479,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1982,
+        "production_tonnes":  2446,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1981,
+        "production_tonnes":  2570,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1984,
+        "production_tonnes":  3472,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1983,
+        "production_tonnes":  2407,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2007,
+        "production_tonnes":  2100,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2011 chapter, Table 1",
+        "source_url":  "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2011/myb3-2011-za.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "copper",
+        "year":  2025,
+        "production_tonnes":  890346,
+        "unit":  "tonnes, national copper production as reported by Zambia Ministry of Mines (ministry basis; ministry\u0027s 2024 comparator was 825,513 t vs BGS 820,676 t)",
+        "source_name":  "Reuters via Mining.com, \u0027Zambia\u0027s 2025 copper production up 8%, misses target\u0027 (27 Jan 2026)",
+        "source_url":  "https://www.mining.com/web/zambias-2025-copper-production-up-8-misses-target/",
+        "note":  "fetched (2026-07-28)"
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2009,
+        "production_tonnes":  37850,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2011 chapter, Table 1 (reported figure)",
+        "source_url":  "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2011/myb3-2011-za.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2008,
+        "production_tonnes":  1600,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2011 chapter, Table 1",
+        "source_url":  "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2011/myb3-2011-za.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2022,
+        "production_tonnes":  252,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2021,
+        "production_tonnes":  240,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2024,
+        "production_tonnes":  1410,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2023,
+        "production_tonnes":  1507,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2019,
+        "production_tonnes":  15400,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2020-21 chapter, Table 1 (estimate)",
+        "source_url":  "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2018,
+        "production_tonnes":  12000,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2020-21 chapter, Table 1 (estimate)",
+        "source_url":  "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2021,
+        "production_tonnes":  8400,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2020-21 chapter, Table 1 (estimate; Kagem alone produced 6,400 kg / 32 million carats)",
+        "source_url":  "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2020,
+        "production_tonnes":  6400,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2020-21 chapter, Table 1 (estimate; Kagem alone produced 1,880 kg / 9.4 million carats of emerald and beryl)",
+        "source_url":  "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2015,
+        "production_tonnes":  36000,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2019 chapter, Table 1 (estimate)",
+        "source_url":  "https://pubs.usgs.gov/myb/vol3/2019/myb3-2019-zambia.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2010,
+        "production_tonnes":  21086,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2011 chapter, Table 1 (reported figure)",
+        "source_url":  "https://d9-wret.s3.us-west-2.amazonaws.com/assets/palladium/production/mineral-pubs/country/2011/myb3-2011-za.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2017,
+        "production_tonnes":  38000,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2020-21 chapter, Table 1 (estimate)",
+        "source_url":  "https://pubs.usgs.gov/myb/vol3/2020-21/myb3-2020-21-zambia.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "emerald",
+        "year":  2016,
+        "production_tonnes":  49000,
+        "unit":  "KILOGRAMS (not tonnes) of emerald, national production; 1 kg = 5,000 carats",
+        "source_name":  "USGS Minerals Yearbook, Zambia 2019 chapter, Table 1 (estimate)",
+        "source_url":  "https://pubs.usgs.gov/myb/vol3/2019/myb3-2019-zambia.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Series is sparse: USGS did not publish comparable national emerald figures for all years; 2011-2014 and 2022+ not covered by fetched chapters."
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2010,
+        "production_tonnes":  5134,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2009,
+        "production_tonnes":  1535,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2012,
+        "production_tonnes":  5665,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2011,
+        "production_tonnes":  5956,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2006,
+        "production_tonnes":  4665,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2005,
+        "production_tonnes":  5422,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2008,
+        "production_tonnes":  4041,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2007,
+        "production_tonnes":  4335,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2018,
+        "production_tonnes":  835,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2017,
+        "production_tonnes":  760,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2020,
+        "production_tonnes":  287,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2019,
+        "production_tonnes":  367,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2014,
+        "production_tonnes":  4562,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2013,
+        "production_tonnes":  5658,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2016,
+        "production_tonnes":  5276,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  2015,
+        "production_tonnes":  2979,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1985,
+        "production_tonnes":  510800,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1984,
+        "production_tonnes":  576000,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1987,
+        "production_tonnes":  527000,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1986,
+        "production_tonnes":  512858,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1981,
+        "production_tonnes":  587442,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1980,
+        "production_tonnes":  609935,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1983,
+        "production_tonnes":  591300,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1982,
+        "production_tonnes":  529641,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1993,
+        "production_tonnes":  431500,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1992,
+        "production_tonnes":  432600,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1995,
+        "production_tonnes":  341938,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1994,
+        "production_tonnes":  384400,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1989,
+        "production_tonnes":  540079,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1988,
+        "production_tonnes":  518062,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1991,
+        "production_tonnes":  423000,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1990,
+        "production_tonnes":  545677,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1969,
+        "production_tonnes":  748115,
+        "unit":  "tonnes (metal content), mine production (converted from long tons)",
+        "source_name":  "British Geological Survey / Institute of Geological Sciences, Statistical Summary of the Mineral Industry 1964-1969",
+        "source_url":  "https://nora.nerc.ac.uk/id/eprint/535266/1/SS_1964_1969.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Original figure 736300 long tons, converted to metric tonnes; \u0027Production of copper ore (metal content)\u0027 table. Values for 1966-1969 cross-checked against the 1966-1970 volume (nora.nerc.ac.uk/id/eprint/535264), whose 1970 value (673,300 long tons = 684,100 t) matches the modern BGS database exactly. Caveat: USGS Minerals Yearbook reports 1969 mine output as 719,467 t (basis difference); BGS series used for consistency."
+    },
+    {
+        "commodity":  "copper",
+        "year":  1968,
+        "production_tonnes":  664885,
+        "unit":  "tonnes (metal content), mine production (converted from long tons)",
+        "source_name":  "British Geological Survey / Institute of Geological Sciences, Statistical Summary of the Mineral Industry 1964-1969",
+        "source_url":  "https://nora.nerc.ac.uk/id/eprint/535266/1/SS_1964_1969.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Original figure 654384 long tons, converted to metric tonnes; \u0027Production of copper ore (metal content)\u0027 table. Values for 1966-1969 cross-checked against the 1966-1970 volume (nora.nerc.ac.uk/id/eprint/535264), whose 1970 value (673,300 long tons = 684,100 t) matches the modern BGS database exactly."
+    },
+    {
+        "commodity":  "copper",
+        "year":  1971,
+        "production_tonnes":  651400,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1970,
+        "production_tonnes":  684100,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1965,
+        "production_tonnes":  695741,
+        "unit":  "tonnes (metal content), mine production (converted from long tons)",
+        "source_name":  "British Geological Survey / Institute of Geological Sciences, Statistical Summary of the Mineral Industry 1964-1969",
+        "source_url":  "https://nora.nerc.ac.uk/id/eprint/535266/1/SS_1964_1969.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Original figure 684753 long tons, converted to metric tonnes; \u0027Production of copper ore (metal content)\u0027 table. Values for 1966-1969 cross-checked against the 1966-1970 volume (nora.nerc.ac.uk/id/eprint/535264), whose 1970 value (673,300 long tons = 684,100 t) matches the modern BGS database exactly."
+    },
+    {
+        "commodity":  "copper",
+        "year":  1964,
+        "production_tonnes":  632349,
+        "unit":  "tonnes (metal content), mine production (converted from long tons)",
+        "source_name":  "British Geological Survey / Institute of Geological Sciences, Statistical Summary of the Mineral Industry 1964-1969",
+        "source_url":  "https://nora.nerc.ac.uk/id/eprint/535266/1/SS_1964_1969.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Original figure 622362 long tons, converted to metric tonnes; \u0027Production of copper ore (metal content)\u0027 table. Values for 1966-1969 cross-checked against the 1966-1970 volume (nora.nerc.ac.uk/id/eprint/535264), whose 1970 value (673,300 long tons = 684,100 t) matches the modern BGS database exactly."
+    },
+    {
+        "commodity":  "copper",
+        "year":  1967,
+        "production_tonnes":  662971,
+        "unit":  "tonnes (metal content), mine production (converted from long tons)",
+        "source_name":  "British Geological Survey / Institute of Geological Sciences, Statistical Summary of the Mineral Industry 1964-1969",
+        "source_url":  "https://nora.nerc.ac.uk/id/eprint/535266/1/SS_1964_1969.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Original figure 652500 long tons, converted to metric tonnes; \u0027Production of copper ore (metal content)\u0027 table. Values for 1966-1969 cross-checked against the 1966-1970 volume (nora.nerc.ac.uk/id/eprint/535264), whose 1970 value (673,300 long tons = 684,100 t) matches the modern BGS database exactly."
+    },
+    {
+        "commodity":  "copper",
+        "year":  1966,
+        "production_tonnes":  623440,
+        "unit":  "tonnes (metal content), mine production (converted from long tons)",
+        "source_name":  "British Geological Survey / Institute of Geological Sciences, Statistical Summary of the Mineral Industry 1964-1969",
+        "source_url":  "https://nora.nerc.ac.uk/id/eprint/535266/1/SS_1964_1969.pdf",
+        "note":  "fetched (PDF text extracted 2026-07-28). Original figure 613594 long tons, converted to metric tonnes; \u0027Production of copper ore (metal content)\u0027 table. Values for 1966-1969 cross-checked against the 1966-1970 volume (nora.nerc.ac.uk/id/eprint/535264), whose 1970 value (673,300 long tons = 684,100 t) matches the modern BGS database exactly."
+    },
+    {
+        "commodity":  "copper",
+        "year":  1977,
+        "production_tonnes":  658788,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1976,
+        "production_tonnes":  711681,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1979,
+        "production_tonnes":  586046,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1978,
+        "production_tonnes":  654012,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1973,
+        "production_tonnes":  706574,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1972,
+        "production_tonnes":  717700,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1975,
+        "production_tonnes":  647163,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1974,
+        "production_tonnes":  697956,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2017,
+        "production_tonnes":  797266,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2016,
+        "production_tonnes":  725359,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2019,
+        "production_tonnes":  787699,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2018,
+        "production_tonnes":  875848,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2013,
+        "production_tonnes":  759800,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2012,
+        "production_tonnes":  695200,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2015,
+        "production_tonnes":  710860,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2014,
+        "production_tonnes":  708259,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1970,
+        "production_tonnes":  2052,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2024,
+        "production_tonnes":  820676,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1972,
+        "production_tonnes":  5200,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "cobalt",
+        "year":  1971,
+        "production_tonnes":  2079,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=cobalt%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2021,
+        "production_tonnes":  803747,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2020,
+        "production_tonnes":  837996,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2023,
+        "production_tonnes":  732583,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2022,
+        "production_tonnes":  763550,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2001,
+        "production_tonnes":  306909,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2000,
+        "production_tonnes":  249304,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2003,
+        "production_tonnes":  346900,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2002,
+        "production_tonnes":  307834,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1997,
+        "production_tonnes":  331235,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1996,
+        "production_tonnes":  339744,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1999,
+        "production_tonnes":  270995,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  1998,
+        "production_tonnes":  378798,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2009,
+        "production_tonnes":  601200,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2008,
+        "production_tonnes":  567700,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2011,
+        "production_tonnes":  663400,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2010,
+        "production_tonnes":  767008,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2005,
+        "production_tonnes":  465002,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2004,
+        "production_tonnes":  410300,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2007,
+        "production_tonnes":  524000,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    },
+    {
+        "commodity":  "copper",
+        "year":  2006,
+        "production_tonnes":  497169,
+        "unit":  "tonnes (metal content), mine production",
+        "source_name":  "British Geological Survey, World Mineral Statistics (OGC API, world-mineral-statistics collection)",
+        "source_url":  "https://ogcapi.bgs.ac.uk/collections/world-mineral-statistics/items?country_iso3_code=ZMB\u0026bgs_commodity_trans=copper%2C%20mine",
+        "note":  "fetched (machine-readable API pull, 2026-07-28)"
+    }
+]

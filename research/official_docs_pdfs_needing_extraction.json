@@ -1,0 +1,416 @@
+[
+    {
+        "url":  "https://www.mmmd.gov.zm/wp-content/uploads/2025/06/Final-Public-Default-Notice_18062025-updated.pdf",
+        "source":  "MMMD",
+        "source_doc":  "MMMD Final Public Default Notice (non-compliance), 18 June 2025",
+        "doc_date":  "2025-06-18",
+        "bytes":  2936643,
+        "expected_content":  "multi-holder licence/default/compliance tables",
+        "note":  "HIGHEST VALUE remaining document: 151 pages of licence-holder tables (embedded grid named grdLicense). WebFetch returned raw PDF object code only. Expect a multi-thousand-holder default list with licence codes."
+    },
+    {
+        "url":  "https://www.mmmd.gov.zm/wp-content/uploads/2025/06/Compliance-Order.pdf",
+        "source":  "MMMD",
+        "source_doc":  "MMMD Compliance Order (2025)",
+        "doc_date":  "2025-06-01",
+        "bytes":  2145173,
+        "expected_content":  "multi-holder licence/default/compliance tables",
+        "note":  "Compliance order listing non-compliant operations. Not text-extractable remotely."
+    },
+    {
+        "url":  "https://www.mmmd.gov.zm/wp-content/uploads/2025/06/Compliance-Order-1.pdf",
+        "source":  "MMMD",
+        "source_doc":  "MMMD Compliance Order (2025) - duplicate upload",
+        "doc_date":  "2025-06-01",
+        "bytes":  2145173,
+        "expected_content":  "multi-holder licence/default/compliance tables",
+        "note":  "Identical byte size to Compliance-Order.pdf and Compliance-and-Tailing.pdf; likely the same file uploaded three times. Deduplicate before extracting."
+    },
+    {
+        "url":  "https://www.mmmd.gov.zm/wp-content/uploads/2025/06/Compliance-and-Tailing.pdf",
+        "source":  "MMMD",
+        "source_doc":  "MMMD Compliance and Tailings notice (2025)",
+        "doc_date":  "2025-06-01",
+        "bytes":  2145173,
+        "expected_content":  "multi-holder licence/default/compliance tables",
+        "note":  "Identical byte size to the two Compliance-Order PDFs; likely the same file. Deduplicate before extracting."
+    },
+    {
+        "url":  "https://www.mmmd.gov.zm/wp-content/uploads/2026/03/AnyScanner_03_02_20261.pdf",
+        "source":  "MMMD",
+        "source_doc":  "MMMD scanned notice, uploaded March 2026 (AnyScanner_03_02_20261.pdf)",
+        "doc_date":  "2026-03-01",
+        "bytes":  495421,
+        "expected_content":  "multi-holder licence/default/compliance tables",
+        "note":  "Scanned document of unknown content; likely needs OCR rather than text extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2023/03/Kishi_call-for-coments.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "CALL FOR COMMENTS: PROPOSED KISHI COPPER MINING PROJECT IN LUFWANYAMA DISTRICT BY KISHI MINING AND GENERAL CONTRACTORS LIMITED",
+        "doc_date":  "2023-03-31",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/EIS-proposed-mining-26625-HQ-SML-by-Texxon-Energies.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Coal Mining Project In Silwegondwe Area Of Sinazongwe District In Southern Province (License Number 26625-Hq-Sml) In Southern Province By Texxon Energies Limited",
+        "doc_date":  "2024-11-18",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2023/04/EIS-Copper-Processing-Plant-in-Mumbwa-Districts-by-Cedars-Minerals-Limited.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "PROPOSED COPPER PROCESSING PLANT ON FARM NO. 11383 IN MUMBWA DISTRICT OF CENTRAL PROVINCE BY CEDARS MINERALS LIMITED",
+        "doc_date":  "2023-04-19",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/GRIZZLY-FINAL-EIS.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Copper Mining and Process Plant, Mining Licence Number 37452-HQ-LML in Mafeta Of Kasempa District, North Western Province By Grizzly Copper Mines Limited (GCML)",
+        "doc_date":  "2024-10-28",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/08/HAOQING-ENTERPRISE-LIMITED.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "EIS - Proposed Copper Processing Plant Along Luanshya-Mpongwe Road, In Luanshya District, Copperbelt Province By Haoqing Enterprises Limited",
+        "doc_date":  "2025-08-20",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2026/02/EIS-RENOVATION-AND-EXPANSION-PROJECT-OF-LEACH-PLANTS-1-2-AND-CONSTRUCTION-OF-A-COPPER-ORE-PROCESSING-PLANT-RONGXING-INVESTMENT-LT.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "EIS - Proposed Expansion of Leach Plants 1 \u0026 2 And Construction of a Copper Ore Processing Plant on Subdivision a of Subdivision E of Lot NO. L/541/M, Chambishi, Kalulushi District, Copperbelt Province",
+        "doc_date":  "2026-02-23",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/07/OREIN-RESOURCES-LIMITED-EIS.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "EIS - Proposed Large Scale Open Cast Mining Project In Ngolo Area Of Chisamba District, Central Province By Orein Resources Limited. (License No. 38621-HQ-LEL)",
+        "doc_date":  "2025-07-02",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/03/Final-EIS-Prroposed-large-scale-mining-in-Mapatizya-by-Sri-Man.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "EIS - Proposed Large Scale Open Cast Mining Project in Sialumba Village Of Zimba District, Southern Province. (License No. 23570-hq-lel) by Sri Maan Resources Limited",
+        "doc_date":  "2025-03-21",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/04/Lubambe-Mine-New-Shafts-Sinking-Project-EIS.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "EIS - Proposed New Shafts Sinking Project 7061-HQ-LML, Konkola Chililabombwe",
+        "doc_date":  "2025-04-20",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2026/02/EIS-Proposed-Large-Scale-Mine-by-Chitubula-compressed.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "EIS - Proposed Open Cast Mining Project - License No. 38897-HQ-LEL Luano District",
+        "doc_date":  "2026-02-18",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/ENVIRONMENTAL-IMPACT-STATEMENT-FOR-DHARANI-MINING.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Open Pit Mine For Copper Under License No. 27272-hq-lel in Chibwika Area, Mwinilunga District, Northwestern Province by Dharani Mining Limited",
+        "doc_date":  "2024-11-01",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/12/GoviEx_Mutanga-Uranium-Project_EISA_ESMP_Appendices_FINAL.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "EIS - Proposed Muntanga Uranium Mine Project in Muntanga, Dibbwi East, Dibbwi, Njame and Gwabi Areas of Siavonga and Chirundu Districts by GoviEx Uranium Zambia Limited - in 13880-HQ-LML, 13881-HQ-LML and 12634-HQ-LML",
+        "doc_date":  "2025-12-15",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2026/02/Mining-project-in-Serenje-by-ZamGem-International-Limited.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "EIS - The Proposed Cobalt, Manganese, Lead, Copper, Amethyst, Quartz, Tin, Tourmaline And Zinc Mining Project In Serenje District Of Central Province By Zamgem International Limited",
+        "doc_date":  "2026-02-24",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2026/01/ESIIA-Report-for-the-Tailings-Dam-failure-at-Sino-Metals_Rev-2_05.01.26.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Environmental and Social IncidentImpact Assessment Report for theTailings Dam Failure at Sino-MetalsLeach Zambia Limited",
+        "doc_date":  "2026-01-06",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/08/EIA-and-RAP-Report_Evergreat-quarry.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "ENVIRONMENTAL IMPACT ASSESSMENT FOR THEPROPOSED LARGE SCALE LIMESTONE QUARRYON LICENSE No. 28235-HQ-LEL IN CHONGWEDISTRICT BY EVERGREAT INVESTMENT ANDCOMPANY LIMITED",
+        "doc_date":  "2025-08-19",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2023/11/Final-EIS-XPoint-Investments-Limited.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "ENVIRONMENTAL IMPACT STATEMENT REPORT FOR THE PROPOSED EXPANSION OF THE GOLD PROCESSING PLANT IN MATALA AREA OF SENIOR CHIEF SHAKUMBILA IN MUMBWA DISTRICT BY XPOINT INVESTMENTS LIMITED",
+        "doc_date":  "2023-09-20",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2023/11/JANAM-INDUSTRIES-LIMITED-ENVIRONMENTAL-AND-SOCIAL-IMPACT-ASSESSMENT-FINAL-COPY.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "FINAL COPY of the pro posed COOKING OIL PROCESSING PLANT BY SOLVENT EXTRACTION AT SUB E OF FARM NO. 3574 IN KATUBA AREA OF CHIBOMBO DISTRICT IN CENTRAL PROVINCE, ZAMBIA BY",
+        "doc_date":  "2023-10-15",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2023/11/FINAL-EIS-JUNREN-INTERNATIONAL-FLOURITE-MININGdocx.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "FOR THE PROPOSED MINERAL MINING OF FLUORITE IN CHIEF SINADAMBWE CHIEFDOM SIANYOLO AREA IN SIAVONGA DISTRICT OF SOUTHERN PROVINCE OF ZAMBIA UNDER LARGE LICENSE NO. 24319-HQ-LEL BY JUNREN INTERNATIONAL INVESTMENTS ZAMBIA LIMITED",
+        "doc_date":  "2023-10-18",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/08/EIS-African-Inkalamo06062024-1.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed African Inkalamo Mining Company Limited Rare Earth Mineral Project Prepared By MVC Consulting Engineers",
+        "doc_date":  "2024-08-02",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2022/11/EIS_Proposed-Alluvial-Gold-Mining-Activities-in-Luano-by-Xingda-Company-Limited.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "PROPOSED ALLUVIAL GOLD MINING ACTIVITIES ALONG THE BANKS OF THE MULUNGUSHI RIVER IN LUANO DISTRICT (License No. 28201-HQ-LEL)",
+        "doc_date":  "2022-11-14",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/08/Mulungwa-Power-EIS.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Construction And Operation of a 300mw Thermal Power Plant Within License No. 28318-HQ-LML in Mulungwa Village Of Sinazongwe District",
+        "doc_date":  "2024-08-02",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/08/Proposed-waste-rock-dump-by-African-Power-Coal.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Construction And Operation Of A Mine Waste Rock Dump (WRD) Within License No. 28318- HQ-LML In Mulungwa Village Of Sinazongwe District By African Power Coal Limited",
+        "doc_date":  "2024-08-02",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/06/Final-EIS-Report_Agroline-Industries-Edible-Oil-Plant_MAY-2024.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "PROPOSED CONSTRUCTION AND OPERATION OF AN EDIBLE OIL PROCESSING PLANT ON LOT No. 4348 STANCOM ROAD OFF GREAT EAST ROAD IN CHIPATA DISTRICT",
+        "doc_date":  "2024-06-13",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/09/Cubright-EIS-For-the-proposed-Construction-of-a-Copper-Processing-Plant-and-Tailings-Storage.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Construction of a Copper Processing Plant and Tailings Storage Facility Sabina Area of Kalulushi District, Copperbelt Province Zambia by Cubright",
+        "doc_date":  "2025-09-10",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/02/EIS-JIAHANG.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Copper Leach Plant On Property Number L/Ching/4031554, Brickfield Area, Chingola By Jiahang Resources Limited",
+        "doc_date":  "2025-02-05",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/EIS-large-scale-mining-21806-HQ-LEL-by-Builders.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Establishment Of A Large-Scale Mineral Mining Activities In Zimba District Of Chief Mwemba And Simwatachela’s Chiefdom Of Southern Province By Builders Mining Corporation Limited - (License No 21806-HQ-LEL)",
+        "doc_date":  "2024-11-20",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2023/03/Final_EIS_Kish-Mine_07112022.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "PROPOSED KISHI COPPER MINING PROJECT IN LUFWANYAMA DISTRICT BY KISHI MINING AND GENERAL CONTRACTORS LIMITED",
+        "doc_date":  "2023-03-31",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/09/Evergreat-Quarry-Chongwe-Palabana.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "PROPOSED LARGE SCALE LIMESTONE QUARRY ON LICENSE No. 28235-HQ-LEL IN CHONGWE DISTRICT BY EVERGREAT INVESTMENT AND COMPANY LIMITED",
+        "doc_date":  "2025-09-17",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/01/EIS-Velos-Enterprises-Limited.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "PROPOSED LARGE SCALE MINING AND COPPER PROCESSING PROJECT BY VELOS ENTERPRISES LIMITED LICENCE NO. 33470-HQ-LEL",
+        "doc_date":  "2025-01-31",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/04/BUILDERS-MINING-PROJECT-SECOND-DRAFT-REPORT-01032024.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Large Scale Open Cast Mining Project In Chakumba, Kanyemba And Siakanja Villages Of Zimba District, Southern Province By Builders Mining Corporation Limited. (License No. 21863-HQ-LEL)",
+        "doc_date":  "2024-04-05",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/09/FINAL-EIS-REPORT-CHATUPALESA-MINING-LTD_PROPOSED-LARGE-SCALE-OPEN-PIT-COPPER-MINING-PROJECT-IN-LICENSE-No-29273-HQ-LEL_May-2024.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Large Scale Open Pit Copper Mining Project In License No. 29273-hq-lel In Muwelwa Area Of Kafue District, Lusaka Province In Chieftainess Nkomeshya Mukamambo’s II Chiefdom",
+        "doc_date":  "2024-09-06",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/OSPREY-MINE-PROJECT-EIS-21-11-2024.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Mumbezhi Coppermine Project In Kalumbila District By Osprey Resources Limited",
+        "doc_date":  "2024-11-21",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/EIS-Proposed-coal-mining-on-licence-36741-HQ-LEL-by-Sino-Great.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Open - Cast Coal Mine On License no. 36741-hqlel In Nyanga Area, Chief Mweemba’s Chiefdom, Off Maamba Road, Sinazongwe District By Sino Great Logistics Company Limited",
+        "doc_date":  "2024-11-19",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/EIS-EVER-GREAT-ENERGY.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Open - Cast Phosphate Mine On License no. 30360-hq-lel in Chieftainess Kawaza’s Chiefdom, Sinda District.",
+        "doc_date":  "2024-11-21",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/EIS-Sino-Great-Logistics-Company-Limited.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Open - Cast Phosphate Mine On License no. 36742-hq-lel in Chieftainess Kawaza’s Chiefdom, Sinda District.",
+        "doc_date":  "2024-11-21",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/06/Final-EIS-COSTELE.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Open Pit Mine for Copper by Costele Mining Limited Under license NO. 33005-HQ-LEL",
+        "doc_date":  "2024-06-10",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/09/ENVIRONMENTAL-IMPACT-STATEMENT-FOR-SINO-XINYUAN-MINING-LTD-RVSD-DRAFT.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "PROPOSED OPEN PIT MINE FOR COPPER UNDER LICENSE No. 26238-HQ-LML IN KASISI AREA CHONGWE DISTRICT, LUSAKA PROVINCE BY SINO XINYUAN MINING COMPANY LIMITED",
+        "doc_date":  "2025-09-30",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/01/EIS-for-ZAMBIAN-ANGLO-FINAL.docx.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "PROPOSED OPEN PIT MINE FOR MANGANESE BY ZAMBIAN ANGLO MINING LIMITED UNDER LICENSE NO.29358-HQ-LEL IN CHIPOOTA AREA OF MKUSHI DISTRICT CENTRAL PROVINCE Aquarite Prospecting",
+        "doc_date":  "2024-01-12",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/11/EIS-Ever-Great-Energy-Company-Ltd-16.10.24.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Thermal Power Plant And Transmission Line Within License No. 33627-hq-lel In Siameja Azilundu Area Of Senior Chief Mweemba’s Chiefdom Of Sinazongwe District By Ever Great Energy Company Limited.",
+        "doc_date":  "2024-11-18",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2024/10/CHIAWA-COPPER-MINING-PROJECT-EIA-BY-DECO-LUCK-INVESTMENT-LIMITED_Final-compressed_compressed.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "Proposed Underground Copper Mining Project in Chief Chiawa Area, Kafue District License # 26434-hq-lel by Deco Luck Investment",
+        "doc_date":  "2024-09-16",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    },
+    {
+        "url":  "https://www.zema.org.zm/wp-content/uploads/2025/09/Baluba-Minerals-Limited-EIS-Report-Final.pdf",
+        "source":  "ZEMA",
+        "source_doc":  "THE PROPOSED MINING DEVELOPMENT AND OPERATION PROJECT WITH LICENSE NO 26223-HQ-LEL IN MPIKA DISTRICT, MUCHINGA PROVINCE BY BALUBA MINERAL LIMITED",
+        "doc_date":  "2025-09-10",
+        "bytes":  null,
+        "expected_content":  "single-proponent EIS / project brief: proponent postal + physical address, telephone, email, contact person, licence area in hectares",
+        "note":  "Holder / licence code / district / province already extracted from the document title into official_docs_holders.json; only the CONTACT DETAILS still require local PDF extraction."
+    }
+]
