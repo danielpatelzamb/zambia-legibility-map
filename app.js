@@ -2290,3 +2290,136 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
     }
   })();
 })();
+
+/* ================================================================
+   MINING BUSINESSES
+   Traders, processors, services and supply - the side of the sector
+   that never appears on a mineral right. Identity and business facts
+   only; contact details stay in private/ and are not in this payload.
+   Data: data/business_data.js.
+================================================================ */
+(function businesses() {
+  const B = window.BIZ;
+  if (!B) return;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  const SEG_COLOR = {
+    trader: "#3987e5", gemstone_dealer: "#d55181", gold_buyer: "#d9a114", scrap_metal: "#8b98a5",
+    trading_house: "#3987e5", processor: "#9a7fd1", smelter_refiner: "#9a7fd1", lapidary: "#d55181",
+    assay_lab: "#22b381", export_intermediary: "#64718a", drilling: "#e06a3a",
+    explosives: "#f85149", mining_contractor: "#e06a3a", equipment_dealer: "#d9a114",
+    geo_consultancy: "#22b381", haulage: "#8b98a5", rail: "#8b98a5", freight_clearing: "#64718a",
+    engineering_epcm: "#3987e5", tailings_water: "#22b381", security: "#64718a",
+    consumables_reagents: "#d55181", power_fuel: "#d9a114",
+  };
+
+  /* ----- segment chart ----- */
+  const seg = B.BY_SEGMENT.filter((s) => s.n >= 4);
+  if (document.getElementById("biz-segment-chart")) {
+    new Chart(document.getElementById("biz-segment-chart"), {
+      type: "bar",
+      data: {
+        labels: seg.map((s) => tc(s.s)),
+        datasets: [{
+          label: "Companies", data: seg.map((s) => s.n),
+          backgroundColor: seg.map((s) => SEG_COLOR[s.s] || "#64718a"),
+          borderRadius: 4, borderSkipped: false,
+        }],
+      },
+      options: {
+        indexAxis: "y", responsive: true, maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: {
+            label: (c) => {
+              const s = seg[c.dataIndex];
+              return fmt(s.n) + " companies · " + s.hi + " with operations evidenced · " + s.tw + " located to a town";
+            },
+          } },
+        },
+        scales: {
+          x: { beginAtZero: true, grid: { color: "#1b2330" } },
+          y: { grid: { display: false }, ticks: { font: { size: 11 } } },
+        },
+      },
+    });
+  }
+
+  /* ----- searchable table ----- */
+  (function table() {
+    const segSel = document.getElementById("biz-seg-filter");
+    const confSel = document.getElementById("biz-conf-filter");
+    const q = document.getElementById("biz-search");
+    const tbl = document.getElementById("biz-table");
+    if (!tbl) return;
+    B.BY_SEGMENT.forEach((s) => {
+      const o = document.createElement("option");
+      o.value = s.s; o.textContent = tc(s.s) + " (" + s.n + ")";
+      segSel.appendChild(o);
+    });
+    const render = () => {
+      const sv = segSel.value, cv = confSel.value, qv = (q.value || "").trim().toUpperCase();
+      const rows = B.ALL.filter((b) =>
+        (sv === "all" || b.s === sv) &&
+        (cv === "all" || b.c === cv) &&
+        (!qv || (b.n + " " + (b.w || "") + " " + (b.t || "") + " " + (b.o || "")).toUpperCase().includes(qv))
+      ).sort((a, b) => (a.c === "high" ? -1 : 1) - (b.c === "high" ? -1 : 1) || a.n.localeCompare(b.n));
+      document.getElementById("biz-count").textContent =
+        fmt(rows.length) + " of " + fmt(B.ALL.length) + " companies";
+      tbl.innerHTML =
+        "<thead><tr><th>Company</th><th>Segment</th><th>What they do</th><th>Town</th>" +
+        "<th>Ownership</th><th>Scale</th><th>Registry</th><th>Evidence</th></tr></thead><tbody>" +
+        rows.slice(0, 400).map((b) => {
+          const col = SEG_COLOR[b.s] || "#64718a";
+          const conf = b.c === "high"
+            ? '<span style="color:var(--good)">operations evidenced</span>'
+            : '<span style="color:var(--muted)">registry only</span>';
+          return '<tr>' +
+            '<td style="font-weight:600;text-align:left">' + esc(b.n) + '</td>' +
+            '<td style="white-space:nowrap;color:' + col + '">' + tc(b.s) + '</td>' +
+            '<td style="text-align:left;max-width:340px;font-size:12px">' + esc(b.w) + '</td>' +
+            '<td style="white-space:nowrap">' + (esc(b.t) || "&ndash;") + '</td>' +
+            '<td style="text-align:left;max-width:200px;font-size:12px">' + (esc(b.o) || "&ndash;") + '</td>' +
+            '<td style="text-align:left;max-width:240px;font-size:12px">' + (esc(b.sc) || "&ndash;") + '</td>' +
+            '<td style="white-space:nowrap;font-family:var(--mono);font-size:11px">' +
+              (b.pn ? esc(b.pn) + (b.ps && b.ps !== "Active" ? ' <span style="color:var(--warning)">' + esc(b.ps) + '</span>' : "") : "&ndash;") +
+              (b.g ? ' <span style="color:var(--s3)">NCC ' + esc(b.g) + '</span>' : "") + '</td>' +
+            '<td style="white-space:nowrap">' + conf + '</td>' +
+          '</tr>';
+        }).join("") + "</tbody>";
+      if (rows.length > 400) {
+        tbl.insertAdjacentHTML("afterend",
+          '<p class="note" style="margin-top:6px">Showing the first 400 of ' + fmt(rows.length) + ' — narrow the filters.</p>');
+      }
+    };
+    [segSel, confSel].forEach((el) => el.addEventListener("change", render));
+    q.addEventListener("input", render);
+    render();
+  })();
+
+  /* ----- map layer: businesses at town level ----- */
+  (function mapLayer() {
+    if (!window._leafletMap || !window._leafletLayerControl || !B.MAPPED.length) return;
+    const layer = L.layerGroup();
+    B.MAPPED.forEach((b) => {
+      // jitter within ~4km so co-located companies in the same town don't stack invisibly
+      const j = () => (Math.random() - 0.5) * 0.07;
+      L.circleMarker([b.lat + j(), b.lng + j()], {
+        radius: 5, color: SEG_COLOR[b.s] || "#64718a", weight: 1.5,
+        fillColor: SEG_COLOR[b.s] || "#64718a", fillOpacity: 0.5,
+      }).bindPopup(
+        '<strong>' + esc(b.n) + '</strong><br>' +
+        '<span style="color:' + (SEG_COLOR[b.s] || "#64718a") + '">' + tc(b.s) + '</span><br>' +
+        esc(b.w) + '<br>' +
+        (b.o ? '<em>' + esc(b.o) + '</em><br>' : "") +
+        (b.sc ? esc(b.sc) + '<br>' : "") +
+        (b.pn ? '<span style="font-family:monospace">PACRA ' + esc(b.pn) + ' · ' + esc(b.ps) + '</span><br>' : "") +
+        '<em style="color:#9aa7b6">Plotted at ' + esc(b.t) + ' town centroid — not a company address</em>'
+      ).addTo(layer);
+    });
+    window._leafletLayerControl.addOverlay(layer,
+      "Mining businesses: traders · services (" + fmt(B.MAPPED.length) + ")");
+  })();
+})();

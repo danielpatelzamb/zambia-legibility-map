@@ -6,7 +6,7 @@
 <title>Zambia Minerals Legibility Terminal</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=202607290400">
+<link rel="stylesheet" href="styles.css?v=202607290500">
 </head>
 <body>
 
@@ -330,6 +330,42 @@
   </div>
 
   <div class="card">
+    <h2>The rest of the sector: traders, processors, services and supply</h2>
+    <p class="note">The licence register only shows who holds ground. These <strong>354 companies</strong>
+      are the sector around it — mineral traders and gemstone dealers, smelters and refiners, drilling and
+      blasting contractors, equipment dealers, assay labs, hauliers and clearing agents, reagent and
+      grinding-media suppliers. <strong>299 are confirmed on an official register</strong> (PACRA number,
+      NCC contractor grade or a ZRA clearing-agent licence); 78 have operations evidenced by a source
+      beyond the registry. Contact details are held privately and are not in this app.</p>
+    <div class="chart-wrap" style="height:460px"><canvas id="biz-segment-chart"></canvas></div>
+    <div class="controls" style="margin-top:14px">
+      <input type="text" id="biz-search" placeholder="Search company, activity, town or owner…"
+             style="min-width:280px" autocomplete="off">
+      <label for="biz-seg-filter">Segment:</label>
+      <select id="biz-seg-filter"><option value="all">All segments</option></select>
+      <label for="biz-conf-filter">Evidence:</label>
+      <select id="biz-conf-filter">
+        <option value="all">Any</option>
+        <option value="high">Operations evidenced</option>
+        <option value="medium">Registry record only</option>
+      </select>
+      <span id="biz-count" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <table class="data" id="biz-table"></table>
+    <div class="callout">
+      <strong>How these were found, and what that means.</strong> Most came from sweeping PACRA's public
+      registry API by keyword — "DRILLING", "GEMSTONE", "HAULAGE" and so on — which surfaces registered
+      Zambian companies that no directory lists. That is why the majority are marked
+      <em>registry record only</em>: the company provably exists and is classified, but no source beyond
+      the register has been checked. Treat those as a verified universe, not a researched profile. The 78
+      marked <em>operations evidenced</em> have a company site, accreditation, tender award or news source
+      behind them. PACRA's own business classifications are sometimes registration-form artefacts — one
+      assay lab is filed under "hospital activities" — and those are flagged per record rather than
+      repeated as fact.
+    </div>
+  </div>
+
+  <div class="card">
     <h2>Mining cooperatives by province</h2>
     <p class="note">229 societies holding artisanal and small-scale rights. Central Province alone holds 53 — and
       the Mkushi Regional Mining Bureau and Mkushi District Council share a town, which makes it the single most
@@ -480,19 +516,20 @@
 
 </main>
 
-<script src="data/trade_data.js?v=202607290400"></script>
-<script src="data/geo_layers.js?v=202607290400"></script>
-<script src="data/legal_layers.js?v=202607290400"></script>
+<script src="data/trade_data.js?v=202607290500"></script>
+<script src="data/geo_layers.js?v=202607290500"></script>
+<script src="data/legal_layers.js?v=202607290500"></script>
 <script src="data/zambia_adm0.js"></script>
-<script src="data/licenses_points.js?v=202607290400"></script>
-<script src="data/licenses_geo.js?v=202607290400"></script>
-<script src="data/kyc_data.js?v=202607290400"></script>
-<script src="data/kyc_court.js?v=202607290400"></script>
-<script src="data/production_data.js?v=202607290400"></script>
-<script src="data/register_data.js?v=202607290400"></script>
+<script src="data/licenses_points.js?v=202607290500"></script>
+<script src="data/licenses_geo.js?v=202607290500"></script>
+<script src="data/kyc_data.js?v=202607290500"></script>
+<script src="data/kyc_court.js?v=202607290500"></script>
+<script src="data/production_data.js?v=202607290500"></script>
+<script src="data/register_data.js?v=202607290500"></script>
+<script src="data/business_data.js?v=202607290500"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=202607290400"></script>
+<script src="app.js?v=202607290500"></script>
 </body>
 </html>
