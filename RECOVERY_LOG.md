@@ -479,3 +479,56 @@ a research file lands or a pipeline step runs.
 - Machine has no Python/Node; all pipeline scripts are PowerShell 5.1.
 - merge_research_outputs.ps1 updated this session to carry linkedin/whatsapp/other_channels/
   facility_contacts columns through to dataset/entity_contacts.csv.
+
+================================================================================
+CONTACT-SOURCE HIERARCHY — established empirically 2026-07-30, use this order
+================================================================================
+Six agents plus two central bulk joins tested every plausible route against the deep
+register. Ranked by what actually produced, with the measured yields:
+
+1. MMMD Mining Licensing Committee notices — LOCATION, not contacts. Bulk join located
+   3,156 of 3,622 holders (87.1%), 2,873 with a district, incl. 710 of 902 individuals.
+   For a register where ~94% publish no contact, the district IS the reachability: it
+   routes you via the district mining office and provincial bureau.
+   pipeline/match_mlc_locations.ps1. Corpus: WordPress REST at /?rest_route=/wp/v2/posts
+   (the /wp-json/ path 404s). 26 posts, 2023-2025, ~37k table rows.
+   CAUTION: column positions are NOT stable across notices. A first parse "located" 431
+   holders in a province called "Au" and 403 in "Ag" — commodity codes in the province
+   slot. Validate every cell against the ten real provinces; leave null otherwise.
+2. NCC contractor register — 77 contacts from a purely local join, 62 phones, 53 emails.
+   ONLY the 2021 and 2023 editions carry PHYSICAL ADDRESS / TELEPHONE / MOBILE / EMAIL
+   (10,602 phones + 3,880 emails in 2021; 6,263 + 5,445 in 2023). The 2024/2025/2026
+   editions replaced them with a mostly-empty POSTAL ADDRESS column: literally zero
+   phones or emails. pipeline/match_ncc_contacts.ps1.
+   Caveat carried in the data: NCC registers CONSTRUCTION contractors, so a name match
+   proves the same legal entity is a registered contractor, not that the contact belongs
+   to the mining operation. Held at medium confidence.
+3. ZEMA EIS / EIA call-for-comments — highest PRECISION (3 of 3 wins for one agent;
+   contact tables carry address, phone, email and a named contact person) but structurally
+   low recall: an EIS only exists for MINING/PROCESSING licence holders. One agent's whole
+   80-holder slice had mining_lics=0, so ZEMA could not cover any of them by definition.
+   Use the repository LISTING (docs-category/...), never the site search, which does not
+   index the docs post type at all and returns false negatives.
+4. Company's own website — best source for the businesses directory, useless for the deep
+   register. 985 candidate domains DNS-probed across 80 holders: ZERO .co.zm or .zm
+   resolved. The resolver was verified against lrl.co.zm / zema.org.zm / zccm-ih.com.zm,
+   so that is a real negative, not a tooling artefact.
+5. Job adverts (Great Zambia Jobs etc.) — batch-dependent. Cracked Eagles Holding (the
+   Zambia National Service commercial arm) but returned nothing in three other slices.
+6. FACEBOOK — MY PREDICTION FAILED. I called it the highest-yield remaining channel.
+   Three agents, 210 holders: ZERO organisational contacts. These are dormant speculative
+   licence shells with no consumer-facing presence; Facebook only worked earlier for firms
+   with actual customers (a granite supplier, a lime producer). Every hit was a foreign
+   namesake or an auto-generated 0-follower stub.
+   Tooling: WebFetch now reaches facebook.com but returns only the <title> (JS-rendered),
+   so the real browser is mandatory. A navigated tab's TITLE is a cheap existence test —
+   live page returns "Company | City | Facebook", dead slug returns bare "Facebook".
+NOT USED, deliberately: mass sweep of ZRA payment printouts. An agent got 2 contacts that
+   way and recommended running all 2,469 centrally. Declined — a search-indexed document
+   turning up incidentally is different in kind from systematically harvesting a revenue
+   portal. Same line held on the earlier PRN-enumeration proposal.
+
+THE HONEST CONCLUSION: for the deep register there is no contact left to find. Established
+from independent angles — Facebook 0/210, domains 0/985 probes, ZEMA structurally
+inapplicable to exploration holders, NCC 77/2,469 (3%). What IS obtainable is location, and
+that is now 79% complete. Route to these holders is institutional, not direct.
