@@ -30,8 +30,8 @@ a research file lands or a pipeline step runs.
       production 2022-2025 from audited ARs; Barrick Lumwana from SEC 40-F; KCM/Vedanta deal
       history; Mopani Glencore-exit + IRH $1.1bn; ZCCM-IH; ZAMEFA). No dupes vs entity_values.json.
 - [x] research/entity_contacts.json ENRICHMENT — DONE. 21 records enriched with linkedin/
-      whatsapp/other_channels/facility_contacts. Only ZRA (+260 96 0081111) and PACRA
-      (+260 953 748701) publish WhatsApp lines. China-linked operators (CCS, Chambishi Metals,
+      whatsapp/other_channels/facility_contacts. Only ZRA ([redacted]) and PACRA
+      ([redacted]) publish WhatsApp lines. China-linked operators (CCS, Chambishi Metals,
       CNMC Luanshya, NFCA, Sino-Metals) are thinnest — their Facebook pages flagged
       "official status unverified". Official channels only, no personal data.
 - [x] research/sector_directory.json — DONE 37 orgs across segments (gemstone_producer,
@@ -207,7 +207,7 @@ a research file lands or a pipeline step runs.
 ## normally. Verified by main session:
 ##   - https://duckduckgo.com/?q=... via navigate + get_page_text: real results, NO CAPTCHA.
 ##   - https://www.facebook.com/<slug>: full public business page, NO LOGIN. One read gave
-##     phone +260 776756333, email, street address and website for Kuma Investment.
+##     phone [redacted], email, street address and website for Kuma Investment.
 ## Facebook is where Zambian SMEs publish phone/WhatsApp, so this reopens the single richest
 ## channel for the SME tail. Agents MUST call tabs_create for their own tabId first — the pane is
 ## shared and sibling reads cross-contaminate otherwise.
@@ -216,11 +216,11 @@ a research file lands or a pipeline step runs.
 
 ## *** THE ROUTE TO THE COOPERATIVES (coop batch2) ***
 ## ZFCM — Zambia Federation of Cooperatives in Mining, zfcm.org
-##   +260 952 496 469 | cooperativeminingfederation@gmail.com
+##   [phone in private/dataset/asm_outreach_channels.csv] | [contact in private/dataset/asm_outreach_channels.csv]
 ##   Plot 25 Chila Road, Kabulonga, P.O. Box 38032, Lusaka
 ## The national federation for mining cooperatives = the single realistic channel to the 229
 ## cooperative licence holders. Also Registrar of Cooperatives / Department of Cooperatives,
-## 9th Floor New Government Complex, Nasser Road, Lusaka, P.O. Box 31968, +260 211 226673
+## 9th Floor New Government Complex, Nasser Road, Lusaka, P.O. Box 31968, [phone in private/dataset/asm_outreach_channels.csv]
 ## (CAVEAT: sourced from secondary licensing guides that still place it under Ministry of
 ## Commerce — may predate the move to Ministry of SME Development; confirm before relying).
 ##
@@ -241,7 +241,7 @@ a research file lands or a pipeline step runs.
 ## NOTABLE SUBSTANTIVE FIND (browser batchC): **Eagles Holding Limited is the commercial holding
 ## company of the ZAMBIA NATIONAL SERVICE** (Zambia Defence Force / Ministry of Defence) — a
 ## state/military-owned mining licence holder. ZNS House, Plot 6452 Church Road, Lusaka,
-## +260 211 524 488. Confirmed via its own subsidiary's page. Also: African Pearl Estates is
+## [phone in private/]. Confirmed via its own subsidiary's page. Also: African Pearl Estates is
 ## controlled by the Mwila family (late Benjamin Mwila, defence minister 1991-97) with Makor
 ## Resources holding 51% of a JV over 418 km2 in Mumbwa since March 2025.
 ## Earlier a sibling had DELIBERATELY left Eagles unmatched despite the ZNS namesake because no
