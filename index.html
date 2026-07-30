@@ -190,10 +190,14 @@
 
   <div class="card">
     <h2>Declared business vs mineral rights</h2>
-    <p class="note">What licence holders told the companies registry they do for a living. <strong>732 of 2,128</strong>
-      declared something other than mining — wholesale trade, building construction, road freight, mixed farming —
-      while holding <strong>10.9 million hectares, about 30% of all licensed ground</strong>. Not a legibility gap
-      in our data: a disagreement between two of the state's own registers.</p>
+    <p class="note">How the companies registry classifies each holder's line of business, set against what the
+      licence register says it holds. <strong>732 of 2,128</strong> are not classified as mining — wholesale trade,
+      building construction, road freight, mixed farming — covering <strong>10.9 million hectares</strong>.
+      <strong>Read that as a statement about the registry, not about the companies.</strong> The classification is a
+      value captured on a registration form, not an audited account of activity, and it is provably wrong for some
+      miners: <em>Rio Tinto Exploration Zambia</em> is filed as "Construction of buildings" and <em>Yetu Mining
+      Limited</em> as "Radio broadcasting". Excluding every holder whose own registered name contradicts its
+      classification, the figure is <strong>27.7% of licensed ground</strong> — that is the defensible one.</p>
     <div class="chart-wrap" style="height:340px"><canvas id="reg-mismatch-chart"></canvas></div>
     <h3 style="margin:18px 0 6px">Largest holdings on a non-mining declaration</h3>
     <table class="data" id="reg-mismatch-table"></table>
@@ -216,10 +220,15 @@
     </div>
     <div class="chart-wrap" style="height:420px"><canvas id="reg-mineral-chart"></canvas></div>
     <div class="callout">
-      Read this as a <em>flag, not a finding</em>. A construction firm can legitimately hold a limestone
-      right, and a farming company can own ground with copper under it. What the chart shows is where the
-      state's two registers describe the same company differently — which is exactly where a counterparty
-      check should slow down.
+      <strong>This measures registry quality as much as company behaviour.</strong> A construction firm can
+      legitimately hold a limestone right, and a farming company can own ground with copper under it — but the
+      larger caveat is that the classification itself is unreliable. <strong>96 of the 732 (13.1%)</strong> carry a
+      mining word in their own registered name while being classified as something else. That is a measurable
+      <em>floor</em> on the error rate, not a ceiling: it cannot catch a mis-filed holder whose name is not
+      self-describing — <em>Willianda Investments</em>, filed under "processing and preserving of fruit and
+      vegetables" against 177,581 ha of iron ore, niobium and cobalt, is exactly that case. Filter on
+      <code>name_contradicts_declaration</code> in <code>declared_business_vs_licences.csv</code> to exclude the
+      detectable ones.
     </div>
   </div>
 

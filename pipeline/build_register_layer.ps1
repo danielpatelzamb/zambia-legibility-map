@@ -99,7 +99,7 @@ $dec = @(Import-Csv (Join-Path $ds 'official_doc_mentions.csv') | Where-Object {
          ForEach-Object { [pscustomobject]@{ d = $_.Name; n = $_.Count } })
 
 $db  = Import-Csv (Join-Path $ds 'declared_business_vs_licences.csv')
-$nm  = @($db | Where-Object business_class -eq 'NOT_mining_related')
+$nm  = @($db | Where-Object { $_.business_class -eq 'NOT_mining_related' -and $_.name_contradicts_declaration -ne 'yes' })
 $mis = @($nm | Group-Object declared_business | Sort-Object Count -Descending | Select-Object -First 12 |
          ForEach-Object { [pscustomobject]@{ b = $_.Name; n = $_.Count; ha = [int](($_.Group | Measure-Object hectares -Sum).Sum) } })
 $misBig = @($nm | Sort-Object { -[int]$_.hectares } | Select-Object -First 12 |
@@ -131,8 +131,13 @@ if (Test-Path $chanSrc) {
 # ---------- economic linkage: which minerals sit under a non-mining declaration ----------
 # The interesting join. A holder's declared line of business comes from the companies registry;
 # the minerals come from the licence register. Where they disagree, this is where it shows up.
+# EXCLUDE holders whose own registered name contradicts the classification. PACRA's ISIC line is a
+# registration-form value, not audited activity, and it is provably wrong for some miners - Rio Tinto
+# Exploration Zambia is filed as "Construction of buildings". Counting those as "non-mining" would
+# measure paperwork error rather than the thing being claimed. This is a floor on the correction, not
+# a ceiling: a mis-filed holder whose name is not self-describing still slips through.
 $nmKeys = @{}
-foreach ($r in ($db | Where-Object business_class -eq 'NOT_mining_related')) {
+foreach ($r in ($db | Where-Object { $_.business_class -eq 'NOT_mining_related' -and $_.name_contradicts_declaration -ne 'yes' })) {
     $k = Norm $r.holder; if ($k) { $nmKeys[$k] = $r.declared_business }
 }
 $licAll = Import-Csv (Join-Path $ds 'licenses.csv')
