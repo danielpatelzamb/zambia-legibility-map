@@ -6,7 +6,18 @@
 <title>Zambia Minerals Register</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=202608120300">
+<link rel="stylesheet" href="styles.css?v=202608120400">
+<script>
+  /* Set the theme before first paint so there is no flash of the wrong palette, and expose
+     the matching CARTO tile set for the two Leaflet maps built later. */
+  (function () {
+    var saved = null;
+    try { saved = localStorage.getItem("zm-theme"); } catch (e) {}
+    var theme = saved || "light";
+    document.documentElement.setAttribute("data-theme", theme);
+    window._tileSet = theme === "dark" ? "dark_all" : "light_all";
+  })();
+</script>
 </head>
 <body>
 
@@ -40,9 +51,21 @@
       <input type="text" id="global-search" placeholder="Search a company, holder, or licence code" autocomplete="off">
       <kbd>/</kbd>
     </div>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Switch between light and dark">
+      <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" class="icon-sun">
+        <circle cx="8" cy="8" r="3.2" fill="currentColor"/>
+        <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M8 1v1.6M8 13.4V15M1 8h1.6M13.4 8H15M3.1 3.1l1.1 1.1M11.8 11.8l1.1 1.1M12.9 3.1l-1.1 1.1M4.2 11.8l-1.1 1.1"/>
+        </g>
+      </svg>
+      <svg viewBox="0 0 16 16" width="15" height="15" aria-hidden="true" class="icon-moon">
+        <path d="M13.2 10.3A5.6 5.6 0 0 1 6 3.05a5.6 5.6 0 1 0 7.2 7.25z" fill="currentColor"/>
+      </svg>
+    </button>
   </div>
   <nav class="tabs">
-    <button data-tab="map" class="active">Map</button>
+    <button data-tab="home" class="active">Overview</button>
+    <button data-tab="map">Map</button>
     <button data-tab="kyc">Counterparty Check</button>
     <button data-tab="register">Register</button>
     <button data-tab="trace">Traceability</button>
@@ -55,8 +78,34 @@
 
 <main>
 
+<!-- ============ OVERVIEW ============ -->
+<section id="tab-home" class="tab-panel active">
+  <div class="hero">
+    <div class="hero-copy">
+      <span class="eyebrow">Zambia mineral registry intelligence</span>
+      <h1>Know exactly who you are dealing with.</h1>
+      <p>Every mineral licence, every holder, and the companies that move and supply them.
+        Built from the government's own registers, joined so the gaps show.</p>
+      <div class="hero-actions">
+        <button class="btn primary" data-goto="kyc">Check a counterparty</button>
+        <button class="btn ghost" data-goto="supply">Find a supplier</button>
+      </div>
+      <p class="hero-meta" id="home-meta"></p>
+    </div>
+    <div class="hero-figures" id="home-figures"></div>
+  </div>
+
+  <div class="tool-grid" id="home-tools"></div>
+
+  <div class="card">
+    <h2>Where the data comes from</h2>
+    <p class="note">Official sources, joined on licence code and company name. Every figure here
+      traces back to one of them.</p>
+    <div class="src-grid" id="home-sources"></div>
+  </div>
+</section>
 <!-- ============ MAP ============ -->
-<section id="tab-map" class="tab-panel active">
+<section id="tab-map" class="tab-panel">
   <div class="hero-stats" id="hero-stats"></div>
   <div class="card">
     <h2>Licences, operations and export routes</h2>
@@ -89,8 +138,6 @@
 
   <div class="card" id="disputes-card" hidden>
     <h2>Disputes and enforcement</h2>
-    <p class="note">Licence conflicts, tax disputes, fraud cases, illegal mining and environmental
-      litigation. Each row is plotted on the map above. Locations are approximate.</p>
     <div class="controls">
       <label for="dispute-filter">Filter:</label>
       <select id="dispute-filter"><option value="all">All categories</option></select>
@@ -662,23 +709,23 @@
 
 </main>
 
-<script src="data/trade_data.js?v=202608120300"></script>
-<script src="data/geo_layers.js?v=202608120300"></script>
-<script src="data/legal_layers.js?v=202608120300"></script>
+<script src="data/trade_data.js?v=202608120400"></script>
+<script src="data/geo_layers.js?v=202608120400"></script>
+<script src="data/legal_layers.js?v=202608120400"></script>
 <script src="data/zambia_adm0.js"></script>
-<script src="data/licenses_points.js?v=202608120300"></script>
-<script src="data/licenses_geo.js?v=202608120300"></script>
-<script src="data/kyc_data.js?v=202608120300"></script>
-<script src="data/kyc_court.js?v=202608120300"></script>
-<script src="data/production_data.js?v=202608120300"></script>
-<script src="data/register_data.js?v=202608120300"></script>
-<script src="data/business_data.js?v=202608120300"></script>
-<script src="data/trace_data.js?v=202608120300"></script>
-<script src="data/infra_layers.js?v=202608120300"></script>
-<script src="data/supply_data.js?v=202608120300"></script>
+<script src="data/licenses_points.js?v=202608120400"></script>
+<script src="data/licenses_geo.js?v=202608120400"></script>
+<script src="data/kyc_data.js?v=202608120400"></script>
+<script src="data/kyc_court.js?v=202608120400"></script>
+<script src="data/production_data.js?v=202608120400"></script>
+<script src="data/register_data.js?v=202608120400"></script>
+<script src="data/business_data.js?v=202608120400"></script>
+<script src="data/trace_data.js?v=202608120400"></script>
+<script src="data/infra_layers.js?v=202608120400"></script>
+<script src="data/supply_data.js?v=202608120400"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=202608120300"></script>
+<script src="app.js?v=202608120400"></script>
 </body>
 </html>

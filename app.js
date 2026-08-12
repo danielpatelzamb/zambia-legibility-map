@@ -30,7 +30,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
 (function buildMap() {
   const map = L.map("map", { worldCopyJump: true, zoomControl: true }).setView([-13.2, 27.8], 5);
   window._leafletMap = map;
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/" + (window._tileSet || "light_all") + "/{z}/{x}/{y}{r}.png", {
     maxZoom: 19, subdomains: "abcd",
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
   }).addTo(map);
@@ -2734,7 +2734,8 @@ const M49 = {
 
   /* ---- map ---- */
   const map = L.map("siting-map", { zoomControl: true }).setView([-13.2, 27.8], 5.4);
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+  window._sitingMap = map;   // the theme switcher needs it to swap tiles
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/" + (window._tileSet || "light_all") + "/{z}/{x}/{y}{r}.png", {
     attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: "abcd", maxZoom: 14,
   }).addTo(map);
 
@@ -3279,10 +3280,11 @@ const M49 = {
    existing markup so no card had to be restructured by hand.
 ================================================================ */
 (function collapsibleCards() {
-  /* Panels whose secondary cards collapse. The map panel is excluded: its extra cards are
-     already shown and hidden by the licence-filter logic, and nesting a second mechanism
-     inside that would fight it. */
-  const PANELS = ["register", "trace", "supply", "siting", "trade", "method"];
+  /* Every panel's secondary cards collapse. The map panel is included: its reference cards
+     carry the `hidden` attribute until the licence data loads, and the two mechanisms compose
+     rather than fight, because `hidden` controls whether the card exists on the page at all
+     while data-open controls whether its body is expanded. */
+  const PANELS = ["map", "register", "trace", "supply", "siting", "trade", "method"];
   const CHEV = '<svg class="chev" viewBox="0 0 8 12" fill="none" aria-hidden="true">' +
     '<path d="M1.5 1L6 6l-4.5 5" stroke="currentColor" stroke-width="2" ' +
     'stroke-linecap="round" stroke-linejoin="round"/></svg>';
@@ -3391,4 +3393,157 @@ const M49 = {
     }
   }
   window._revealCard = revealTarget;
+})();
+
+/* ================================================================
+   THEME SWITCH
+   The palette lives in CSS custom properties, but Chart.js bakes grid
+   and tick colours into each chart's options at build time, and Leaflet
+   needs a different tile set. Both are re-read from the CSS variables
+   on every switch, so no chart carries a hardcoded colour.
+================================================================ */
+(function themeSwitch() {
+  const btn = document.getElementById("theme-toggle");
+  if (!btn) return;
+  const css = (n) => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+  function paintCharts() {
+    if (!window.Chart) return;
+    const grid = css("--grid"), tick = css("--muted"), ink = css("--ink-2");
+    Chart.defaults.color = ink;
+    Chart.defaults.borderColor = grid;
+    Object.values(Chart.instances || {}).forEach((ch) => {
+      if (!ch || !ch.options) return;
+      const sc = ch.options.scales || {};
+      Object.keys(sc).forEach((k) => {
+        if (!sc[k]) return;
+        if (sc[k].grid && sc[k].grid.display !== false) sc[k].grid.color = grid;
+        sc[k].ticks = Object.assign({}, sc[k].ticks, { color: tick });
+      });
+      if (ch.options.plugins && ch.options.plugins.legend && ch.options.plugins.legend.labels) {
+        ch.options.plugins.legend.labels.color = ink;
+      }
+      try { ch.update("none"); } catch (e) { /* a chart mid-build can refuse; harmless */ }
+    });
+  }
+
+  function paintMaps(tiles) {
+    [window._leafletMap, window._sitingMap].forEach((m) => {
+      if (!m || !window.L) return;
+      m.eachLayer((l) => {
+        if (l instanceof L.TileLayer && /basemaps\.cartocdn\.com/.test(l._url || "")) {
+          l.setUrl(l._url.replace(/(dark_all|light_all)/, tiles));
+        }
+      });
+    });
+  }
+
+  function apply(theme, persist) {
+    document.documentElement.setAttribute("data-theme", theme);
+    const tiles = theme === "dark" ? "dark_all" : "light_all";
+    window._tileSet = tiles;
+    if (persist) { try { localStorage.setItem("zm-theme", theme); } catch (e) {} }
+    requestAnimationFrame(() => { paintCharts(); paintMaps(tiles); });
+  }
+
+  btn.addEventListener("click", () => {
+    const now = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+    apply(now, true);
+  });
+  // charts are built after this module loads, so do one pass once they exist
+  window.addEventListener("load", () => requestAnimationFrame(paintCharts));
+  paintCharts();
+})();
+
+/* ================================================================
+   OVERVIEW
+   The landing panel. Numbers and counts are read from the loaded data
+   rather than written by hand, so nothing here can go stale against
+   the datasets.
+================================================================ */
+(function homeTab() {
+  const figs = document.getElementById("home-figures");
+  if (!figs) return;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const S = (window.REGISTER && window.REGISTER.STATS) || {};
+  const SUP = window.SUPPLY || {};
+  const T = window.TRACE || {};
+  const B = window.BIZ || {};
+  const nAgents = (SUP.AGENTS || []).length;
+  const nSup = (SUP.SUPPLIERS || []).length;
+  const nPartners = (T.PARTNERS || []).length;
+  const verified = (T.PARTNERS || []).filter((p) => p.sc > 0).length;
+
+  figs.innerHTML = [
+    [fmt(S.licences || 7468), "mineral licences on the active register", "var(--s1)"],
+    [fmt(S.pacraQueried || 2716), "company holders checked against the companies registry", "var(--amber)"],
+    [fmt(nAgents + nSup), "clearing agents and suppliers you can search", "var(--s2)"],
+    [fmt(S.boUndeclared || 746), "holders that have never declared who owns them", "var(--critical)"],
+  ].map(([v, k, c]) =>
+    '<div class="hero-fig"><span class="v" style="color:' + c + '">' + v + '</span>' +
+    '<span class="k">' + k + '</span></div>'
+  ).join("");
+
+  document.getElementById("home-meta").textContent =
+    "Licence register snapshot 18 Jun 2025 · clearing agents 31 May 2024 · production to 2025";
+
+  /* Tool cards. `go` is the tab id, so a card is one click from the thing it describes. */
+  const ICON = {
+    search: '<path d="M7.5 2a5.5 5.5 0 1 0 3.4 9.8l3.4 3.4 1.4-1.4-3.4-3.4A5.5 5.5 0 0 0 7.5 2zm0 2a3.5 3.5 0 1 1 0 7 3.5 3.5 0 0 1 0-7z"/>',
+    map: '<path d="M10 1.5 6 3 2 1.5v13L6 16l4-1.5 4 1.5v-13L10 1.5zm-.5 2.1v9.3L6.5 14V4.7l3-1.1z"/>',
+    chain: '<path d="M6.3 9.7a1 1 0 0 1 0-1.4l2-2a1 1 0 0 1 1.4 1.4l-2 2a1 1 0 0 1-1.4 0zm-2.1 2.1a3 3 0 0 1 0-4.2l1.4-1.4 1.4 1.4-1.4 1.4a1 1 0 0 0 1.4 1.4l1.4-1.4 1.4 1.4-1.4 1.4a3 3 0 0 1-4.2 0z"/>',
+    truck: '<path d="M1 3h8v7H1V3zm9 2h3l2 2.5V10h-5V5zM3.5 13.5a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3zm9 0a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>',
+    plant: '<path d="M2 14V7l4-2.5V7l4-2.5V7l4-2.5V14H2zm3-1.5h2V10H5v2.5zm4 0h2V10H9v2.5z"/>',
+    chart: '<path d="M2 14V2h1.5v10.5H14V14H2zm3-2V7h2v5H5zm3.5 0V4h2v8h-2zm3.5 0V8.5h2V12h-2z"/>',
+  };
+  const TOOLS = [
+    { go: "kyc", i: "search", h: "Counterparty check",
+      p: "Screen any company or holder against the register, the cancellation and default notices, and published court judgments.",
+      s: "7,468 licences · 2,789 names court-checked" },
+    { go: "supply", i: "truck", h: "Suppliers and clearing agents",
+      p: "Search every ZRA-licensed customs clearing agent plus the firms supplying reagents, explosives, equipment, freight and assay.",
+      s: fmt(nAgents + nSup) + " companies · " + fmt(nAgents) + " licensed agents" },
+    { go: "map", i: "map", h: "Licence map",
+      p: "Every licence parcel by type, with adverse flags from the Ministry's own notices, mines, corridors and border posts.",
+      s: "NGDR cadastre · 5 export corridors" },
+    { go: "trace", i: "chain", h: "Traceability",
+      p: "Follow a commodity from licensed ground to destination, and see which counterparties clear a verification standard.",
+      s: fmt(verified) + " of " + fmt(nPartners) + " clear any standard" },
+    { go: "siting", i: "plant", h: "Site screening",
+      p: "Score any location for a processing plant on grid voltage, rail, trunk road, feedstock and market access.",
+      s: "668 grid segments · 124 towns ranked" },
+    { go: "register", i: "chart", h: "Register and ownership",
+      p: "Registry standing, undeclared ownership, declared business against mineral rights, and copper output since 1964.",
+      s: fmt(S.boUndeclared || 746) + " with no declared owner" },
+  ];
+  document.getElementById("home-tools").innerHTML = TOOLS.map((t) =>
+    '<button class="tool-card" data-goto="' + t.go + '">' +
+    '<span class="tc-icon"><svg viewBox="0 0 16 16" width="17" height="17" fill="currentColor" aria-hidden="true">' +
+    ICON[t.i] + '</svg></span>' +
+    '<h3>' + t.h + '</h3><p>' + t.p + '</p>' +
+    '<span class="tc-stat">' + t.s + '</span></button>'
+  ).join("");
+
+  const SOURCES = [
+    ["NGDR cadastre", "Geological Survey, open WFS"],
+    ["MMMD notices", "licensing committee, defaults"],
+    ["PACRA registry", "company standing, ownership"],
+    ["ZRA clearing agents", "licensed agent schedule"],
+    ["Zambia EITI", "production, payments"],
+    ["UN Comtrade", "declared trade flows"],
+    ["ZambiaLII", "published judgments"],
+    ["US CBP manifests", "bills of lading"],
+    ["OpenStreetMap", "grid, rail, roads"],
+  ];
+  document.getElementById("home-sources").innerHTML = SOURCES.map(([n, d]) =>
+    '<div class="src-item"><div class="sn">' + n + '</div><div class="sd">' + d + '</div></div>'
+  ).join("");
+
+  /* Any element with data-goto switches tabs. Used by the hero buttons and tool cards. */
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest && e.target.closest("[data-goto]");
+    if (!el) return;
+    const btn = document.querySelector('nav.tabs button[data-tab="' + el.dataset.goto + '"]');
+    if (btn) { btn.click(); window.scrollTo({ top: 0, behavior: "smooth" }); }
+  });
 })();
