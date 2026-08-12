@@ -2423,3 +2423,751 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
       "Mining businesses: traders · services (" + fmt(B.MAPPED.length) + ")");
   })();
 })();
+
+/* ================================================================
+   TRACEABILITY
+   Chain of custody per commodity, counterparties that clear a named
+   verification standard, and the customs-manifest evidence behind the
+   physical flows. Data: data/trace_data.js plus the existing licence,
+   business and trade layers. No contact data enters this module.
+================================================================ */
+const M49 = {
+  757: "Switzerland", 156: "China", 702: "Singapore", 344: "Hong Kong SAR", 442: "Luxembourg",
+  784: "United Arab Emirates", 710: "South Africa", 72: "Botswana", 834: "Tanzania", 480: "Mauritius",
+  180: "DR Congo", 716: "Zimbabwe", 404: "Kenya", 826: "United Kingdom", 646: "Rwanda",
+  842: "United States", 392: "Japan", 454: "Malawi", 699: "India", 899: "Areas nes",
+  800: "Uganda", 516: "Namibia", 124: "Canada", 690: "Seychelles", 508: "Mozambique",
+  818: "Egypt", 410: "Korea, Rep.", 764: "Thailand", 458: "Malaysia", 276: "Germany",
+  380: "Italy", 528: "Netherlands", 250: "France", 203: "Czechia", 616: "Poland",
+  792: "Turkiye", 604: "Peru", 68: "Bolivia", 862: "Venezuela",
+};
+
+(function traceTab() {
+  const T = window.TRACE;
+  if (!T) return;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const STD_KEYS = Object.keys(T.STANDARDS);
+
+  /* ----- hero ----- */
+  const anyStd = T.PARTNERS.filter((p) => p.sc > 0).length;
+  const twoPlus = T.PARTNERS.filter((p) => p.sc >= 2).length;
+  const bolKg = T.BOL.reduce((a, r) => a + (Number(r.kg) || 0), 0);
+  document.getElementById("trace-hero").innerHTML = [
+    [fmt(T.PARTNERS.length), "counterparties in the chain layer", "var(--s1)"],
+    [fmt(anyStd), "clear at least one verification standard", "var(--s3)"],
+    [fmt(twoPlus), "clear two or more", "var(--warning)"],
+    [Math.round((100 * (T.PARTNERS.length - anyStd)) / T.PARTNERS.length) + "%", "clear none — the verification void", "var(--critical)"],
+    [fmt(T.BOL.length), "bills of lading recovered", "var(--s4)"],
+    [(bolKg / 1e6).toFixed(1) + "kt", "cargo weight on those manifests", "var(--s2)"],
+  ].map(([n, l, c]) =>
+    '<div class="hero-stat"><div class="num" style="color:' + c + '">' + n + '</div><div class="lbl">' + l + '</div></div>'
+  ).join("");
+
+  /* ----- chain of custody -----
+     Stage counts are recomputed from the live layers, so the flow can never drift
+     from the underlying data. The stage with no public record is drawn as a void. */
+  const COMMODITY_RX = {
+    copper: /copper|\bcu\b/i,
+    cobalt: /cobalt|\bco\b/i,
+    gemstones: /emerald|amethyst|beryl|tourmaline|aquamarine|gemstone/i,
+    gold: /gold|\bau\b/i,
+    manganese: /manganese|\bmn\b/i,
+  };
+  const COMMODITY_HS = { copper: ["740311", "7402", "2603", "7404", "7408"], cobalt: ["8105"], gemstones: [], gold: [], manganese: [] };
+  const PROC_SEGS = ["smelter_refiner", "processor", "assay_lab", "lapidary"];
+  const MINING_TYPES = ["LML", "SML", "MPL", "AMR", "P_LML", "P_SML"];
+
+  function licsFor(key) {
+    const rx = COMMODITY_RX[key];
+    const pts = (window.LICENSES && window.LICENSES.points) || [];
+    return pts.filter((p) => rx.test(p[5] || ""));
+  }
+  function flowsFor(key) {
+    const hs = COMMODITY_HS[key] || [];
+    if (!hs.length) return [];
+    return (window.TRADE_ROWS || []).filter((r) =>
+      r.flow === "X" && r.rep === 894 && r.par !== 0 && hs.includes(r.code));
+  }
+
+  function stagesFor(key) {
+    const lics = licsFor(key);
+    const holders = new Set(lics.map((p) => p[4]));
+    const mining = lics.filter((p) => MINING_TYPES.includes(p[3]));
+    const procN = ((window.BIZ && window.BIZ.ALL) || []).filter((r) => PROC_SEGS.includes(r.s)).length;
+    const dest = new Set(flowsFor(key).map((r) => r.par));
+    return [
+      { n: "Licensed ground", v: fmt(lics.length), s: fmt(holders.size) + " distinct holders", d: "lic", key },
+      { n: "In production", v: fmt(mining.length), s: "mining & artisanal licences, not exploration", d: "prod", key },
+      { n: "Processing", v: fmt(procN), s: "smelters, refiners, plants, labs, lapidaries", d: "proc", key },
+      { n: "Chain of custody", v: "0", s: "nothing public links a shipment to the licence it came off", d: "void", key, void: true },
+      { n: "Export", v: fmt(T.BOL.length), s: "manifest-verified consignments", d: "bol", key },
+      { n: "Destination", v: dest.size ? fmt(dest.size) : "–", s: dest.size ? "partner markets in mirrored trade data" : "no HS line mapped for this commodity", d: "dest", key },
+    ];
+  }
+
+  const flowEl = document.getElementById("trace-flow");
+  const detailEl = document.getElementById("trace-stage-detail");
+
+  function drawFlow() {
+    const key = document.getElementById("trace-commodity").value;
+    const st = stagesFor(key);
+    flowEl.innerHTML = st.map((s, i) =>
+      '<div class="trace-stage' + (s.void ? " void-stage" : "") + '" data-i="' + i + '" tabindex="0">' +
+      '<div class="st-name">' + esc(s.n) + '</div>' +
+      '<div class="st-num">' + s.v + '</div>' +
+      '<div class="st-sub">' + esc(s.s) + '</div></div>'
+    ).join("");
+    document.getElementById("trace-flow-note").textContent =
+      "Counts recomputed live from the licence, business and trade layers — click any stage.";
+    flowEl.querySelectorAll(".trace-stage").forEach((el) => {
+      const open = () => {
+        flowEl.querySelectorAll(".trace-stage").forEach((x) => x.classList.remove("sel"));
+        el.classList.add("sel");
+        showStage(st[Number(el.dataset.i)]);
+      };
+      el.addEventListener("click", open);
+      el.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); open(); } });
+    });
+    detailEl.innerHTML = "";
+  }
+
+  function tbl(head, rows) {
+    return '<table class="data" style="margin-top:12px"><thead><tr>' +
+      head.map((h) => "<th>" + h + "</th>").join("") + "</tr></thead><tbody>" + rows + "</tbody></table>";
+  }
+
+  function showStage(s) {
+    if (s.d === "void") {
+      detailEl.innerHTML = '<div class="callout void" style="margin-top:12px"><strong>This stage is empty, and that is the finding.</strong> ' +
+        'Zambia issues a mineral export permit and the ZRA issues a CD-1, but neither is published, and neither carries the licence ' +
+        'number the ore came off. A cathode on a ship can be traced to an exporter, and a licence can be traced to a holder — but ' +
+        'nothing in the public record joins those two facts. Any traceability scheme for Zambian minerals has to build this link first, ' +
+        'and the join key already exists: the licence code that appears on both the MLC notices and the cadastre.</div>';
+      return;
+    }
+    if (s.d === "bol") {
+      detailEl.innerHTML = '<p class="note" style="margin-top:12px">Every recovered manifest row is listed in the bills-of-lading table below.</p>';
+      return;
+    }
+    if (s.d === "lic" || s.d === "prod") {
+      let rows = licsFor(s.key);
+      if (s.d === "prod") rows = rows.filter((p) => MINING_TYPES.includes(p[3]));
+      const byHolder = {};
+      rows.forEach((p) => {
+        const h = byHolder[p[4]] || (byHolder[p[4]] = { n: 0, ha: 0, flag: 0 });
+        h.n++; h.ha += Number(p[7]) || 0; h.flag = Math.max(h.flag, Number(p[8]) || 0);
+      });
+      const top = Object.entries(byHolder).sort((a, b) => b[1].ha - a[1].ha).slice(0, 12);
+      detailEl.innerHTML = tbl(["Holder", "Licences", "Hectares", "Adverse notice"],
+        top.map(([h, v]) =>
+          '<tr><td style="font-weight:600">' + esc(h) + '</td>' +
+          '<td style="font-family:var(--mono)">' + v.n + '</td>' +
+          '<td style="font-family:var(--mono)">' + fmt(Math.round(v.ha)) + '</td>' +
+          '<td>' + (v.flag ? '<span style="color:var(--serious)">' + (v.flag === 2 ? "cancelled at MLC-78" : v.flag === 3 ? "default + cancelled" : "in 2025 default notice") + '</span>' : "&ndash;") + '</td></tr>').join(""));
+      return;
+    }
+    if (s.d === "proc") {
+      const rows = ((window.BIZ && window.BIZ.ALL) || []).filter((r) => PROC_SEGS.includes(r.s))
+        .sort((a, b) => String(a.s).localeCompare(String(b.s)) || String(a.n).localeCompare(String(b.n)));
+      detailEl.innerHTML = tbl(["Company", "Segment", "Town", "Registry"],
+        rows.slice(0, 20).map((r) =>
+          '<tr><td style="font-weight:600">' + esc(r.n) + '</td><td>' + esc(tc(r.s)) + '</td>' +
+          '<td>' + esc(r.t || "–") + '</td>' +
+          '<td style="white-space:nowrap;color:' + (r.ps === "Active" ? "var(--good)" : "var(--muted)") + '">' + esc(r.ps || "–") + '</td></tr>').join(""));
+      return;
+    }
+    if (s.d === "dest") {
+      const flows = flowsFor(s.key);
+      if (!flows.length) {
+        detailEl.innerHTML = '<p class="note" style="margin-top:12px">No HS line is mapped for this commodity in the Comtrade pull, ' +
+          'so destinations cannot be shown. Gemstones and gold are the notable gap — both leave Zambia under HS lines the free ' +
+          'preview tier does not cover, which is itself a legibility problem.</p>';
+        return;
+      }
+      const agg = {};
+      flows.forEach((r) => { agg[r.par] = (agg[r.par] || 0) + (Number(r.usd) || 0); });
+      const total = Object.values(agg).reduce((a, b) => a + b, 0);
+      const top = Object.entries(agg).sort((a, b) => b[1] - a[1]).slice(0, 12);
+      detailEl.innerHTML = tbl(["Destination", "Reported exports (all years)", "Share"],
+        top.map(([p, v]) =>
+          '<tr><td style="font-weight:600">' + esc(M49[p] || "code " + p) + '</td>' +
+          '<td style="font-family:var(--mono)">$' + (v >= 1e9 ? (v / 1e9).toFixed(2) + "bn" : Math.round(v / 1e6) + "m") + '</td>' +
+          '<td style="font-family:var(--mono)">' + (100 * v / total).toFixed(1) + '%</td></tr>').join("")) +
+        '<p class="note" style="margin-top:8px">Switzerland and Hong Kong lead because copper is <em>invoiced</em> through trading ' +
+        'desks there, not consumed there. Declared destination is a financial fact, not a physical one — another reason a ' +
+        'physical chain of custody cannot be inferred from trade statistics.</p>';
+    }
+  }
+  document.getElementById("trace-commodity").addEventListener("change", drawFlow);
+  drawFlow();
+
+  /* ----- verified counterparties ----- */
+  const stdSel = document.getElementById("trace-std-filter");
+  STD_KEYS.forEach((k) => {
+    const o = document.createElement("option");
+    o.value = k; o.textContent = T.STANDARDS[k].n;
+    stdSel.appendChild(o);
+  });
+  const roleSel = document.getElementById("trace-role-filter");
+  [...new Set(T.PARTNERS.map((p) => String(p.r || "").split(":")[0].trim()))].filter(Boolean).sort().forEach((r) => {
+    const o = document.createElement("option");
+    o.value = r; o.textContent = tc(r);
+    roleSel.appendChild(o);
+  });
+
+  function badges(p) {
+    return STD_KEYS.map((k) => {
+      const on = !!(p.f && p.f[k]);
+      const s = T.STANDARDS[k];
+      const tip = s.n + " — " + s.w + " (source: " + s.s + ")" +
+        (on && s.check === "verify" ? " [asterisk: re-verify against the live list]" : "");
+      return '<span class="std-badge b-' + k + (on ? " on" : "") + '" title="' + esc(tip) + '">' +
+        k.toUpperCase() + (on && s.check === "verify" ? "*" : "") + "</span>";
+    }).join("");
+  }
+  function drawPartners() {
+    const std = stdSel.value, role = roleSel.value;
+    let rows = T.PARTNERS.slice();
+    if (std !== "all") rows = rows.filter((p) => p.f && p.f[std]);
+    if (role !== "all") rows = rows.filter((p) => String(p.r || "").split(":")[0].trim() === role);
+    document.getElementById("trace-partner-count").textContent =
+      rows.length + " of " + T.PARTNERS.length + " counterparties";
+    document.getElementById("trace-partners-table").innerHTML =
+      "<thead><tr><th>Counterparty</th><th>Role in the chain</th><th>Standards cleared</th><th>Score</th></tr></thead><tbody>" +
+      rows.slice(0, 130).map((p) =>
+        '<tr><td style="font-weight:600">' + esc(p.n) +
+        (p.note ? ' <span style="color:var(--muted);font-size:11px">(' + esc(p.note) + ')</span>' : "") + '</td>' +
+        '<td style="text-align:left">' + esc(tc(p.r)) + '</td>' +
+        '<td style="white-space:nowrap">' + badges(p) + '</td>' +
+        '<td style="font-family:var(--mono);color:' +
+          (p.sc >= 2 ? "var(--good)" : p.sc === 1 ? "var(--warning)" : "var(--critical)") + '">' +
+          p.sc + "/4</td></tr>").join("") + "</tbody>";
+  }
+  stdSel.addEventListener("change", drawPartners);
+  roleSel.addEventListener("change", drawPartners);
+  drawPartners();
+
+  /* ----- bills of lading ----- */
+  document.getElementById("trace-bol-table").innerHTML =
+    "<thead><tr><th>Date</th><th>Shipper</th><th>Consignee</th><th>Cargo</th><th>HS</th><th>Weight</th><th>Route</th></tr></thead><tbody>" +
+    T.BOL.map((r) =>
+      '<tr><td style="white-space:nowrap;font-family:var(--mono)">' + esc(r.d) + '</td>' +
+      '<td style="font-weight:600">' + esc(r.sh) + '</td>' +
+      '<td style="text-align:left">' + esc(r.co) + '</td>' +
+      '<td style="text-align:left">' + esc(r.p) + '</td>' +
+      '<td style="font-family:var(--mono)">' + esc(r.hs) + '</td>' +
+      '<td style="font-family:var(--mono);white-space:nowrap">' + (r.kg ? fmt(r.kg) + " kg" : "&ndash;") + '</td>' +
+      '<td style="text-align:left;font-size:11.5px">' + esc(r.o) + " &rarr; " + esc(r.de) +
+      (r.u ? ' <a href="' + esc(r.u) + '" target="_blank" rel="noopener">src</a>' : "") + '</td></tr>').join("") +
+    "</tbody>";
+})();
+
+/* ================================================================
+   SITING LAB
+   Screening model for where a processing facility should go. Scores a
+   candidate point on grid proximity and voltage adequacy, rail and
+   trunk-road access, and licensed feedstock within trucking range.
+   Data: data/infra_layers.js (OSM/ODbL) + the licence centroid layer.
+================================================================ */
+(function sitingLab() {
+  const I = window.INFRA;
+  if (!I) return;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  /* Facility archetypes. minKv is the transmission class the load actually needs;
+     feed is the commodity regex for feedstock within haulRadius km. Weights sum to 100. */
+  /* Weights sum to 100 across five components. `road` scores distance to the TRUNK network
+     (653 segments), not any road — every town sits on some road, so scoring "nearest road"
+     made all 124 towns identical and the league table meaningless. `mkt` is distance to the
+     nearest export gateway or domestic demand centre, which is what actually separates a
+     Copperbelt site from a Western Province one. */
+  const FTYPES = [
+    { id: "cu_smelter", n: "Copper smelter / converter", minKv: 132, mw: "60–150 MW",
+      feed: /copper|\bcu\b/i, haul: 150, w: { power: 34, rail: 20, road: 12, feed: 20, mkt: 14 },
+      note: "Continuous high load and a concentrate stream measured in millions of tonnes. Rail matters as much as grid." },
+    { id: "cu_refinery", n: "Copper refinery (electrowinning)", minKv: 132, mw: "40–120 MW",
+      feed: /copper|\bcu\b/i, haul: 120, w: { power: 42, rail: 12, road: 12, feed: 20, mkt: 14 },
+      note: "Electrowinning is the most power-intensive step in the chain. Off-grid generation is not economic." },
+    { id: "co_refinery", n: "Cobalt / battery-precursor plant", minKv: 66, mw: "15–40 MW",
+      feed: /cobalt|\bco\b|copper/i, haul: 200, w: { power: 30, rail: 14, road: 16, feed: 22, mkt: 18 },
+      note: "Reagent-intensive; road access for imported chemicals often binds harder than raw power." },
+    { id: "mn_ferro", n: "Manganese / ferroalloy smelter", minKv: 220, mw: "80–200 MW",
+      feed: /manganese|\bmn\b/i, haul: 250, w: { power: 44, rail: 18, road: 10, feed: 16, mkt: 12 },
+      note: "Submerged-arc furnaces need the 220/330 kV backbone. Nothing else on this list is as power-bound." },
+    { id: "gem_cutting", n: "Gemstone cutting & polishing", minKv: 33, mw: "0.2–2 MW",
+      feed: /emerald|amethyst|beryl|tourmaline|aquamarine|gemstone/i, haul: 120, w: { power: 10, rail: 4, road: 20, feed: 40, mkt: 26 },
+      note: "Low load — a genset covers it. Value is in skilled labour, proximity to the rough, and a flight out for buyers." },
+    { id: "assay_lab", n: "Assay laboratory (ISO 17025)", minKv: 33, mw: "0.5–3 MW",
+      feed: /./, haul: 250, w: { power: 14, rail: 4, road: 28, feed: 32, mkt: 22 },
+      note: "Sample turnaround is the product, so trunk-road reach across many mines dominates. This is verification infrastructure itself." },
+    { id: "cathode_fab", n: "Copper fabrication (rod / wire / tube)", minKv: 66, mw: "5–20 MW",
+      feed: /copper|\bcu\b/i, haul: 150, w: { power: 22, rail: 16, road: 18, feed: 22, mkt: 22 },
+      note: "The value-addition step Zambia keeps announcing. Needs cathode nearby and a route to a market that will buy it." },
+  ];
+
+  /* Export gateways and domestic demand centres. Corridor heads are the real border crossings;
+     Lusaka and the Kitwe-Ndola conurbation are where domestic offtake actually is. */
+  const GATEWAYS = [
+    { n: "Lusaka (domestic market)", ll: [-15.4167, 28.2833] },
+    { n: "Ndola / Kitwe conurbation", ll: [-12.9587, 28.6366] },
+    { n: "Kasumbalesa (DRC border)", ll: [-12.2167, 27.7833] },
+    { n: "Nakonde (TAZARA / Dar corridor)", ll: [-9.3400, 32.7500] },
+    { n: "Chirundu (Zim / Durban corridor)", ll: [-16.0333, 28.8500] },
+    { n: "Kazungula (Walvis Bay corridor)", ll: [-17.7900, 25.2600] },
+    { n: "Jimbe (Lobito corridor)", ll: [-11.2000, 22.3000] },
+    { n: "Mpulungu (Lake Tanganyika port)", ll: [-8.7600, 31.1100] },
+  ];
+
+  /* ---- geometry: equirectangular approximation, fine at Zambia's scale ---- */
+  const R_KM = 111.32;
+  function dKm(aLat, aLng, bLat, bLng) {
+    const x = (bLng - aLng) * Math.cos(((aLat + bLat) / 2) * Math.PI / 180);
+    const y = bLat - aLat;
+    return Math.sqrt(x * x + y * y) * R_KM;
+  }
+  /* distance from a point to a polyline, sampling vertices and segment midpoints.
+     Vertex-only sampling under-reports on long straight spans, which the grid has. */
+  function dToPts(lat, lng, pts) {
+    let best = Infinity;
+    for (let i = 0; i < pts.length; i++) {
+      const d = dKm(lat, lng, pts[i][0], pts[i][1]);
+      if (d < best) best = d;
+      if (i + 1 < pts.length) {
+        const m = dKm(lat, lng, (pts[i][0] + pts[i + 1][0]) / 2, (pts[i][1] + pts[i + 1][1]) / 2);
+        if (m < best) best = m;
+      }
+    }
+    return best;
+  }
+  function nearestLine(lat, lng, arr, filter) {
+    let best = Infinity, hit = null;
+    for (const seg of arr) {
+      if (filter && !filter(seg)) continue;
+      const d = dToPts(lat, lng, seg.pts);
+      if (d < best) { best = d; hit = seg; }
+    }
+    return { km: best, seg: hit };
+  }
+
+  /* ---- scoring ---- */
+  const decay = (km, half) => 100 / (1 + km / half);   // 100 at the line, 50 at `half` km
+  function score(lat, lng, ft) {
+    const adequate = nearestLine(lat, lng, I.power, (s) => s.kv >= ft.minKv);
+    const anyPower = nearestLine(lat, lng, I.power, (s) => s.kv > 0);
+    const rail = nearestLine(lat, lng, I.rail, null);
+    const road = nearestLine(lat, lng, I.roads, (s) => s.c === "t");
+    let subKm = Infinity;
+    for (const s of I.subs) { const d = dKm(lat, lng, s.ll[0], s.ll[1]); if (d < subKm) subKm = d; }
+
+    const pts = (window.LICENSES && window.LICENSES.points) || [];
+    let feedN = 0, feedHa = 0;
+    for (const p of pts) {
+      if (!ft.feed.test(p[5] || "")) continue;
+      if (dKm(lat, lng, p[1], p[0]) <= ft.haul) { feedN++; feedHa += Number(p[7]) || 0; }
+    }
+
+    let gw = { km: Infinity, n: "–" };
+    for (const g of GATEWAYS) {
+      const d = dKm(lat, lng, g.ll[0], g.ll[1]);
+      if (d < gw.km) gw = { km: d, n: g.n };
+    }
+
+    const parts = {
+      power: { v: decay(adequate.km, 30), km: adequate.km, extra: (adequate.seg ? adequate.seg.kv + " kV" : "none in range") },
+      rail:  { v: decay(rail.km, 40), km: rail.km, extra: rail.seg ? rail.seg.net : "–" },
+      road:  { v: decay(road.km, 30), km: road.km, extra: road.seg && road.seg.ref ? road.seg.ref : (road.seg ? "trunk" : "–") },
+      feed:  { v: Math.min(100, 100 * Math.log10(1 + feedN) / Math.log10(201)), n: feedN, ha: feedHa },
+      mkt:   { v: decay(gw.km, 120), km: gw.km, extra: gw.n },
+    };
+    const total = Object.keys(ft.w).reduce((a, k) => a + parts[k].v * ft.w[k] / 100, 0);
+    return { total, parts, ft, subKm, anyPowerKm: anyPower.km, adequateKm: adequate.km, feedN, feedHa, gw };
+  }
+
+  /* ---- map ---- */
+  const map = L.map("siting-map", { zoomControl: true }).setView([-13.2, 27.8], 5.4);
+  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: "abcd", maxZoom: 14,
+  }).addTo(map);
+
+  const KV_STYLE = (kv) => kv >= 330 ? { color: "#f85149", weight: 2.4 }
+    : kv >= 220 ? { color: "#e06a3a", weight: 2.1 }
+    : kv >= 132 ? { color: "#eda100", weight: 1.8 }
+    : kv >= 66 ? { color: "#d9a114", weight: 1.3, opacity: 0.75 }
+    : { color: "#6b5a2a", weight: 1, opacity: 0.5 };
+
+  const gridHi = L.layerGroup(), gridLo = L.layerGroup(), railL = L.layerGroup(), roadL = L.layerGroup(), subL = L.layerGroup();
+  I.power.forEach((s) => {
+    const st = KV_STYLE(s.kv);
+    const ln = L.polyline(s.pts, { ...st, interactive: false });
+    (s.kv >= 132 ? gridHi : gridLo).addLayer(ln);
+  });
+  I.rail.forEach((s) => railL.addLayer(L.polyline(s.pts, {
+    color: s.net === "TAZARA" ? "#d55181" : "#9aa7b6", weight: 1.6, dashArray: "5,4", interactive: false })));
+  I.roads.forEach((s) => roadL.addLayer(L.polyline(s.pts, {
+    color: "#3987e5", weight: s.c === "t" ? 1.5 : 0.9, opacity: 0.55, interactive: false })));
+  I.subs.forEach((s) => subL.addLayer(L.circleMarker(s.ll, {
+    radius: 2.6, color: "#22b381", weight: 1, fillOpacity: 0.85, interactive: false })));
+  gridHi.addTo(map); railL.addTo(map); roadL.addTo(map); subL.addTo(map);
+  L.control.layers(null, {
+    "Grid 132 kV and above": gridHi,
+    "Grid below 132 kV": gridLo,
+    "Rail (ZR + TAZARA)": railL,
+    "Trunk & primary roads": roadL,
+    "Substations": subL,
+  }, { collapsed: true }).addTo(map);
+
+  let pin = null, haulRing = null;
+  const ftSel = document.getElementById("siting-ftype");
+  const townSel = document.getElementById("siting-town");
+  FTYPES.forEach((f) => { const o = document.createElement("option"); o.value = f.id; o.textContent = f.n; ftSel.appendChild(o); });
+  I.towns.slice().sort((a, b) => a.n.localeCompare(b.n)).forEach((t) => {
+    const o = document.createElement("option");
+    o.value = t.n; o.textContent = t.n + (t.pop ? " (" + fmt(t.pop) + ")" : "");
+    townSel.appendChild(o);
+  });
+  document.getElementById("siting-hint").textContent = I.power.length + " grid segments · " +
+    I.subs.length + " substations · " + I.rail.length + " rail · " + I.roads.length + " road segments";
+
+  const bar = (v, c) => '<div class="score-bar"><div style="width:' + Math.max(2, Math.round(v)) + '%;background:' + c + '"></div></div>';
+  const band = (t) => t >= 70 ? ["var(--good)", "Strong site"] : t >= 50 ? ["var(--warning)", "Workable with investment"]
+    : t >= 32 ? ["var(--serious)", "Marginal — needs dedicated infrastructure"] : ["var(--critical)", "Poor — infrastructure-led cost"];
+
+  let selected = null;
+  function renderScore(lat, lng, label) {
+    const ft = FTYPES.find((f) => f.id === ftSel.value);
+    const s = score(lat, lng, ft);
+    const [col, verdict] = band(s.total);
+    const P = s.parts;
+    const offGrid = s.adequateKm > 60;
+    document.getElementById("siting-score").innerHTML =
+      '<h4>' + esc(label) + '</h4>' +
+      '<div class="score-row"><span class="sr-l">Overall, for a ' + esc(ft.n.toLowerCase()) + '</span>' +
+        '<span class="sr-v" style="color:' + col + ';font-size:17px">' + s.total.toFixed(0) + '/100</span></div>' +
+      bar(s.total, col) +
+      '<div class="score-row"><span class="sr-l">Grid ≥ ' + ft.minKv + ' kV</span><span class="sr-v">' +
+        (isFinite(s.adequateKm) ? s.adequateKm.toFixed(1) + " km · " + esc(P.power.extra) : "none mapped") + '</span></div>' + bar(P.power.v, "#eda100") +
+      '<div class="score-row"><span class="sr-l">Nearest substation</span><span class="sr-v">' +
+        (isFinite(s.subKm) ? s.subKm.toFixed(1) + " km" : "–") + '</span></div>' +
+      '<div class="score-row"><span class="sr-l">Rail (' + esc(P.rail.extra) + ')</span><span class="sr-v">' +
+        P.rail.km.toFixed(1) + ' km</span></div>' + bar(P.rail.v, "#d55181") +
+      '<div class="score-row"><span class="sr-l">Trunk road (' + esc(P.road.extra) + ')</span><span class="sr-v">' +
+        P.road.km.toFixed(1) + ' km</span></div>' + bar(P.road.v, "#3987e5") +
+      '<div class="score-row"><span class="sr-l">Feedstock licences within ' + ft.haul + ' km</span><span class="sr-v">' +
+        fmt(P.feed.n) + (P.feed.ha ? " · " + fmt(Math.round(P.feed.ha / 1000)) + "k ha" : "") + '</span></div>' + bar(P.feed.v, "#22b381") +
+      '<div class="score-row"><span class="sr-l">Nearest gateway/market</span><span class="sr-v">' +
+        P.mkt.km.toFixed(0) + ' km</span></div>' +
+      '<div class="score-row" style="margin-top:-4px"><span class="sr-l" style="font-size:11px;color:var(--muted)">' +
+        esc(P.mkt.extra) + '</span><span class="sr-v"></span></div>' + bar(P.mkt.v, "#e06a3a") +
+      '<div class="siting-verdict" style="border-left:3px solid ' + col + '"><strong style="color:' + col + '">' + verdict + '.</strong> ' +
+        esc(ft.note) + '</div>' +
+      (offGrid
+        ? '<div class="siting-verdict" style="border-left:3px solid var(--critical);background:rgba(248,81,73,.07)">' +
+          '<strong style="color:var(--critical)">Off-grid for this load class.</strong> The nearest ' + ft.minKv +
+          '&nbsp;kV+ line is ' + s.adequateKm.toFixed(0) + ' km away' +
+          (isFinite(s.anyPowerKm) && s.anyPowerKm < s.adequateKm
+            ? ' (a lower-voltage line runs within ' + s.anyPowerKm.toFixed(0) + ' km, but it cannot carry ' + esc(ft.mw) + ')'
+            : "") +
+          '. This site needs a dedicated transmission spur or on-site generation — typically the single largest line item in a ' +
+          'Zambian plant budget, and the reason announced value-addition projects stall.</div>'
+        : '<div class="siting-verdict" style="border-left:3px solid var(--good);background:rgba(63,185,80,.06)">' +
+          '<strong style="color:var(--good)">Grid-connectable.</strong> A ' + esc(P.power.extra) + ' line is within ' +
+          s.adequateKm.toFixed(1) + ' km, adequate for the ' + esc(ft.mw) + ' this facility class draws.</div>') +
+      '<p class="note" style="margin-top:10px;font-size:11.5px">Weights for this facility: power ' + ft.w.power +
+        '%, rail ' + ft.w.rail + '%, trunk road ' + ft.w.road + '%, feedstock ' + ft.w.feed +
+        '%, market access ' + ft.w.mkt + '%. Screening heuristic only — no land, water, tailings or community assessment.</p>';
+
+    if (pin) map.removeLayer(pin);
+    if (haulRing) map.removeLayer(haulRing);
+    pin = L.circleMarker([lat, lng], { radius: 7, color: col, weight: 2.5, fillColor: col, fillOpacity: 0.35 }).addTo(map);
+    haulRing = L.circle([lat, lng], { radius: ft.haul * 1000, color: "#22b381", weight: 1, opacity: 0.4, fill: false, dashArray: "4,6" }).addTo(map);
+    selected = { lat, lng, label };
+  }
+
+  map.on("click", (e) => {
+    townSel.value = "";
+    renderScore(e.latlng.lat, e.latlng.lng, "Selected point · " + e.latlng.lat.toFixed(3) + ", " + e.latlng.lng.toFixed(3));
+  });
+  townSel.addEventListener("change", () => {
+    const t = I.towns.find((x) => x.n === townSel.value);
+    if (!t) return;
+    map.setView(t.ll, 8);
+    renderScore(t.ll[0], t.ll[1], t.n + (t.c ? " (city)" : "") + (t.pop ? " · pop. " + fmt(t.pop) : ""));
+  });
+
+  /* ---- league table ---- */
+  function drawLeague() {
+    const ft = FTYPES.find((f) => f.id === ftSel.value);
+    const rows = I.towns.map((t) => ({ t, s: score(t.ll[0], t.ll[1], ft) }))
+      .sort((a, b) => b.s.total - a.s.total);
+    document.getElementById("siting-league-table").innerHTML =
+      "<thead><tr><th>#</th><th>Town</th><th>Score</th><th>Grid ≥" + ft.minKv + "kV</th><th>Rail</th><th>Trunk rd</th>" +
+      "<th>Feed &lt;" + ft.haul + "km</th><th>Gateway</th><th>Verdict</th></tr></thead><tbody>" +
+      rows.slice(0, 25).map((r, i) => {
+        const [col, v] = band(r.s.total);
+        return '<tr><td style="font-family:var(--mono);color:var(--muted)">' + (i + 1) + '</td>' +
+          '<td style="font-weight:600"><a href="#" data-town="' + esc(r.t.n) + '" style="color:inherit">' + esc(r.t.n) + '</a></td>' +
+          '<td style="font-family:var(--mono);color:' + col + ';font-weight:700">' + r.s.total.toFixed(0) + '</td>' +
+          '<td style="font-family:var(--mono)">' + (isFinite(r.s.adequateKm) ? r.s.adequateKm.toFixed(0) + " km" : "–") + '</td>' +
+          '<td style="font-family:var(--mono)">' + r.s.parts.rail.km.toFixed(0) + ' km</td>' +
+          '<td style="font-family:var(--mono)">' + r.s.parts.road.km.toFixed(0) + ' km</td>' +
+          '<td style="font-family:var(--mono)">' + fmt(r.s.feedN) + '</td>' +
+          '<td style="font-family:var(--mono)">' + r.s.parts.mkt.km.toFixed(0) + ' km</td>' +
+          '<td style="text-align:left;font-size:11.5px;color:' + col + '">' + esc(v) + '</td></tr>';
+      }).join("") + "</tbody>";
+    document.querySelectorAll("#siting-league-table a[data-town]").forEach((a) => {
+      a.addEventListener("click", (e) => {
+        e.preventDefault();
+        townSel.value = a.dataset.town;
+        townSel.dispatchEvent(new Event("change"));
+        document.getElementById("siting-map").scrollIntoView({ behavior: "smooth", block: "center" });
+      });
+    });
+  }
+
+  ftSel.addEventListener("change", () => {
+    drawLeague();
+    if (selected) renderScore(selected.lat, selected.lng, selected.label);
+  });
+  drawLeague();
+
+  /* Leaflet measures 0x0 in a hidden panel and never recovers, so size it on first reveal. */
+  document.querySelector('nav.tabs button[data-tab="siting"]').addEventListener("click", () => {
+    requestAnimationFrame(() => map.invalidateSize());
+  });
+})();
+
+/* ================================================================
+   SUPPLY-CHAIN ADVISOR
+   Turns a stated transaction into a tailored brief: corridor and port,
+   the counterparty categories the deal needs and who is registered in
+   them, the verification standards a buyer or lender will demand, and
+   the gaps that do not exist in Zambia yet. Every line resolves to a
+   dataset already loaded in this terminal.
+================================================================ */
+(function advisor() {
+  const out = document.getElementById("adv-output");
+  if (!out) return;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+  const BIZ = (window.BIZ && window.BIZ.ALL) || [];
+  const PARTNERS = (window.TRACE && window.TRACE.PARTNERS) || [];
+  const CORR = (window.GEO && window.GEO.corridors) || [];
+
+  /* Which business segments each role actually has to contract with, in the order
+     the transaction needs them. Drawn from the 354-company sector directory. */
+  const NEEDS = {
+    exporter: ["assay_lab", "freight_clearing", "haulage", "export_intermediary", "smelter_refiner"],
+    importer: ["export_intermediary", "trader", "assay_lab", "freight_clearing"],
+    supplier: ["mining_contractor", "equipment_dealer", "consumables_reagents", "explosives", "engineering_epcm"],
+    financier: ["assay_lab", "freight_clearing", "smelter_refiner", "trader"],
+    investor: ["engineering_epcm", "geo_consultancy", "drilling", "power_fuel", "tailings_water"],
+  };
+  /* Commodity overrides the role default where the physical chain differs. A gemstone exporter
+     has no use for a copper smelter; a gold seller deals with licensed buyers, not concentrators. */
+  const NEEDS_BY_COMMODITY = {
+    gemstones: { exporter: ["lapidary", "gemstone_dealer", "export_intermediary", "freight_clearing", "security"],
+                 importer: ["gemstone_dealer", "lapidary", "export_intermediary", "freight_clearing"],
+                 financier: ["gemstone_dealer", "lapidary", "export_intermediary", "security"] },
+    gold:      { exporter: ["gold_buyer", "assay_lab", "export_intermediary", "security", "freight_clearing"],
+                 importer: ["gold_buyer", "assay_lab", "export_intermediary", "freight_clearing"],
+                 financier: ["gold_buyer", "assay_lab", "export_intermediary", "security"] },
+    equipment: { supplier: ["equipment_dealer", "consumables_reagents", "haulage", "freight_clearing", "engineering_epcm"],
+                 importer: ["equipment_dealer", "freight_clearing", "haulage"] },
+    manganese: { exporter: ["assay_lab", "haulage", "freight_clearing", "export_intermediary", "rail"] },
+  };
+  /* Which commodity a counterparty is evidenced in, for filtering the standards table.
+     Absence of a match is reported, never silently replaced with the copper leaders. */
+  const PARTNER_RX = {
+    copper: /copper|cathode|smelt|refin|kansanshi|mopani|konkola|lumwana|luanshya|chambishi|nfc|sino|mufulira|kcm|zccm|lubambe/i,
+    concentrate: /copper|concentrate|smelt|kansanshi|mopani|konkola|lumwana|chambishi|nfc|sino/i,
+    cobalt: /cobalt|chambishi metals|chambishi|zccm/i,
+    gemstones: /gem|emerald|lapidar|kagem|grizzly|amethyst/i,
+    gold: /gold|bullion|refinery|precious/i,
+    manganese: /manganese|alloy|ferro/i,
+    equipment: /equipment|supply|engineering|epcm/i,
+  };
+  const ROLE_LABEL = {
+    exporter: "Zambian exporter / producer", importer: "Overseas buyer / importer",
+    supplier: "Supplier into the mines", financier: "Lender / trade financier",
+    investor: "Investor building a facility",
+  };
+  /* Corridor fit by destination. Chosen on where the cargo physically has to reach,
+     not on invoicing geography — Switzerland is a desk, not a port. */
+  const CORRIDOR_FIT = {
+    156: ["TAZARA", "Durban", "Beira"], 757: ["Durban", "TAZARA"], eu: ["Lobito", "Durban", "Walvis"],
+    842: ["Lobito", "Durban"], 784: ["TAZARA", "Durban"], region: ["Durban", "Beira"], dom: [],
+  };
+  const DEST_LABEL = {
+    156: "China", 757: "Switzerland (trading desk)", eu: "Europe", 842: "United States",
+    784: "UAE / Gulf", region: "Southern Africa (regional)", dom: "Domestic Zambian market",
+  };
+  const HS_FOR = {
+    copper: ["740311", "7402"], concentrate: ["2603"], cobalt: ["8105"],
+    gemstones: [], gold: [], manganese: [], equipment: [],
+  };
+  const COMMODITY_RX = {
+    copper: /copper|\bcu\b/i, concentrate: /copper|\bcu\b/i, cobalt: /cobalt|\bco\b/i,
+    gemstones: /emerald|amethyst|beryl|tourmaline|aquamarine|gemstone/i,
+    gold: /gold|\bau\b/i, manganese: /manganese|\bmn\b/i, equipment: /./,
+  };
+
+  function render() {
+    const role = document.getElementById("adv-role").value;
+    const com = document.getElementById("adv-commodity").value;
+    const dest = document.getElementById("adv-dest").value;
+    const scale = document.getElementById("adv-scale").value;
+    const segs = (NEEDS_BY_COMMODITY[com] && NEEDS_BY_COMMODITY[com][role]) || NEEDS[role] || [];
+    const blocks = [];
+
+    /* ---- 1. route ---- */
+    const fits = CORRIDOR_FIT[dest] || [];
+    const picked = fits.map((f) => CORR.find((c) => c.name.indexOf(f) >= 0)).filter(Boolean);
+    if (dest === "dom") {
+      blocks.push(card("Route", '<p class="note" style="margin:0">Domestic sale — no corridor decision. The ' +
+        'binding constraint becomes the trunk-road link to Lusaka or the Copperbelt, which the Siting Lab tab ' +
+        'scores for any point in the country.</p>'));
+    } else if (picked.length) {
+      blocks.push(card("Route — ranked for " + DEST_LABEL[dest],
+        '<table class="data"><thead><tr><th>Corridor</th><th>Port</th><th>Mode</th><th>Standing</th></tr></thead><tbody>' +
+        picked.map((c, i) =>
+          '<tr><td style="font-weight:600">' + (i === 0 ? '<span style="color:var(--good)">1st choice</span> · ' : (i + 1) + '. ') +
+          esc(c.name) + '</td><td>' + esc(c.port) + '</td><td>' + esc(c.mode) + '</td>' +
+          '<td style="text-align:left;font-size:11.5px">' + esc(String(c.status).slice(0, 180)) + '</td></tr>').join("") +
+        '</tbody></table>'));
+    }
+
+    /* ---- 2. counterparties you need, and who exists ---- */
+    const rows = segs.map((s) => {
+      const all = BIZ.filter((b) => b.s === s);
+      const active = all.filter((b) => b.ps === "Active");
+      const located = all.filter((b) => b.t);
+      return { s, n: all.length, act: active.length, loc: located.length, sample: all.slice(0, 3).map((b) => b.n) };
+    });
+    blocks.push(card("Counterparties this transaction needs",
+      '<table class="data"><thead><tr><th>Category</th><th>In directory</th><th>Registry-active</th>' +
+      '<th>Located to a town</th><th>Examples</th></tr></thead><tbody>' +
+      rows.map((r) =>
+        '<tr><td style="font-weight:600">' + esc(tc(r.s)) + '</td>' +
+        '<td style="font-family:var(--mono)">' + r.n + '</td>' +
+        '<td style="font-family:var(--mono);color:' + (r.act ? "var(--good)" : "var(--critical)") + '">' + r.act + '</td>' +
+        '<td style="font-family:var(--mono)">' + r.loc + '</td>' +
+        '<td style="text-align:left;font-size:11.5px;color:var(--ink-2)">' + esc(r.sample.join("; ") || "none identified") + '</td></tr>').join("") +
+      '</tbody></table>' +
+      '<p class="note" style="margin:8px 0 0">Full records, including town and registry number, are in the ' +
+      '<strong>Register &amp; Ownership</strong> tab under "the rest of the sector". Contact details are held ' +
+      'privately and are not published in this app.</p>'));
+
+    /* ---- 3. standards the counterparty will be asked for ---- */
+    const rx = PARTNER_RX[com] || /./;
+    const relevant = PARTNERS.filter((p) => p.sc > 0 && rx.test(p.n + " " + (p.r || "")));
+    const scored = relevant.sort((a, b) => b.sc - a.sc).slice(0, 8);
+    const noneRelevant = scored.length === 0;
+    const askFor = {
+      exporter: "A buyer will ask you for these. The two you can obtain unilaterally and cheaply are PACRA beneficial-ownership filing and an accredited assay — do those first.",
+      importer: "Screen any Zambian counterparty on these four before you pay a deposit. A 0/4 score is not disqualifying on its own, but it means every claim in the deal has to be verified independently.",
+      supplier: "Your customer's lender will look through to you on the ownership question. PACRA beneficial-ownership filing is the cheap one to clear.",
+      financier: "These are the only four provenance signals in Zambian minerals that are checkable from outside the country. Everything else in a data room is self-reported.",
+      investor: "Your offtake counterparty will be scored on these by whoever finances the plant. Build the assay and custody chain into the capex, not as an afterthought.",
+    }[role];
+    blocks.push(card("Verification standards — and who already clears them",
+      '<p class="note" style="margin:0 0 10px">' + esc(askFor) + '</p>' +
+      (noneRelevant
+        ? '<div class="callout void" style="margin:0"><strong>Not one counterparty evidenced in this commodity clears ' +
+          'any of the four standards.</strong> The scored list is dominated by copper, because copper is the only part ' +
+          'of the Zambian sector that has had to satisfy outside lenders and the LME. For ' +
+          esc(document.querySelector("#adv-commodity option:checked").textContent.toLowerCase()) +
+          ' there is no verified counterparty to benchmark against — which means a buyer cannot screen you against ' +
+          'a peer, and you cannot point at a local precedent. Being first to clear even PACRA beneficial ownership ' +
+          'plus an accredited assay would put you ahead of the entire visible field.</div>'
+        : '<table class="data"><thead><tr><th>Counterparty</th><th>Role</th><th>Score</th></tr></thead><tbody>' +
+          scored.map((p) =>
+            '<tr><td style="font-weight:600">' + esc(p.n) + '</td><td style="text-align:left">' + esc(tc(p.r)) + '</td>' +
+            '<td style="font-family:var(--mono);color:' + (p.sc >= 2 ? "var(--good)" : "var(--warning)") + '">' + p.sc + '/4</td></tr>').join("") +
+          '</tbody></table>' +
+          '<p class="note" style="margin:8px 0 0">' + relevant.length + ' of ' + PARTNERS.length +
+          ' counterparties in the chain layer are evidenced in this commodity and clear at least one standard.</p>')));
+
+    /* ---- 4. market reality from the trade data ---- */
+    const hs = HS_FOR[com] || [];
+    if (hs.length) {
+      const flows = (window.TRADE_ROWS || []).filter((r) =>
+        r.flow === "X" && r.rep === 894 && r.par !== 0 && hs.includes(r.code));
+      const agg = {};
+      flows.forEach((r) => { agg[r.par] = (agg[r.par] || 0) + (Number(r.usd) || 0); });
+      const total = Object.values(agg).reduce((a, b) => a + b, 0);
+      const mine = /^\d+$/.test(dest) ? (agg[dest] || 0) : 0;
+      const top = Object.entries(agg).sort((a, b) => b[1] - a[1]).slice(0, 6);
+      blocks.push(card("What the trade data says about this route",
+        '<p class="note" style="margin:0 0 8px">Zambia\'s declared exports on ' + hs.join(" / ") +
+        ', all years in the Comtrade pull. ' +
+        (mine ? 'Your stated destination accounts for <strong>' + (100 * mine / total).toFixed(1) +
+          '%</strong> of declared value, so there is an established channel and comparable pricing to benchmark against.'
+        : 'Your stated destination does not appear as a material declared destination — either the trade is invoiced ' +
+          'through an intermediary jurisdiction, or the channel is genuinely thin. Verify against the buyer\'s own import records.') +
+        '</p><table class="data"><thead><tr><th>Declared destination</th><th>Value</th><th>Share</th></tr></thead><tbody>' +
+        top.map(([p, v]) =>
+          '<tr' + (p === dest ? ' style="background:rgba(57,135,229,.08)"' : '') + '><td style="font-weight:600">' +
+          esc(M49[p] || "code " + p) + '</td><td style="font-family:var(--mono)">$' +
+          (v >= 1e9 ? (v / 1e9).toFixed(2) + "bn" : Math.round(v / 1e6) + "m") + '</td>' +
+          '<td style="font-family:var(--mono)">' + (100 * v / total).toFixed(1) + '%</td></tr>').join("") +
+        '</tbody></table>'));
+    } else {
+      blocks.push(card("What the trade data says about this route",
+        '<div class="callout void" style="margin:0"><strong>No usable HS line for ' + esc(com) + '.</strong> ' +
+        'Gemstones, gold and equipment are not covered by the free Comtrade preview tier this app pulls, so ' +
+        'declared-export benchmarking is unavailable for them here. For emeralds specifically the deeper problem ' +
+        'is that most value is realised at overseas auction, so Zambian export declarations understate the ' +
+        'final price by construction — treat any "market price" you are quoted as unverifiable.</div>'));
+    }
+
+    /* ---- 5. the gaps — the part that makes this honest ---- */
+    const feedN = ((window.LICENSES && window.LICENSES.points) || [])
+      .filter((p) => COMMODITY_RX[com].test(p[5] || "")).length;
+    const gaps = [];
+    gaps.push("<strong>Chain of custody does not exist.</strong> No public record links a shipment to the licence " +
+      "the ore came off. If your buyer or lender asks for mine-to-port traceability, you will have to construct it " +
+      "contractually — there is no registry to point at. The join key that would make it possible is the licence code, " +
+      "which appears on both the cadastre and the MLC notices.");
+    if (scale === "small") {
+      gaps.push("<strong>At artisanal scale the formal channel mostly is not available to you.</strong> " +
+        "Of 3,622 licence holders, roughly 94% publish no contact of any kind, 229 cooperatives publish none at all, " +
+        "and the assay and clearing firms above cluster in Lusaka and the Copperbelt. The realistic route is through " +
+        "a district mining office or an ASM association rather than direct contracting.");
+    }
+    if (com === "gemstones" || com === "gold") {
+      gaps.push("<strong>This commodity is the least legible on the register.</strong> 2,056 licences list a gemstone " +
+        "commodity while only 28 were ever issued as gemstone licences — the mismatch means the licence type tells " +
+        "you almost nothing about what is actually being mined. Verify at the parcel, not the licence class.");
+    }
+    if (role === "financier" || role === "importer") {
+      gaps.push("<strong>Registry standing is weak sector-wide.</strong> 746 holders have never declared beneficial " +
+        "owners, 1,428 have unfiled annual returns, and 214 companies holding mineral rights have no companies-registry " +
+        "record at all. Budget for independent verification rather than assuming filings exist.");
+    }
+    gaps.push("<strong>Feedstock check.</strong> " + fmt(feedN) + " licences on the register list a matching commodity. " +
+      "That is licensed ground, not production — most of it is exploration, and being licensed is not evidence anything " +
+      "is being mined. Cross-check against the production licence types in the Traceability flow above.");
+    blocks.push(card("Gaps you will hit — and nobody's playbook mentions",
+      '<div class="callout void" style="margin:0"><ul style="margin:0;padding-left:18px">' +
+      gaps.map((g) => '<li style="margin-bottom:7px">' + g + '</li>').join("") + '</ul></div>'));
+
+    out.innerHTML = '<p class="note" style="margin:14px 0 4px;color:var(--ink-2)">Brief for a <strong>' +
+      esc(ROLE_LABEL[role]) + '</strong> moving <strong>' + esc(document.querySelector("#adv-commodity option:checked").textContent) +
+      '</strong> to <strong>' + esc(DEST_LABEL[dest]) + '</strong> at <strong>' +
+      esc(document.querySelector("#adv-scale option:checked").textContent.toLowerCase()) + '</strong> scale.</p>' +
+      blocks.join("");
+  }
+
+  function card(title, body) {
+    return '<div style="border:1px solid var(--grid);border-radius:8px;padding:12px 14px;margin-top:12px;background:var(--panel-2)">' +
+      '<h3 style="margin:0 0 8px;font-size:13px">' + esc(title) + '</h3>' + body + '</div>';
+  }
+
+  ["adv-role", "adv-commodity", "adv-dest", "adv-scale"].forEach((id) =>
+    document.getElementById(id).addEventListener("change", render));
+  render();
+})();

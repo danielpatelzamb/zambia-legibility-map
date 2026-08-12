@@ -1,0 +1,133 @@
+# fetch_infra_layers.ps1
+# Builds data/infra_layers.js - the physical-infrastructure layer behind the Siting Lab:
+# ZESCO transmission lines, substations, railways (Zambia Railways + TAZARA), trunk/primary
+# roads, and the candidate-site towns. Source: OpenStreetMap via the Overpass API (ODbL,
+# attribution kept in the file header and the map credit line).
+#
+# Raw responses cache to data/raw/infra/ (gitignored); the script only refetches what is
+# missing, so a rerun after a crash costs nothing. Geometry is decimated to every 4th vertex
+# and 4 decimal places (~11 m) - far below siting resolution, which cares about kilometres.
+$ErrorActionPreference = 'Stop'
+$root = Split-Path $PSScriptRoot -Parent
+$raw  = Join-Path $root 'data\raw\infra'
+New-Item -ItemType Directory -Force -Path $raw | Out-Null
+$utf8 = New-Object System.Text.UTF8Encoding($false)
+
+$QUERIES = @{
+    'power.json'       = 'way["power"="line"](area.zm);out geom;'
+    'rail.json'        = 'way["railway"="rail"](area.zm);out geom;'
+    'roads.json'       = 'way["highway"~"^(trunk|primary)$"](area.zm);out geom;'
+    'towns.json'       = 'node["place"~"^(city|town)$"](area.zm);out;'
+    'substations.json' = '(node["power"="substation"](area.zm);way["power"="substation"](area.zm););out center;'
+}
+$PREFIX = '[out:json][timeout:150];area["ISO3166-1"="ZM"][admin_level=2]->.zm;'
+
+foreach ($f in $QUERIES.Keys) {
+    $p = Join-Path $raw $f
+    if ((Test-Path $p) -and (Get-Item $p).Length -gt 5kb) { continue }
+    Write-Host "fetching $f ..."
+    $body = 'data=' + [uri]::EscapeDataString($PREFIX + $QUERIES[$f])
+    Invoke-RestMethod -Uri 'https://overpass-api.de/api/interpreter' -Method Post -Body $body `
+        -ContentType 'application/x-www-form-urlencoded' -TimeoutSec 170 -OutFile $p
+    Start-Sleep -Seconds 3   # be polite to the public endpoint
+}
+
+function Load($f) {
+    $p = Join-Path $raw $f
+    if (-not (Test-Path $p)) { throw "missing $p - fetch failed" }
+    ([System.IO.File]::ReadAllText($p, $utf8) | ConvertFrom-Json).elements
+}
+
+# decimate a way's geometry: every 4th vertex plus the last, rounded to 4dp
+function Slim($geom) {
+    $n = $geom.Count
+    $out = New-Object System.Collections.Generic.List[object]
+    for ($i = 0; $i -lt $n; $i += 4) {
+        $out.Add(@([math]::Round($geom[$i].lat, 4), [math]::Round($geom[$i].lon, 4)))
+    }
+    if (($n - 1) % 4 -ne 0) { $out.Add(@([math]::Round($geom[$n-1].lat, 4), [math]::Round($geom[$n-1].lon, 4))) }
+    ,$out
+}
+function JsArr($pts) { '[' + (($pts | ForEach-Object { '[' + ($_ -join ',') + ']' }) -join ',') + ']' }
+
+Write-Host 'parsing power lines...'
+$power = foreach ($w in (Load 'power.json')) {
+    if (-not $w.geometry) { continue }
+    # voltage may be "330000" or "330000;66000" - take the highest, express in kV
+    $kv = 0
+    if ($w.tags.voltage) {
+        $kv = (($w.tags.voltage -split ';') | ForEach-Object { [int]($_ -replace '\D','') } |
+               Measure-Object -Maximum).Maximum / 1000
+    }
+    [pscustomobject]@{ kv = [math]::Round($kv, 0); pts = (Slim $w.geometry) }
+}
+Write-Host ("  {0} line segments; kV classes: {1}" -f @($power).Count,
+    ((@($power) | Group-Object kv | Sort-Object {[int]$_.Name} -Descending | ForEach-Object { "$($_.Name)kV x$($_.Count)" }) -join ', '))
+
+Write-Host 'parsing rail...'
+$rail = foreach ($w in (Load 'rail.json')) {
+    if (-not $w.geometry) { continue }
+    $op = "$($w.tags.operator)"
+    $net = if ($op -match 'TAZARA|Tanzania' -or "$($w.tags.name)" -match 'TAZARA') { 'TAZARA' } else { 'ZR' }
+    [pscustomobject]@{ net = $net; pts = (Slim $w.geometry) }
+}
+Write-Host ("  {0} rail segments" -f @($rail).Count)
+
+Write-Host 'parsing roads...'
+$roads = foreach ($w in (Load 'roads.json')) {
+    if (-not $w.geometry) { continue }
+    [pscustomobject]@{
+        c   = if ($w.tags.highway -eq 'trunk') { 't' } else { 'p' }
+        ref = "$($w.tags.ref)"
+        pts = (Slim $w.geometry)
+    }
+}
+Write-Host ("  {0} road segments" -f @($roads).Count)
+
+Write-Host 'parsing towns + substations...'
+$towns = foreach ($n in (Load 'towns.json')) {
+    if (-not $n.tags.name) { continue }
+    [pscustomobject]@{
+        n   = $n.tags.name
+        c   = [int]($n.tags.place -eq 'city')
+        pop = if ($n.tags.population) { [int]($n.tags.population -replace '\D','') } else { 0 }
+        lat = [math]::Round($n.lat, 4); lng = [math]::Round($n.lon, 4)
+    }
+}
+$subs = foreach ($e in (Load 'substations.json')) {
+    $lat = if ($e.center) { $e.center.lat } else { $e.lat }
+    $lng = if ($e.center) { $e.center.lon } else { $e.lon }
+    if ($null -eq $lat) { continue }
+    [pscustomobject]@{ lat = [math]::Round($lat, 4); lng = [math]::Round($lng, 4)
+                       n = "$($e.tags.name)"; kv = [int]("0" + ($e.tags.voltage -split ';')[0] -replace '\D','') }
+}
+Write-Host ("  {0} towns/cities, {1} substations" -f @($towns).Count, @($subs).Count)
+
+# ---------- emit ----------
+$sb = New-Object System.Text.StringBuilder
+[void]$sb.AppendLine('/* infra_layers.js - generated by pipeline/fetch_infra_layers.ps1. Do not hand-edit.')
+[void]$sb.AppendLine('   Transmission grid, substations, rail and trunk/primary roads for the Siting Lab.')
+[void]$sb.AppendLine('   (c) OpenStreetMap contributors, ODbL - via Overpass API, snapshot ' + (Get-Date -Format 'yyyy-MM-dd') + ' */')
+[void]$sb.AppendLine('window.INFRA = {')
+[void]$sb.AppendLine('meta: {source: "OpenStreetMap via Overpass API (ODbL)", snapshot: "' + (Get-Date -Format 'yyyy-MM-dd') + '"},')
+[void]$sb.Append('power: [')
+[void]$sb.Append((($power | ForEach-Object { '{"kv":' + $_.kv + ',"pts":' + (JsArr $_.pts) + '}' }) -join ','))
+[void]$sb.AppendLine('],')
+[void]$sb.Append('rail: [')
+[void]$sb.Append((($rail | ForEach-Object { '{"net":"' + $_.net + '","pts":' + (JsArr $_.pts) + '}' }) -join ','))
+[void]$sb.AppendLine('],')
+[void]$sb.Append('roads: [')
+[void]$sb.Append((($roads | ForEach-Object { '{"c":"' + $_.c + '","ref":"' + ($_.ref -replace '"','') + '","pts":' + (JsArr $_.pts) + '}' }) -join ','))
+[void]$sb.AppendLine('],')
+[void]$sb.Append('towns: [')
+[void]$sb.Append((($towns | Sort-Object { -$_.pop } | ForEach-Object {
+    '{"n":"' + ($_.n -replace '"','') + '","c":' + $_.c + ',"pop":' + $_.pop + ',"ll":[' + $_.lat + ',' + $_.lng + ']}' }) -join ','))
+[void]$sb.AppendLine('],')
+[void]$sb.Append('subs: [')
+[void]$sb.Append((($subs | ForEach-Object { '{"ll":[' + $_.lat + ',' + $_.lng + '],"kv":' + $_.kv + '}' }) -join ','))
+[void]$sb.AppendLine(']')
+[void]$sb.AppendLine('};')
+
+$out = Join-Path $root 'data\infra_layers.js'
+[System.IO.File]::WriteAllText($out, $sb.ToString(), $utf8)
+Write-Host ("`nwrote {0}  ({1:N0} KB)" -f $out, ((Get-Item $out).Length / 1kb))

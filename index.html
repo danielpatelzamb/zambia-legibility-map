@@ -6,7 +6,7 @@
 <title>Zambia Minerals Legibility Terminal</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=202607290500">
+<link rel="stylesheet" href="styles.css?v=202608120100">
 </head>
 <body>
 
@@ -25,6 +25,8 @@
     <button data-tab="map" class="active">Legibility Map</button>
     <button data-tab="kyc">KYC Check</button>
     <button data-tab="register">Register &amp; Ownership</button>
+    <button data-tab="trace">Traceability</button>
+    <button data-tab="siting">Siting Lab</button>
     <button data-tab="trade">Trade Analysis</button>
     <button data-tab="method">Methodology &amp; Caveats</button>
   </nav>
@@ -441,6 +443,144 @@
   </div>
 </section>
 
+<!-- ============ TRACEABILITY ============ -->
+<section id="tab-trace" class="tab-panel">
+  <div class="hero-stats" id="trace-hero"></div>
+
+  <div class="card">
+    <h2>Chain of custody — where the metal actually goes</h2>
+    <p class="note">Follow a commodity from licensed ground to destination market. Every stage is drawn from
+      the datasets already in this terminal: the licence register, the facilities table, offtake and prepayment
+      arrangements, corridor assignments and mirror-verified trade flows. Click a stage to see who sits in it.</p>
+    <div class="controls">
+      <label for="trace-commodity">Commodity:</label>
+      <select id="trace-commodity">
+        <option value="copper">Copper</option>
+        <option value="cobalt">Cobalt</option>
+        <option value="gemstones">Gemstones</option>
+        <option value="gold">Gold</option>
+        <option value="manganese">Manganese</option>
+      </select>
+      <span id="trace-flow-note" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <div id="trace-flow" class="trace-flow"></div>
+    <div id="trace-stage-detail"></div>
+  </div>
+
+  <div class="card">
+    <h2>Verified counterparties — standard by standard</h2>
+    <p class="note">"Verified" here means <strong>checkable against a named public record</strong>, not an
+      endorsement. Four independent standards: beneficial ownership on the companies registry (PACRA),
+      payment disclosure under EITI, physical flows on US customs manifests, and LME brand registration.
+      Most of the sector clears none of them — that sparsity <em>is</em> the verification void.</p>
+    <div class="controls">
+      <label for="trace-std-filter">Standard:</label>
+      <select id="trace-std-filter"><option value="all">Any standard</option></select>
+      <label for="trace-role-filter">Role:</label>
+      <select id="trace-role-filter"><option value="all">All roles</option></select>
+      <span id="trace-partner-count" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <table class="data" id="trace-partners-table"></table>
+  </div>
+
+  <div class="card">
+    <h2>Supply-chain advisor — tell it what you're trying to do</h2>
+    <p class="note">Describe the transaction and this builds a tailored brief: which corridor and port,
+      which categories of counterparty you need and who is actually registered in them, which verification
+      standards a lender or buyer will ask for, and — the part most advisors skip — <strong>which of those
+      things do not exist in Zambia yet</strong>. Every recommendation is traceable to a dataset in this
+      terminal, not to a generic playbook.</p>
+    <div class="controls">
+      <label for="adv-role">I am a:</label>
+      <select id="adv-role">
+        <option value="exporter">Zambian exporter / producer</option>
+        <option value="importer">Overseas buyer / importer</option>
+        <option value="supplier">Supplier into the mines</option>
+        <option value="financier">Lender / trade financier</option>
+        <option value="investor">Investor building a facility</option>
+      </select>
+      <label for="adv-commodity">Commodity:</label>
+      <select id="adv-commodity">
+        <option value="copper">Copper cathode / blister</option>
+        <option value="concentrate">Copper concentrate</option>
+        <option value="cobalt">Cobalt</option>
+        <option value="gemstones">Emeralds / gemstones</option>
+        <option value="gold">Gold</option>
+        <option value="manganese">Manganese</option>
+        <option value="equipment">Equipment &amp; consumables</option>
+      </select>
+      <label for="adv-dest">Destination market:</label>
+      <select id="adv-dest">
+        <option value="156">China</option>
+        <option value="757">Switzerland (trading desk)</option>
+        <option value="eu">Europe</option>
+        <option value="842">United States</option>
+        <option value="784">UAE / Gulf</option>
+        <option value="region">Southern Africa (regional)</option>
+        <option value="dom">Domestic Zambian market</option>
+      </select>
+      <label for="adv-scale">Scale:</label>
+      <select id="adv-scale">
+        <option value="small">Artisanal / small (&lt;1,000 t/yr)</option>
+        <option value="mid" selected>Mid-tier (1,000–50,000 t/yr)</option>
+        <option value="large">Large (&gt;50,000 t/yr)</option>
+      </select>
+    </div>
+    <div id="adv-output"></div>
+  </div>
+
+  <div class="card">
+    <h2>Customs-manifest evidence — bills of lading</h2>
+    <p class="note">US CBP sea-import manifests naming Zambian shippers: cargo, weight, load port and
+      destination. This is what third-party verification looks like when it exists — a foreign customs
+      service with no stake in the story recorded the container.</p>
+    <table class="data" id="trace-bol-table"></table>
+    <div class="callout void">
+      <strong>The gap this table proves.</strong> These manifests exist only because the US publishes
+      import manifests. Zambia's own export side — the ZRA CD-1 form chain — is not public, so the
+      equivalent record for the ~75% of exports that go to China and the region cannot be checked by
+      anyone outside government. Upstream of the port, nothing here verifies which licence the metal
+      came off — that chain-of-custody layer does not exist yet in any public record.
+    </div>
+  </div>
+</section>
+
+<!-- ============ SITING LAB ============ -->
+<section id="tab-siting" class="tab-panel">
+  <div class="hero-stats" id="siting-hero"></div>
+
+  <div class="card">
+    <h2>Where should the next plant go?</h2>
+    <p class="note">Pick a facility type, then <strong>click anywhere on the map</strong> or choose a town.
+      The score weighs what that facility actually needs: distance to the transmission grid (and whether the
+      voltage class is sufficient), rail and trunk-road access, and licensed feedstock within trucking range —
+      all computed live from the grid, rail, road and licence layers below. Smelting off-grid is not a plan;
+      a lapidary runs on a genset. The tool knows the difference.</p>
+    <div class="controls">
+      <label for="siting-ftype">Facility:</label>
+      <select id="siting-ftype"></select>
+      <label for="siting-town">Town:</label>
+      <select id="siting-town"><option value="">— click map or pick —</option></select>
+      <span id="siting-hint" style="font-size:12.5px;color:var(--muted)"></span>
+    </div>
+    <div class="siting-grid">
+      <div id="siting-map"></div>
+      <div id="siting-score"><p class="note" style="margin-top:6px">No site selected yet — click the map or pick a town.</p></div>
+    </div>
+    <p class="note" style="margin-top:8px">Grid, substations, rail and roads &copy; OpenStreetMap contributors (ODbL),
+      snapshot 2026-08-12. Feedstock = licence centroids from the NGDR cadastre. Scores are a screening heuristic for
+      <em>comparing sites</em>, not an engineering study; land, water, tailings and community factors are out of scope.</p>
+  </div>
+
+  <div class="card">
+    <h2>League table — every town, ranked for this facility</h2>
+    <p class="note">All 124 OSM-mapped towns and cities scored for the selected facility type. The ranking
+      shifts as you change facility — a ferroalloy smelter wants the 330&nbsp;kV backbone, a gemstone works
+      wants to be an hour from the Lufwanyama emerald fields.</p>
+    <table class="data" id="siting-league-table"></table>
+  </div>
+</section>
+
 <!-- ============ METHODOLOGY ============ -->
 <section id="tab-method" class="tab-panel">
   <div class="card">
@@ -525,20 +665,22 @@
 
 </main>
 
-<script src="data/trade_data.js?v=202607290500"></script>
-<script src="data/geo_layers.js?v=202607290500"></script>
-<script src="data/legal_layers.js?v=202607290500"></script>
+<script src="data/trade_data.js?v=202608120100"></script>
+<script src="data/geo_layers.js?v=202608120100"></script>
+<script src="data/legal_layers.js?v=202608120100"></script>
 <script src="data/zambia_adm0.js"></script>
-<script src="data/licenses_points.js?v=202607290500"></script>
-<script src="data/licenses_geo.js?v=202607290500"></script>
-<script src="data/kyc_data.js?v=202607290500"></script>
-<script src="data/kyc_court.js?v=202607290500"></script>
-<script src="data/production_data.js?v=202607290500"></script>
-<script src="data/register_data.js?v=202607290500"></script>
-<script src="data/business_data.js?v=202607290500"></script>
+<script src="data/licenses_points.js?v=202608120100"></script>
+<script src="data/licenses_geo.js?v=202608120100"></script>
+<script src="data/kyc_data.js?v=202608120100"></script>
+<script src="data/kyc_court.js?v=202608120100"></script>
+<script src="data/production_data.js?v=202608120100"></script>
+<script src="data/register_data.js?v=202608120100"></script>
+<script src="data/business_data.js?v=202608120100"></script>
+<script src="data/trace_data.js?v=202608120100"></script>
+<script src="data/infra_layers.js?v=202608120100"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=202607290500"></script>
+<script src="app.js?v=202608120100"></script>
 </body>
 </html>
