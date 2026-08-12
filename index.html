@@ -6,7 +6,7 @@
 <title>Zambia Minerals Register</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=202608120400">
+<link rel="stylesheet" href="styles.css?v=202608120500">
 <script>
   /* Set the theme before first paint so there is no flash of the wrong palette, and expose
      the matching CARTO tile set for the two Leaflet maps built later. */
@@ -69,6 +69,7 @@
     <button data-tab="kyc">Counterparty Check</button>
     <button data-tab="register">Register</button>
     <button data-tab="trace">Traceability</button>
+    <button data-tab="prov">Provenance</button>
     <button data-tab="supply">Suppliers</button>
     <button data-tab="siting">Siting</button>
     <button data-tab="trade">Trade</button>
@@ -594,6 +595,68 @@
   </div>
 </section>
 
+<!-- ============ PROVENANCE ============ -->
+<section id="tab-prov" class="tab-panel">
+  <div class="hero-stats" id="prov-hero"></div>
+
+  <div class="card">
+    <h2>Licence lookup</h2>
+    <p class="note">Enter a licence code. This resolves it to its holder, that holder's standing on the
+      companies registry, and any adverse notice against the licence. It is the join that makes a
+      consignment traceable to ground.</p>
+    <div class="controls">
+      <input type="text" id="prov-code" placeholder="e.g. 23189-HQ-LEL" style="min-width:230px"
+             autocomplete="off" spellcheck="false">
+      <span id="prov-code-hint" style="font-size:12px;color:var(--muted)"></span>
+    </div>
+    <div class="prov-examples" id="prov-examples"></div>
+    <div id="prov-result"></div>
+  </div>
+
+  <div class="card">
+    <h2>Build a consignment record</h2>
+    <p class="note">Pick the licence the ore came off, the lab that assayed it, and the agent clearing it.
+      This produces the provenance record Zambia does not currently require, in a form a buyer or lender
+      can check line by line.</p>
+    <div class="controls">
+      <label for="cons-lab">Assay lab:</label>
+      <select id="cons-lab"></select>
+      <label for="cons-agent">Clearing agent:</label>
+      <select id="cons-agent"></select>
+      <label for="cons-commodity">Product:</label>
+      <select id="cons-commodity">
+        <option value="Copper cathode">Copper cathode</option>
+        <option value="Copper concentrate">Copper concentrate</option>
+        <option value="Copper blister/anode">Copper blister or anode</option>
+        <option value="Cobalt hydroxide">Cobalt hydroxide</option>
+        <option value="Emerald, rough">Emerald, rough</option>
+        <option value="Gold dore">Gold dore</option>
+        <option value="Manganese ore">Manganese ore</option>
+      </select>
+      <label for="cons-tonnes">Tonnes:</label>
+      <input type="number" id="cons-tonnes" value="25" min="0" step="1" style="width:92px">
+    </div>
+    <div id="cons-record"></div>
+    <div class="controls" style="margin-top:12px">
+      <button class="btn primary" id="cons-copy">Copy record as JSON</button>
+      <button class="btn ghost" id="cons-print">Print</button>
+      <span id="cons-copied" style="font-size:12px;color:var(--good)"></span>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Assay and inspection labs</h2>
+    <p class="note">An assay is the first thing a lender asks to see. Zambia has a small number of labs,
+      and only some belong to inspection groups whose accreditation is published and checkable from
+      outside the country.</p>
+    <table class="data" id="prov-labs-table"></table>
+    <div class="callout">
+      <strong>On accreditation.</strong> The tiering below reflects whether the operator is an
+      international inspection group with published accreditation, not a certificate this tool has seen.
+      Ask any lab for its current ISO 17025 scope before you rely on it, whichever tier it sits in.
+    </div>
+  </div>
+</section>
 <!-- ============ SITING LAB ============ -->
 <section id="tab-siting" class="tab-panel">
   <div class="hero-stats" id="siting-hero"></div>
@@ -709,23 +772,23 @@
 
 </main>
 
-<script src="data/trade_data.js?v=202608120400"></script>
-<script src="data/geo_layers.js?v=202608120400"></script>
-<script src="data/legal_layers.js?v=202608120400"></script>
+<script src="data/trade_data.js?v=202608120500"></script>
+<script src="data/geo_layers.js?v=202608120500"></script>
+<script src="data/legal_layers.js?v=202608120500"></script>
 <script src="data/zambia_adm0.js"></script>
-<script src="data/licenses_points.js?v=202608120400"></script>
-<script src="data/licenses_geo.js?v=202608120400"></script>
-<script src="data/kyc_data.js?v=202608120400"></script>
-<script src="data/kyc_court.js?v=202608120400"></script>
-<script src="data/production_data.js?v=202608120400"></script>
-<script src="data/register_data.js?v=202608120400"></script>
-<script src="data/business_data.js?v=202608120400"></script>
-<script src="data/trace_data.js?v=202608120400"></script>
-<script src="data/infra_layers.js?v=202608120400"></script>
-<script src="data/supply_data.js?v=202608120400"></script>
+<script src="data/licenses_points.js?v=202608120500"></script>
+<script src="data/licenses_geo.js?v=202608120500"></script>
+<script src="data/kyc_data.js?v=202608120500"></script>
+<script src="data/kyc_court.js?v=202608120500"></script>
+<script src="data/production_data.js?v=202608120500"></script>
+<script src="data/register_data.js?v=202608120500"></script>
+<script src="data/business_data.js?v=202608120500"></script>
+<script src="data/trace_data.js?v=202608120500"></script>
+<script src="data/infra_layers.js?v=202608120500"></script>
+<script src="data/supply_data.js?v=202608120500"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=202608120400"></script>
+<script src="app.js?v=202608120500"></script>
 </body>
 </html>

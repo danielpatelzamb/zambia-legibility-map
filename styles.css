@@ -628,3 +628,62 @@ label.chk input { accent-color: var(--amber); cursor: pointer; }
 
 /* rounder everything, to match the hero */
 .card, .hero-stat { border-radius: var(--radius); }
+
+/* ---------- provenance ---------- */
+.prov-examples { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 4px; }
+.mono { font-family: var(--mono); }
+
+.prov-grade {
+  display: flex; align-items: center; gap: 16px; margin-top: 14px;
+  padding: 14px 18px; border: 1px solid var(--border); border-left-width: 4px;
+  border-radius: 10px; background: var(--panel-2);
+}
+.pg-letter { font-family: var(--mono); font-size: 34px; font-weight: 800; line-height: 1; }
+.pg-copy { font-size: 13px; color: var(--ink-2); }
+.pg-copy strong { color: var(--ink); }
+
+.prov-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px; }
+@media (max-width: 820px) { .prov-cols { grid-template-columns: 1fr; } }
+.prov-block {
+  background: var(--panel-2); border: 1px solid var(--border);
+  border-radius: 10px; padding: 13px 16px;
+}
+.prov-block h4 {
+  margin: 0 0 9px; font-size: 10.5px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.prov-row {
+  display: flex; justify-content: space-between; gap: 14px;
+  padding: 5px 0; border-bottom: 1px solid var(--grid); font-size: 12.5px;
+}
+.prov-row:last-child { border-bottom: none; }
+.prov-row .pk { color: var(--muted); flex-shrink: 0; }
+.prov-row .pv { text-align: right; color: var(--ink); }
+
+.prov-h {
+  margin: 18px 0 8px; font-size: 10.5px; font-weight: 700; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.1em;
+}
+.prov-checks { display: grid; gap: 7px; }
+.pc {
+  display: flex; gap: 12px; align-items: flex-start;
+  padding: 10px 14px; border-radius: 9px;
+  border: 1px solid var(--border); background: var(--panel-2);
+}
+.pc.ok { border-left: 3px solid var(--good); }
+.pc.bad { border-left: 3px solid var(--critical); }
+.pc-mark {
+  font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  flex-shrink: 0; padding-top: 2px; width: 34px;
+}
+.pc.ok .pc-mark { color: var(--good); }
+.pc.bad .pc-mark { color: var(--critical); }
+.pc-t { font-size: 12.5px; color: var(--ink); display: flex; flex-direction: column; gap: 2px; }
+.pc-d { font-size: 11.5px; color: var(--muted); }
+.prov-miss { margin: 0; padding-left: 17px; font-size: 12px; color: var(--ink-2); }
+.prov-miss li { margin-bottom: 5px; }
+
+@media print {
+  header.app-header, nav.tabs, .panel-tools, .hero-stats, .tool-grid { display: none !important; }
+  .card { break-inside: avoid; box-shadow: none; }
+}

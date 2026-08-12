@@ -3547,3 +3547,334 @@ const M49 = {
     if (btn) { btn.click(); window.scrollTo({ top: 0, behavior: "smooth" }); }
   });
 })();
+
+/* ================================================================
+   PROVENANCE
+   The licence-code join, as a tool. A shipment can be traced to an
+   exporter and a licence can be traced to a holder, but nothing public
+   joins the two. This does the join: code -> licence -> holder ->
+   registry standing -> adverse notices -> assay -> clearing agent, and
+   emits it as a record a buyer or lender can check line by line.
+================================================================ */
+(function provenanceTab() {
+  const codeEl = document.getElementById("prov-code");
+  if (!codeEl) return;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  const PTS = (window.LICENSES && window.LICENSES.points) || [];
+  const REG = (window.REGISTER && window.REGISTER.REG) || {};
+  const LISTS = (window.KYC && window.KYC.lists) || {};
+
+  /* Same normaliser the pipeline uses, so a holder resolves to its registry record. */
+  function norm(n) {
+    if (!n) return "";
+    return String(n)
+      .replace(/\([^)]*\)/g, "")
+      .toUpperCase().replace(/[^A-Z0-9 ]/g, " ")
+      .replace(/\b(LIMITED|LTD|PLC|COMPANY|CO|INCORPORATED|INC|THE)\b/g, " ")
+      .replace(/\s+/g, " ").trim();
+  }
+
+  /* Index every licence by code once. 5,000 rows, so a map beats scanning per keystroke. */
+  const BY_CODE = new Map();
+  PTS.forEach((p) => BY_CODE.set(String(p[2]).toUpperCase(), p));
+
+  /* Adverse notices are keyed by licence code inside the KYC lists. */
+  const ADVERSE = new Map();
+  Object.entries(LISTS).forEach(([key, list]) => {
+    (list.rows || []).forEach((r) => {
+      const code = String(r[0] || "").toUpperCase();
+      if (!code) return;
+      if (!ADVERSE.has(code)) ADVERSE.set(code, []);
+      ADVERSE.get(code).push({ list: list.label || key, holder: r[1], status: r[2] });
+    });
+  });
+
+  const TYPE_NAME = {
+    LEL: "Large-scale exploration", SEL: "Small-scale exploration", LML: "Large-scale mining",
+    SML: "Small-scale mining", AMR: "Artisanal mining right", MPL: "Mineral processing",
+    LGL: "Large-scale gemstone", SGL: "Small-scale gemstone", BA: "Bidding area", PL: "Prospecting",
+    PP: "Prospecting permit", P_LML: "Pending large-scale mining", P_SML: "Pending small-scale mining",
+    P_LEL: "Pending large-scale exploration", P_MPL: "Pending processing",
+  };
+  /* Only a mining, artisanal or processing licence can lawfully be the origin of a shipment.
+     An exploration licence cannot, and that distinction is the whole point of the lookup. */
+  const PRODUCING = ["LML", "SML", "AMR", "MPL", "LGL", "SGL", "P_LML", "P_SML"];
+
+  /* ----- hero ----- */
+  const nProducing = PTS.filter((p) => PRODUCING.includes(p[3])).length;
+  const nFlagged = PTS.filter((p) => p[8] > 0).length;
+  document.getElementById("prov-hero").innerHTML = [
+    [fmt(BY_CODE.size), "licence codes you can resolve", "var(--s1)"],
+    [fmt(nProducing), "can lawfully be the origin of a shipment", "var(--good)"],
+    [fmt(PTS.length - nProducing), "cannot: exploration or bidding only", "var(--warning)"],
+    [fmt(nFlagged), "carry an adverse notice", "var(--critical)"],
+  ].map(([n, l, c]) =>
+    '<div class="hero-stat"><div class="num" style="color:' + c + '">' + n + '</div><div class="lbl">' + l + '</div></div>'
+  ).join("");
+
+  /* ----- lookup ----- */
+  let current = null;
+
+  function grade(rec) {
+    /* Four checks, each resolvable to a named public record. Deliberately not a black box. */
+    const c = [];
+    c.push({ ok: PRODUCING.includes(rec.type), t: "Licence type permits production",
+      d: PRODUCING.includes(rec.type) ? TYPE_NAME[rec.type] || rec.type
+        : (TYPE_NAME[rec.type] || rec.type) + " cannot lawfully produce for sale" });
+    c.push({ ok: !rec.flag, t: "No adverse notice against the licence",
+      d: rec.flag ? rec.flagText : "Not in the cancellation or default notices" });
+    c.push({ ok: !!(rec.reg && rec.reg.bo === 1), t: "Holder has declared beneficial ownership",
+      d: rec.reg ? (rec.reg.bo === 1 ? "Declared with PACRA" : "Not declared with PACRA")
+        : "No companies-registry record found for this holder" });
+    c.push({ ok: !!(rec.reg && rec.reg.ar === 1), t: "Holder has filed annual returns",
+      d: rec.reg ? (rec.reg.ar === 1 ? "Filed" : "Not filed") : "No registry record" });
+    const score = c.filter((x) => x.ok).length;
+    const band = score === 4 ? ["A", "var(--good)", "Clean on all four public checks"]
+      : score === 3 ? ["B", "var(--warning)", "One check fails, verify before relying on it"]
+      : score === 2 ? ["C", "var(--serious)", "Two checks fail"]
+      : ["D", "var(--critical)", "Three or more checks fail"];
+    return { checks: c, score, band };
+  }
+
+  function resolve(code) {
+    const p = BY_CODE.get(String(code).toUpperCase().trim());
+    if (!p) return null;
+    const holder = String(p[4] || "").replace(/\s*\(\d+(\.\d+)?%\)/g, "").trim();
+    const adv = ADVERSE.get(String(p[2]).toUpperCase()) || [];
+    const flagText = p[8] === 3 ? "In the default notice and cancelled at MLC 78"
+      : p[8] === 2 ? "Cancelled at MLC 78 (Apr 2024)"
+      : p[8] === 1 ? "In the June 2025 default notice" : "";
+    return {
+      code: p[2], type: p[3], holder: holder, commodities: p[5], expires: p[6],
+      hectares: p[7], flag: p[8], flagText: flagText, adverse: adv,
+      lat: p[1], lng: p[0], reg: REG[norm(holder)] || null,
+    };
+  }
+
+  function row(k, v, colour) {
+    return '<div class="prov-row"><span class="pk">' + esc(k) + '</span><span class="pv"' +
+      (colour ? ' style="color:' + colour + '"' : "") + '>' + v + "</span></div>";
+  }
+
+  function render(code) {
+    const out = document.getElementById("prov-result");
+    if (!code) { out.innerHTML = ""; current = null; return; }
+    const rec = resolve(code);
+    if (!rec) {
+      /* A code can be absent from the ACTIVE register precisely because it was cancelled, so
+         check the adverse lists before reporting a plain miss. That distinction matters: one
+         answer means "unknown", the other means "revoked", and they are not the same risk. */
+      const adv = ADVERSE.get(String(code).toUpperCase().trim()) || [];
+      out.innerHTML = adv.length
+        ? '<div class="callout void" style="margin-top:12px"><strong>This code is not on the active ' +
+          'register, and the notices say why.</strong> It appears in:<ul style="margin:6px 0 6px;padding-left:18px">' +
+          adv.map((a) => "<li>" + esc(a.list) + (a.holder ? ", held by " + esc(a.holder) : "") +
+            (a.status ? " (" + esc(a.status) + ")" : "") + "</li>").join("") + "</ul>" +
+          "A licence in the cancellation list is absent from the active register by definition. If a seller " +
+          "offers you this code as their origin, that is the finding." + "</div>"
+        : '<div class="callout" style="margin-top:12px"><strong>No match.</strong> Not on the active ' +
+          "register and not in any adverse notice. This snapshot holds the first 5,000 of about 7,468 " +
+          "active licences, so absence here is not proof the licence does not exist.</div>";
+      current = null;
+      buildRecord();
+      return;
+    }
+    current = rec;
+    const g = grade(rec);
+    out.innerHTML =
+      '<div class="prov-grade" style="border-color:' + g.band[1] + '">' +
+        '<span class="pg-letter" style="color:' + g.band[1] + '">' + g.band[0] + '</span>' +
+        '<span class="pg-copy"><strong>' + g.score + ' of 4 public checks pass.</strong> ' + esc(g.band[2]) + '</span>' +
+      "</div>" +
+      '<div class="prov-cols">' +
+        '<div class="prov-block"><h4>Licence</h4>' +
+          row("Code", '<span class="mono">' + esc(rec.code) + "</span>") +
+          row("Type", esc(TYPE_NAME[rec.type] || rec.type) + ' <span class="mono" style="color:var(--muted)">' + esc(rec.type) + "</span>") +
+          row("Commodities", esc(rec.commodities || "not stated")) +
+          row("Area", fmt(rec.hectares) + " ha") +
+          row("Expires", esc(rec.expires || "not stated")) +
+          row("Coordinates", '<span class="mono">' + Number(rec.lat).toFixed(3) + ", " + Number(rec.lng).toFixed(3) + "</span>") +
+        "</div>" +
+        '<div class="prov-block"><h4>Holder</h4>' +
+          row("Name", "<strong>" + esc(rec.holder) + "</strong>") +
+          (rec.reg
+            ? row("Registry number", '<span class="mono">' + esc(rec.reg.no) + "</span>") +
+              row("Registered", esc(rec.reg.d)) +
+              row("Status", esc(rec.reg.st), rec.reg.st === "Active" ? "var(--good)" : "var(--warning)") +
+              row("Declared business", esc(rec.reg.b || "not stated")) +
+              row("Beneficial owners", rec.reg.bo === 1 ? "declared" : "not declared",
+                  rec.reg.bo === 1 ? "var(--good)" : "var(--critical)") +
+              row("Annual returns", rec.reg.ar === 1 ? "filed" : "not filed",
+                  rec.reg.ar === 1 ? "var(--good)" : "var(--critical)")
+            : row("Registry", "no companies-registry record found", "var(--critical)")) +
+        "</div>" +
+      "</div>" +
+      '<h4 class="prov-h">Checks</h4>' +
+      '<div class="prov-checks">' + g.checks.map((c) =>
+        '<div class="pc' + (c.ok ? " ok" : " bad") + '"><span class="pc-mark">' + (c.ok ? "PASS" : "FAIL") +
+        '</span><span class="pc-t">' + esc(c.t) + '<span class="pc-d">' + esc(c.d) + "</span></span></div>").join("") +
+      "</div>" +
+      (rec.adverse.length
+        ? '<div class="callout void"><strong>Adverse notices naming this licence code.</strong><ul style="margin:6px 0 0;padding-left:18px">' +
+          rec.adverse.map((a) => "<li>" + esc(a.list) + (a.status ? ": " + esc(a.status) : "") + "</li>").join("") +
+          "</ul></div>"
+        : "");
+    buildRecord();
+  }
+
+  /* Examples chosen to show the range: a clean producer, a cancelled licence, an exploration-only. */
+  const cancelled = (LISTS.mlc78 && LISTS.mlc78.rows && LISTS.mlc78.rows[0] && LISTS.mlc78.rows[0][0]) || null;
+  const producing = (PTS.find((p) => PRODUCING.includes(p[3]) && !p[8]) || [])[2];
+  const explor = (PTS.find((p) => p[3] === "LEL" && !p[8]) || [])[2];
+  const flagged = (PTS.find((p) => p[8] > 0) || [])[2];
+  const EX = [["Producing licence", producing], ["Exploration only", explor],
+              ["Carries a flag", flagged], ["Cancelled, so off the register", cancelled]].filter((e) => e[1]);
+  document.getElementById("prov-examples").innerHTML =
+    '<span style="font-size:11px;color:var(--muted)">Try:</span> ' +
+    EX.map((e) => '<button class="supply-chip" data-code="' + esc(e[1]) + '">' + esc(e[0]) +
+      ' <span class="mono" style="opacity:.6">' + esc(e[1]) + "</span></button>").join("");
+  document.getElementById("prov-examples").addEventListener("click", (e) => {
+    const b = e.target.closest("[data-code]");
+    if (!b) return;
+    codeEl.value = b.dataset.code;
+    render(b.dataset.code);
+  });
+
+  codeEl.addEventListener("input", () => {
+    const v = codeEl.value.trim();
+    document.getElementById("prov-code-hint").textContent =
+      v.length < 3 ? "" : BY_CODE.has(v.toUpperCase()) ? "found" : "no match yet";
+    if (v.length >= 5) render(v); else render(null);
+  });
+
+  /* ----- assay labs -----
+     Tiering reflects whether the OPERATOR is an international inspection group with published,
+     checkable accreditation. It is not a certificate this tool has inspected, and the copy on
+     the page says so. Anything else is listed as unverified rather than implied to be lesser. */
+  const INTL = /SGS|BUREAU VERITAS|INTERTEK|ALFRED H\.? KNIGHT|AUSTRALIAN LABORATORY GROUP|\bALS\b/i;
+  const LABS = ((window.BIZ && window.BIZ.ALL) || []).filter((r) => r.s === "assay_lab");
+  const labTier = (n) => INTL.test(n)
+    ? { t: "International inspection group", c: "var(--good)",
+        d: "Accreditation published by the parent group and checkable from outside Zambia" }
+    : { t: "Local laboratory", c: "var(--muted)",
+        d: "Accreditation not verified in this dataset. Ask for the current ISO 17025 scope" };
+
+  document.getElementById("prov-labs-table").innerHTML =
+    "<thead><tr><th>Laboratory</th><th>Tier</th><th>Town</th><th>Registry</th><th>What to ask for</th></tr></thead><tbody>" +
+    LABS.slice().sort((a, b) => (INTL.test(b.n) ? 1 : 0) - (INTL.test(a.n) ? 1 : 0) || a.n.localeCompare(b.n))
+      .map((l) => {
+        const t = labTier(l.n);
+        return "<tr><td style='font-weight:600'>" + esc(l.n) + "</td>" +
+          "<td style='white-space:nowrap;color:" + t.c + "'>" + t.t + "</td>" +
+          "<td>" + esc(l.t || "not stated") + "</td>" +
+          "<td style='white-space:nowrap;color:" + (l.ps === "Active" ? "var(--good)" : "var(--muted)") + "'>" +
+          esc(l.ps || "not found") + "</td>" +
+          "<td style='text-align:left;font-size:11.5px'>" + esc(t.d) + "</td></tr>";
+      }).join("") + "</tbody>";
+
+  /* ----- consignment record ----- */
+  const labSel = document.getElementById("cons-lab");
+  LABS.slice().sort((a, b) => (INTL.test(b.n) ? 1 : 0) - (INTL.test(a.n) ? 1 : 0) || a.n.localeCompare(b.n))
+    .forEach((l) => {
+      const o = document.createElement("option");
+      o.value = l.n;
+      o.textContent = l.n + (INTL.test(l.n) ? "  (international group)" : "");
+      labSel.appendChild(o);
+    });
+  const agentSel = document.getElementById("cons-agent");
+  const AGENTS = ((window.SUPPLY && window.SUPPLY.AGENTS) || []).slice()
+    .sort((a, b) => (b.lic === "Full licence" ? 1 : 0) - (a.lic === "Full licence" ? 1 : 0) || a.n.localeCompare(b.n));
+  AGENTS.slice(0, 400).forEach((a) => {
+    const o = document.createElement("option");
+    o.value = a.n;
+    o.textContent = a.n + (a.t ? "  (" + a.t + ")" : "");
+    agentSel.appendChild(o);
+  });
+
+  function recordObject() {
+    const lab = labSel.value, agent = agentSel.value;
+    const ag = AGENTS.find((a) => a.n === agent) || {};
+    const g = current ? grade(current) : null;
+    return {
+      record_type: "zm_mineral_consignment_provenance",
+      version: "0.1",
+      product: document.getElementById("cons-commodity").value,
+      tonnes: Number(document.getElementById("cons-tonnes").value) || null,
+      origin_licence: current ? {
+        code: current.code, type: current.type, type_name: TYPE_NAME[current.type] || current.type,
+        permits_production: PRODUCING.includes(current.type),
+        holder: current.holder,
+        holder_registry_number: current.reg ? current.reg.no : null,
+        beneficial_ownership_declared: current.reg ? current.reg.bo === 1 : null,
+        annual_returns_filed: current.reg ? current.reg.ar === 1 : null,
+        adverse_notice: current.flagText || null,
+        coordinates: [Number(current.lat), Number(current.lng)],
+      } : null,
+      assay: { laboratory: lab, tier: INTL.test(lab) ? "international_inspection_group" : "local_unverified",
+               iso17025_scope_seen: false },
+      customs: { clearing_agent: agent, zra_licence_type: ag.lic || null, town: ag.t || null,
+                 zra_licence_expiry: ag.exp || null },
+      public_checks_passed: g ? g.score : null,
+      public_checks_total: 4,
+      sources: ["NGDR cadastre (Geological Survey of Zambia)", "MMMD licensing and default notices",
+                "PACRA companies registry", "ZRA licensed clearing agents schedule 31.05.2024"],
+    };
+  }
+
+  function buildRecord() {
+    const o = recordObject();
+    const el = document.getElementById("cons-record");
+    const miss = [];
+    if (!o.origin_licence) miss.push("No licence selected. Look one up above, and the record will name the ground the ore came off.");
+    else if (!o.origin_licence.permits_production) miss.push("The licence selected is " + o.origin_licence.type_name.toLowerCase() + ", which cannot lawfully produce for sale.");
+    if (o.assay.tier === "local_unverified") miss.push("The chosen lab's accreditation is not verified here. Ask for its ISO 17025 scope.");
+    if (!o.customs.zra_licence_type) miss.push("Clearing agent licence type unknown.");
+
+    el.innerHTML =
+      '<div class="prov-cols" style="margin-top:12px">' +
+        '<div class="prov-block"><h4>Record</h4>' +
+          row("Product", esc(o.product) + (o.tonnes ? ", " + fmt(o.tonnes) + " t" : "")) +
+          row("Origin licence", o.origin_licence
+            ? '<span class="mono">' + esc(o.origin_licence.code) + "</span> " + esc(o.origin_licence.type_name)
+            : "<em>not set</em>") +
+          row("Holder", o.origin_licence ? esc(o.origin_licence.holder) : "<em>not set</em>") +
+          row("Assay lab", esc(o.assay.laboratory || "none")) +
+          row("Clearing agent", esc(o.customs.clearing_agent || "none")) +
+          row("Public checks", o.public_checks_passed == null ? "<em>no licence set</em>"
+            : o.public_checks_passed + " of 4",
+            o.public_checks_passed === 4 ? "var(--good)" : o.public_checks_passed >= 3 ? "var(--warning)" : "var(--critical)") +
+        "</div>" +
+        '<div class="prov-block"><h4>What is still unproven</h4>' +
+          (miss.length
+            ? "<ul class='prov-miss'>" + miss.map((m) => "<li>" + esc(m) + "</li>").join("") + "</ul>"
+            : "<p class='note' style='margin:0;color:var(--good)'>Every field this record can check is filled and passing. " +
+              "The physical custody chain between pit and port is still not covered by any public record.</p>") +
+        "</div>" +
+      "</div>";
+  }
+
+  [labSel, agentSel, document.getElementById("cons-commodity"), document.getElementById("cons-tonnes")]
+    .forEach((el) => el.addEventListener("change", buildRecord));
+  document.getElementById("cons-tonnes").addEventListener("input", buildRecord);
+
+  document.getElementById("cons-copy").addEventListener("click", () => {
+    const txt = JSON.stringify(recordObject(), null, 2);
+    const done = () => {
+      const n = document.getElementById("cons-copied");
+      n.textContent = "Copied";
+      setTimeout(() => { n.textContent = ""; }, 2200);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(txt).then(done, done);
+    else {
+      const ta = document.createElement("textarea");
+      ta.value = txt; document.body.appendChild(ta); ta.select();
+      try { document.execCommand("copy"); } catch (e) {}
+      ta.remove(); done();
+    }
+  });
+  document.getElementById("cons-print").addEventListener("click", () => window.print());
+
+  buildRecord();
+})();
