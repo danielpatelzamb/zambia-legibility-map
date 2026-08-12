@@ -6,7 +6,7 @@
 <title>Zambia Minerals Legibility Terminal</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=202608120100">
+<link rel="stylesheet" href="styles.css?v=202608120200">
 </head>
 <body>
 
@@ -26,6 +26,7 @@
     <button data-tab="kyc">KYC Check</button>
     <button data-tab="register">Register &amp; Ownership</button>
     <button data-tab="trace">Traceability</button>
+    <button data-tab="supply">Find a Supplier</button>
     <button data-tab="siting">Siting Lab</button>
     <button data-tab="trade">Trade Analysis</button>
     <button data-tab="method">Methodology &amp; Caveats</button>
@@ -545,6 +546,52 @@
   </div>
 </section>
 
+<!-- ============ FIND A SUPPLIER ============ -->
+<section id="tab-supply" class="tab-panel">
+  <div class="hero-stats" id="supply-hero"></div>
+
+  <div class="card">
+    <h2>Find a supplier</h2>
+    <p class="note">Search 1,730 companies: every customs clearing agent licensed by the ZRA, plus the
+      firms that supply the mines &mdash; reagents, explosives, equipment, drilling, freight, assay labs,
+      fuel, fabrication. Type what you need, or pick a category and a town.</p>
+    <div class="controls">
+      <input type="text" id="supply-q" placeholder="Search by name, town, or what they do…"
+             style="min-width:300px" autocomplete="off">
+      <label for="supply-cat">Category:</label>
+      <select id="supply-cat"><option value="all">Everything</option></select>
+      <label for="supply-town">Town:</label>
+      <select id="supply-town"><option value="all">Anywhere</option></select>
+      <label class="chk"><input type="checkbox" id="supply-reach"> Only ones we can reach</label>
+    </div>
+    <div id="supply-chips" class="supply-chips"></div>
+    <p class="note" id="supply-count" style="margin:10px 0 0"></p>
+    <table class="data" id="supply-table"></table>
+    <div class="callout">
+      <strong>How to get the contact details.</strong> Phone numbers and emails are kept out of this
+      site on purpose &mdash; it is public, so anything published here is scrapable. They sit in
+      <code>private/dataset/clearing_agents.csv</code> on the project owner's machine, alongside the
+      ZRA register they came from. Clearing agent details are published by the ZRA itself at
+      <a href="https://www.zra.org.zm/clearing-agents/" target="_blank" rel="noopener">zra.org.zm/clearing-agents</a>,
+      so you can look any of them up directly.
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>Where the clearing agents are</h2>
+    <p class="note">Customs clearing is the step most export plans underestimate. Agents cluster at the
+      borders they clear through, so where an agent sits tells you which corridor they actually work.
+      1,278 of 1,376 are located to a town.</p>
+    <div class="chart-wrap" style="height:300px"><canvas id="supply-town-chart"></canvas></div>
+    <div class="callout">
+      <strong>One thing worth knowing before you sign.</strong> 105 of these licensed agents share just
+      39 email addresses between them &mdash; one operator holds up to ten separate licensed companies.
+      That is in the ZRA's own register. If you are comparing quotes from several agents, check you are
+      not comparing the same person to himself.
+    </div>
+  </div>
+</section>
+
 <!-- ============ SITING LAB ============ -->
 <section id="tab-siting" class="tab-panel">
   <div class="hero-stats" id="siting-hero"></div>
@@ -665,22 +712,23 @@
 
 </main>
 
-<script src="data/trade_data.js?v=202608120100"></script>
-<script src="data/geo_layers.js?v=202608120100"></script>
-<script src="data/legal_layers.js?v=202608120100"></script>
+<script src="data/trade_data.js?v=202608120200"></script>
+<script src="data/geo_layers.js?v=202608120200"></script>
+<script src="data/legal_layers.js?v=202608120200"></script>
 <script src="data/zambia_adm0.js"></script>
-<script src="data/licenses_points.js?v=202608120100"></script>
-<script src="data/licenses_geo.js?v=202608120100"></script>
-<script src="data/kyc_data.js?v=202608120100"></script>
-<script src="data/kyc_court.js?v=202608120100"></script>
-<script src="data/production_data.js?v=202608120100"></script>
-<script src="data/register_data.js?v=202608120100"></script>
-<script src="data/business_data.js?v=202608120100"></script>
-<script src="data/trace_data.js?v=202608120100"></script>
-<script src="data/infra_layers.js?v=202608120100"></script>
+<script src="data/licenses_points.js?v=202608120200"></script>
+<script src="data/licenses_geo.js?v=202608120200"></script>
+<script src="data/kyc_data.js?v=202608120200"></script>
+<script src="data/kyc_court.js?v=202608120200"></script>
+<script src="data/production_data.js?v=202608120200"></script>
+<script src="data/register_data.js?v=202608120200"></script>
+<script src="data/business_data.js?v=202608120200"></script>
+<script src="data/trace_data.js?v=202608120200"></script>
+<script src="data/infra_layers.js?v=202608120200"></script>
+<script src="data/supply_data.js?v=202608120200"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=202608120100"></script>
+<script src="app.js?v=202608120200"></script>
 </body>
 </html>

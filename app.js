@@ -2540,11 +2540,12 @@ const M49 = {
 
   function showStage(s) {
     if (s.d === "void") {
-      detailEl.innerHTML = '<div class="callout void" style="margin-top:12px"><strong>This stage is empty, and that is the finding.</strong> ' +
-        'Zambia issues a mineral export permit and the ZRA issues a CD-1, but neither is published, and neither carries the licence ' +
-        'number the ore came off. A cathode on a ship can be traced to an exporter, and a licence can be traced to a holder — but ' +
-        'nothing in the public record joins those two facts. Any traceability scheme for Zambian minerals has to build this link first, ' +
-        'and the join key already exists: the licence code that appears on both the MLC notices and the cadastre.</div>';
+      detailEl.innerHTML = '<div class="callout void" style="margin-top:12px"><strong>This stage is empty on purpose.</strong> ' +
+        'You can trace a shipment back to its exporter, and a licence back to its holder. But nothing public connects the two, so ' +
+        'you cannot show which licence a given cargo came off.' +
+        '<p style="margin:8px 0 0">Zambia does issue an export permit, and the ZRA issues a CD-1 form. Neither is published, and ' +
+        'neither records the licence number. The fix is not complicated — the licence code already appears on both the cadastre and ' +
+        'the Ministry\'s committee notices, so it is the obvious key to put on the export paperwork.</p></div>';
       return;
     }
     if (s.d === "bol") {
@@ -2581,9 +2582,9 @@ const M49 = {
     if (s.d === "dest") {
       const flows = flowsFor(s.key);
       if (!flows.length) {
-        detailEl.innerHTML = '<p class="note" style="margin-top:12px">No HS line is mapped for this commodity in the Comtrade pull, ' +
-          'so destinations cannot be shown. Gemstones and gold are the notable gap — both leave Zambia under HS lines the free ' +
-          'preview tier does not cover, which is itself a legibility problem.</p>';
+        detailEl.innerHTML = '<p class="note" style="margin-top:12px">No destinations to show for this commodity. Gemstones and ' +
+          'gold leave Zambia under HS codes that the free Comtrade tier does not cover, so the trade data simply has no rows for ' +
+          'them here.</p>';
         return;
       }
       const agg = {};
@@ -3067,11 +3068,11 @@ const M49 = {
     const scored = relevant.sort((a, b) => b.sc - a.sc).slice(0, 8);
     const noneRelevant = scored.length === 0;
     const askFor = {
-      exporter: "A buyer will ask you for these. The two you can obtain unilaterally and cheaply are PACRA beneficial-ownership filing and an accredited assay — do those first.",
-      importer: "Screen any Zambian counterparty on these four before you pay a deposit. A 0/4 score is not disqualifying on its own, but it means every claim in the deal has to be verified independently.",
-      supplier: "Your customer's lender will look through to you on the ownership question. PACRA beneficial-ownership filing is the cheap one to clear.",
-      financier: "These are the only four provenance signals in Zambian minerals that are checkable from outside the country. Everything else in a data room is self-reported.",
-      investor: "Your offtake counterparty will be scored on these by whoever finances the plant. Build the assay and custody chain into the capex, not as an afterthought.",
+      exporter: "Buyers will ask for these. Two are cheap and entirely up to you: file your beneficial ownership with PACRA, and get an accredited assay. Start there.",
+      importer: "Check any Zambian counterparty against these four before you pay a deposit. Scoring 0/4 does not make them a bad counterparty — it means you will have to verify their claims yourself.",
+      supplier: "Your customer's lender will look through to you on ownership. Filing beneficial ownership with PACRA is the easy win.",
+      financier: "These four are the only provenance signals you can check from outside Zambia. Everything else in a data room is self-reported.",
+      investor: "Whoever finances your plant will score your offtake partner on these. Budget for the assay and custody chain up front, not later.",
     }[role];
     blocks.push(card("Verification standards — and who already clears them",
       '<p class="note" style="margin:0 0 10px">' + esc(askFor) + '</p>' +
@@ -3108,7 +3109,7 @@ const M49 = {
           '%</strong> of declared value, so there is an established channel and comparable pricing to benchmark against.'
         : 'Your stated destination does not appear as a material declared destination — either the trade is invoiced ' +
           'through an intermediary jurisdiction, or the channel is genuinely thin. Verify against the buyer\'s own import records.') +
-        '</p><table class="data"><thead><tr><th>Declared destination</th><th>Value</th><th>Share</th></tr></thead><tbody>' +
+        '</p><table class="data"><thead><tr><th>Where it is declared to go</th><th>Value</th><th>Share</th></tr></thead><tbody>' +
         top.map(([p, v]) =>
           '<tr' + (p === dest ? ' style="background:rgba(57,135,229,.08)"' : '') + '><td style="font-weight:600">' +
           esc(M49[p] || "code " + p) + '</td><td style="font-family:var(--mono)">$' +
@@ -3117,41 +3118,39 @@ const M49 = {
         '</tbody></table>'));
     } else {
       blocks.push(card("What the trade data says about this route",
-        '<div class="callout void" style="margin:0"><strong>No usable HS line for ' + esc(com) + '.</strong> ' +
-        'Gemstones, gold and equipment are not covered by the free Comtrade preview tier this app pulls, so ' +
-        'declared-export benchmarking is unavailable for them here. For emeralds specifically the deeper problem ' +
-        'is that most value is realised at overseas auction, so Zambian export declarations understate the ' +
-        'final price by construction — treat any "market price" you are quoted as unverifiable.</div>'));
+        '<div class="callout void" style="margin:0"><strong>No trade data for this commodity.</strong> ' +
+        'Gemstones, gold and equipment fall outside the HS codes the free Comtrade tier covers, so there is nothing ' +
+        'to benchmark against here.' +
+        '<p style="margin:8px 0 0">For emeralds there is a second problem worth knowing: most of the value is set at ' +
+        'overseas auction, not at the border. Zambian export declarations will always read low. If someone quotes you a ' +
+        '"market price", you have no way to check it.</p></div>'));
     }
 
     /* ---- 5. the gaps — the part that makes this honest ---- */
     const feedN = ((window.LICENSES && window.LICENSES.points) || [])
       .filter((p) => COMMODITY_RX[com].test(p[5] || "")).length;
     const gaps = [];
-    gaps.push("<strong>Chain of custody does not exist.</strong> No public record links a shipment to the licence " +
-      "the ore came off. If your buyer or lender asks for mine-to-port traceability, you will have to construct it " +
-      "contractually — there is no registry to point at. The join key that would make it possible is the licence code, " +
-      "which appears on both the cadastre and the MLC notices.");
+    gaps.push("<strong>You cannot prove where the ore came from.</strong> Nothing public links a shipment to a licence. " +
+      "If a buyer or lender asks for mine-to-port traceability, you will have to build it into your contracts — there is " +
+      "no registry to point at.");
     if (scale === "small") {
-      gaps.push("<strong>At artisanal scale the formal channel mostly is not available to you.</strong> " +
-        "Of 3,622 licence holders, roughly 94% publish no contact of any kind, 229 cooperatives publish none at all, " +
-        "and the assay and clearing firms above cluster in Lusaka and the Copperbelt. The realistic route is through " +
-        "a district mining office or an ASM association rather than direct contracting.");
+      gaps.push("<strong>At small scale, the formal route mostly is not open to you.</strong> Around 94% of the 3,622 " +
+        "licence holders publish no contact at all, and the assay and clearing firms cluster in Lusaka and the Copperbelt. " +
+        "Going through a district mining office or an ASM association will get further than cold contracting.");
     }
     if (com === "gemstones" || com === "gold") {
-      gaps.push("<strong>This commodity is the least legible on the register.</strong> 2,056 licences list a gemstone " +
-        "commodity while only 28 were ever issued as gemstone licences — the mismatch means the licence type tells " +
-        "you almost nothing about what is actually being mined. Verify at the parcel, not the licence class.");
+      gaps.push("<strong>The licence type will not tell you what is being mined.</strong> 2,056 licences list a gemstone " +
+        "commodity, but only 28 were ever issued as gemstone licences. Check the individual parcel, not the licence class.");
     }
     if (role === "financier" || role === "importer") {
-      gaps.push("<strong>Registry standing is weak sector-wide.</strong> 746 holders have never declared beneficial " +
-        "owners, 1,428 have unfiled annual returns, and 214 companies holding mineral rights have no companies-registry " +
-        "record at all. Budget for independent verification rather than assuming filings exist.");
+      gaps.push("<strong>Do not assume the filings exist.</strong> 746 holders have never declared beneficial owners, " +
+        "1,428 have not filed annual returns, and 214 companies holding mineral rights have no registry record at all. " +
+        "Budget for your own verification.");
     }
-    gaps.push("<strong>Feedstock check.</strong> " + fmt(feedN) + " licences on the register list a matching commodity. " +
-      "That is licensed ground, not production — most of it is exploration, and being licensed is not evidence anything " +
-      "is being mined. Cross-check against the production licence types in the Traceability flow above.");
-    blocks.push(card("Gaps you will hit — and nobody's playbook mentions",
+    gaps.push("<strong>" + fmt(feedN) + " licences list this commodity — but that is ground, not production.</strong> " +
+      "Most of it is exploration. A licence is not evidence anyone is mining. Check the production licence types in the " +
+      "chain above before you count on supply.");
+    blocks.push(card("What to watch out for",
       '<div class="callout void" style="margin:0"><ul style="margin:0;padding-left:18px">' +
       gaps.map((g) => '<li style="margin-bottom:7px">' + g + '</li>').join("") + '</ul></div>'));
 
@@ -3170,4 +3169,176 @@ const M49 = {
   ["adv-role", "adv-commodity", "adv-dest", "adv-scale"].forEach((id) =>
     document.getElementById(id).addEventListener("change", render));
   render();
+})();
+
+/* ================================================================
+   FIND A SUPPLIER
+   Searchable directory of licensed customs clearing agents (ZRA
+   register) plus the firms that supply the mines. Contact values are
+   never in this data - only a flag saying a channel exists, which is
+   what the tool needs to be useful without publishing anything.
+================================================================ */
+(function supplyTab() {
+  const S = window.SUPPLY;
+  if (!S) return;
+  const fmt = (n) => Number(n).toLocaleString("en-US");
+  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
+
+  /* One flat row shape for both sources so search and filters stay simple. */
+  const ROWS = [
+    ...S.AGENTS.map((a) => ({
+      n: a.n, cat: "Customs clearing agents", town: a.t || "", what: a.lic || "Licensed clearing agent",
+      extra: a.exp ? "licence to " + a.exp : "", ch: a.ch, kind: "agent", status: "",
+    })),
+    ...S.SUPPLIERS.map((r) => ({
+      n: r.n, cat: r.lbl, town: r.t || "", what: r.w || "", extra: r.own || "",
+      ch: r.ch, kind: "supplier", status: r.ps || "",
+    })),
+  ];
+
+  /* ----- hero ----- */
+  const agents = S.AGENTS.length, sup = S.SUPPLIERS.length;
+  const reachable = ROWS.filter((r) => r.ch).length;
+  const towns = new Set(ROWS.map((r) => r.town).filter(Boolean));
+  document.getElementById("supply-hero").innerHTML = [
+    [fmt(ROWS.length), "companies you can search", "var(--s1)"],
+    [fmt(agents), "customs clearing agents, ZRA-licensed", "var(--s3)"],
+    [fmt(sup), "suppliers to the mines", "var(--s4)"],
+    [fmt(reachable), "with a phone or email on file", "var(--good)"],
+    [fmt(towns.size), "towns covered", "var(--s2)"],
+    [fmt(new Set(ROWS.map((r) => r.cat)).size), "categories", "var(--s5)"],
+  ].map(([n, l, c]) =>
+    '<div class="hero-stat"><div class="num" style="color:' + c + '">' + n + '</div><div class="lbl">' + l + '</div></div>'
+  ).join("");
+
+  /* ----- filter controls ----- */
+  const catSel = document.getElementById("supply-cat");
+  const catCounts = {};
+  ROWS.forEach((r) => { catCounts[r.cat] = (catCounts[r.cat] || 0) + 1; });
+  Object.entries(catCounts).sort((a, b) => b[1] - a[1]).forEach(([c, n]) => {
+    const o = document.createElement("option");
+    o.value = c; o.textContent = c + " (" + fmt(n) + ")";
+    catSel.appendChild(o);
+  });
+  const townSel = document.getElementById("supply-town");
+  const townCounts = {};
+  ROWS.forEach((r) => { if (r.town) townCounts[r.town] = (townCounts[r.town] || 0) + 1; });
+  Object.entries(townCounts).sort((a, b) => b[1] - a[1]).forEach(([t, n]) => {
+    const o = document.createElement("option");
+    o.value = t; o.textContent = tc(t.toLowerCase()) + " (" + fmt(n) + ")";
+    townSel.appendChild(o);
+  });
+
+  /* Quick-pick chips for the things people actually come here looking for. */
+  const CHIPS = [
+    { l: "Clearing agent", cat: "Customs clearing agents" },
+    { l: "Reagents & chemicals", cat: "Reagents & process chemicals" },
+    { l: "Explosives", cat: "Explosives & blasting" },
+    { l: "Equipment & spares", cat: "Equipment & spares" },
+    { l: "Drilling", cat: "Drilling contractors" },
+    { l: "Assay lab", cat: "Assay & inspection labs" },
+    { l: "Freight forwarder", cat: "Freight forwarders" },
+    { l: "Haulage", cat: "Road haulage" },
+    { l: "Fuel & power", cat: "Fuel & power" },
+    { l: "Smelter / refiner", cat: "Smelters & refiners" },
+  ].filter((c) => catCounts[c.cat]);
+  document.getElementById("supply-chips").innerHTML =
+    CHIPS.map((c) => '<button class="supply-chip" data-cat="' + esc(c.cat) + '">' + esc(c.l) +
+      ' <span style="opacity:.65">' + fmt(catCounts[c.cat]) + '</span></button>').join("");
+
+  const qEl = document.getElementById("supply-q");
+  const reachEl = document.getElementById("supply-reach");
+
+  function draw() {
+    const q = qEl.value.trim().toLowerCase();
+    const cat = catSel.value, town = townSel.value, onlyReach = reachEl.checked;
+    let rows = ROWS;
+    if (cat !== "all") rows = rows.filter((r) => r.cat === cat);
+    if (town !== "all") rows = rows.filter((r) => r.town === town);
+    if (onlyReach) rows = rows.filter((r) => r.ch);
+    if (q) {
+      const terms = q.split(/\s+/);
+      rows = rows.filter((r) => {
+        const hay = (r.n + " " + r.cat + " " + r.town + " " + r.what + " " + r.extra).toLowerCase();
+        return terms.every((t) => hay.indexOf(t) >= 0);
+      });
+    }
+    // reachable first, then name — so the useful ones are at the top
+    rows = rows.slice().sort((a, b) => (b.ch - a.ch) || a.n.localeCompare(b.n));
+
+    document.getElementById("supply-count").innerHTML = rows.length
+      ? "<strong>" + fmt(rows.length) + "</strong> match" + (rows.length === 1 ? "" : "es") +
+        (rows.length > 200 ? " — showing the first 200" : "") + ". " +
+        fmt(rows.filter((r) => r.ch).length) + " have a phone or email on file."
+      : "No matches. Try a shorter search, or clear the filters.";
+
+    document.getElementById("supply-table").innerHTML = rows.length
+      ? "<thead><tr><th>Company</th><th>What they are</th><th>Town</th><th>Contact on file</th></tr></thead><tbody>" +
+        rows.slice(0, 200).map((r) =>
+          '<tr><td style="font-weight:600">' + esc(r.n) +
+            (r.status && r.status !== "Active"
+              ? ' <span style="color:var(--muted);font-size:11px">(' + esc(r.status) + ')</span>' : "") + '</td>' +
+          '<td style="text-align:left">' + esc(r.cat) +
+            (r.what && r.what !== r.cat
+              ? '<div style="color:var(--muted);font-size:11.5px;margin-top:2px">' +
+                esc(r.what.length > 120 ? r.what.slice(0, 118) + "…" : r.what) + '</div>' : "") + '</td>' +
+          '<td style="white-space:nowrap">' + esc(r.town ? tc(r.town.toLowerCase()) : "—") + '</td>' +
+          '<td style="white-space:nowrap"><span class="reach-dot ' + (r.ch ? "yes" : "no") + '"></span>' +
+            (r.ch ? "yes" : "not found") + '</td></tr>').join("") + "</tbody>"
+      : "";
+  }
+
+  qEl.addEventListener("input", draw);
+  [catSel, townSel, reachEl].forEach((el) => el.addEventListener("change", draw));
+  document.querySelectorAll("#supply-chips .supply-chip").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const on = btn.classList.contains("on");
+      document.querySelectorAll("#supply-chips .supply-chip").forEach((b) => b.classList.remove("on"));
+      if (on) { catSel.value = "all"; } else { btn.classList.add("on"); catSel.value = btn.dataset.cat; }
+      draw();
+    });
+  });
+  draw();
+
+  /* ----- where the agents are ----- */
+  const top = Object.entries(townCounts)
+    .filter(([t]) => S.AGENTS.some((a) => a.t === t))
+    .map(([t]) => [t, S.AGENTS.filter((a) => a.t === t).length])
+    .sort((a, b) => b[1] - a[1]).slice(0, 14);
+  const BORDER = { NAKONDE: 1, CHIRUNDU: 1, KASUMBALESA: 1, KAZUNGULA: 1, SESHEKE: 1, LIVINGSTONE: 1, MPULUNGU: 1 };
+  new Chart(document.getElementById("supply-town-chart"), {
+    type: "bar",
+    data: {
+      labels: top.map(([t]) => tc(t.toLowerCase())),
+      datasets: [{
+        label: "Licensed clearing agents",
+        data: top.map(([, n]) => n),
+        backgroundColor: top.map(([t]) => (BORDER[t] ? "#e06a3a" : "#3987e5")),
+        borderRadius: 4, borderSkipped: false,
+      }],
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: {
+          label: (c) => fmt(c.parsed.y) + " agents" + (BORDER[top[c.dataIndex][0]] ? " — border post" : ""),
+        } },
+      },
+      scales: {
+        x: { grid: { display: false }, ticks: { font: { size: 11 }, maxRotation: 40 } },
+        y: { beginAtZero: true, grid: { color: "#1b2330" } },
+      },
+    },
+  });
+
+  /* Chart.js measures a hidden canvas at 0x0 and never recovers, so size it on first reveal. */
+  document.querySelector('nav.tabs button[data-tab="supply"]').addEventListener("click", () => {
+    requestAnimationFrame(() => {
+      const cv = document.getElementById("supply-town-chart");
+      const ch = cv && Chart.getChart(cv);
+      if (ch) ch.resize();
+    });
+  });
 })();
