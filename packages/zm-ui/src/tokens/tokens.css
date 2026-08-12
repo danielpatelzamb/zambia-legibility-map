@@ -1,53 +1,77 @@
 /* zm-ui design tokens.
-   Copied verbatim from the deployed terminal's styles.css :root block so the package and the
-   app cannot drift. If you change a value here, change it there too — or better, make the app
-   consume this file. */
+   Copied verbatim from the deployed app's styles.css so the package and the app cannot
+   drift. Light is the default; dark is a real second palette, not an inversion.
+   Regenerate by re-copying both blocks from styles.css. */
 
 :root {
-  /* surfaces, darkest to lightest */
-  --bg: #0a0e14;
-  --panel: #10151d;
-  --panel-2: #151b26;
-  --border: #1e2733;
-  --grid: #1b2330;
-  --baseline: #2a3446;
+  /* Surfaces: warm off-white, not grey. Grey reads institutional; a hint of warmth reads
+     like a product someone designed. */
+  --bg: #fbfaf9;
+  --panel: #ffffff;
+  --panel-2: #f7f5f3;
+  --border: #e9e5e1;
+  --grid: #eeeae6;
+  --baseline: #d4cdc6;
 
-  /* text, strongest to weakest */
-  --ink: #dce5ee;
-  --ink-2: #9aa7b6;
-  --muted: #64718a;
+  /* Ink is a warm near-black rather than pure grey, so it sits with the copper. */
+  --ink: #1a1613;
+  --ink-2: #56504a;
+  --muted: #8b837b;
 
-  /* brand accent — used for focus, selection and the active state */
-  --amber: #f5a623;
+  /* Copper is the brand. It is the commodity, so the accent is not arbitrary. */
+  --amber: #c2410c;
+  --accent-hi: #ea580c;
+  --accent-soft: rgba(194, 65, 12, 0.07);
 
-  /* categorical series. Use in order; they are ordered for distinguishability, so s1+s2
-     is the most legible pair and s1+s4 the least. Never pick by taste out of sequence. */
-  --s1: #3987e5; /* blue */
-  --s2: #e06a3a; /* orange */
-  --s3: #22b381; /* aqua */
-  --s4: #d9a114; /* yellow */
-  --s5: #d55181; /* magenta */
+  /* Data series: modern, saturated, distinguishable, and none of them copper so the brand
+     colour never competes with a data mark. */
+  --s1: #4338ca;
+  --s2: #0d9488;
+  --s3: #b45309;
+  --s4: #7c3aed;
+  --s5: #be123c;
 
-  /* status, in escalating severity. These carry meaning — do not use them decoratively. */
-  --good: #3fb950;
-  --warning: #d29922;
-  --serious: #ec835a;
-  --critical: #f85149;
+  --good: #047857;
+  --warning: #b45309;
+  --serious: #ea580c;
+  --critical: #be123c;
 
+  --shadow: 0 1px 2px rgba(26, 22, 19, 0.04), 0 1px 3px rgba(26, 22, 19, 0.06);
+  --shadow-lg: 0 12px 32px -8px rgba(26, 22, 19, 0.16), 0 4px 12px -4px rgba(26, 22, 19, 0.08);
+  --map-bg: #f0ece8;
+  --radius: 12px;
   --mono: ui-monospace, "Cascadia Mono", Consolas, "SF Mono", monospace;
-
-  /* spacing scale — the app uses these values, now named */
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 14px;
-  --sp-5: 18px;
-  --sp-6: 26px;
-  --radius: 8px;
-  --radius-sm: 4px;
-  --radius-pill: 20px;
 }
 
-/* The terminal is dark-first by design: it is an analyst tool meant for long sessions, and
-   the categorical palette above was chosen against #0a0e14. There is deliberately no light
-   theme — a light variant would need a re-derived palette, not inverted tokens. */
+:root[data-theme="dark"] {
+  /* Warm-shifted dark, so switching themes does not feel like a different product. */
+  --bg: #0f0d0c;
+  --panel: #171412;
+  --panel-2: #1e1a18;
+  --border: #2b2622;
+  --grid: #262120;
+  --baseline: #3d3630;
+
+  --ink: #f5f1ed;
+  --ink-2: #b3a9a0;
+  --muted: #857a71;
+
+  --amber: #fb923c;
+  --accent-hi: #fdba74;
+  --accent-soft: rgba(251, 146, 60, 0.12);
+
+  --s1: #818cf8;
+  --s2: #2dd4bf;
+  --s3: #fbbf24;
+  --s4: #c084fc;
+  --s5: #fb7185;
+
+  --good: #34d399;
+  --warning: #fbbf24;
+  --serious: #fb923c;
+  --critical: #fb7185;
+
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 16px 40px -8px rgba(0, 0, 0, 0.7);
+  --map-bg: #0f0d0c;
+}

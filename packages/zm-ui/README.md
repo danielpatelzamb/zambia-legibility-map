@@ -2,16 +2,16 @@
 
 The design system behind the [Zambia Minerals Legibility Terminal](https://danielpatelzamb.github.io/zambia-legibility-map/), as React components.
 
-The terminal itself is vanilla JS — one `app.js`, one `styles.css`, no build step, which is why it loads instantly and has no dependency surface. This package exists so *other* surfaces can be built on the same vocabulary without copying CSS around.
+The terminal itself is vanilla JS: one `app.js`, one `styles.css`, no build step, which is why it loads instantly and has no dependency surface. This package exists so *other* surfaces can be built on the same vocabulary without copying CSS around.
 
 ## Status
 
-**Not yet built or published.** The source is complete and typed, but `npm install && npm run build` has never run — the machine this was authored on has no Node. Nothing here has been executed. Treat the first build as a real step that may surface type errors, not a formality.
+**Not yet built or published.** The source is complete and typed, but `npm install && npm run build` has never run, the machine this was authored on has no Node. Nothing here has been executed. Treat the first build as a real step that may surface type errors, not a formality.
 
 ```bash
 cd packages/zm-ui
 npm install
-npm run typecheck   # do this first — it is the fastest signal
+npm run typecheck   # do this first, it is the fastest signal
 npm run build
 ```
 
@@ -67,18 +67,20 @@ export function LicenceSummary({ holders }) {
 
 ## Conventions that matter
 
-**Dark only, deliberately.** This is an analyst tool built for long sessions, and the categorical palette was chosen against `#0a0e14`. There is no light theme, and inverting the tokens would not produce one — a light variant needs a re-derived palette.
+**Light by default, dark as a real second palette.** Set `data-theme="dark"` on the root element to switch. The two palettes are derived independently rather than one being an inversion of the other, because inverting a light palette produces muddy darks and vice versa. Both are warm-shifted so a theme switch does not feel like a different product.
 
-**Series colours are ordered, not a menu.** Use `SERIES[0]`, then `SERIES[1]`, and so on. They are sequenced for distinguishability: `s1`+`s2` is the most legible pair, `s1`+`s4` the least. Picking out of order by taste degrades the chart.
+**Copper is the brand, and it is never a data colour.** `--amber` is the accent. The five `SERIES` colours deliberately exclude copper so the brand never competes with a data mark. If you need a sixth series, do not reach for the accent.
 
-**Status colours carry meaning.** `good` / `warning` / `serious` / `critical` escalate in severity. Never use them decoratively — in this system red means something is wrong or missing, and diluting that costs you the one signal readers actually scan for.
+**Series colours are ordered, not a menu.** Use `SERIES[0]`, then `SERIES[1]`, and so on. They are sequenced for distinguishability: `s1`+`s2` is the most legible pair. Picking out of order by taste degrades the chart.
 
-**Absence is a first-class state.** `Callout tone="void"` and `Badge on={false}` exist because the terminal's whole argument is about what the public record *does not* contain. Do not hide a missing value — render it as missing.
+**Status colours carry meaning.** `good` / `warning` / `serious` / `critical` escalate in severity. Never use them decoratively: in this system red means something is wrong or missing, and diluting that costs you the one signal readers actually scan for.
+
+**Absence is a first-class state.** `Callout tone="void"` and `Badge on={false}` exist because the terminal's whole argument is about what the public record *does not* contain. Do not hide a missing value: render it as missing.
 
 **Numbers are monospace and pre-formatted.** Components do not format for you; pass a formatted string. Locale formatting belongs at your call site where you know the locale.
 
 ## Tokens
 
-`src/tokens/tokens.css` is copied verbatim from the app's `styles.css` `:root` block so the two cannot drift. Surfaces `--bg` → `--baseline`, text `--ink` / `--ink-2` / `--muted`, accent `--amber`, series `--s1`…`--s5`, status `--good` / `--warning` / `--serious` / `--critical`, plus a spacing scale (`--sp-1`…`--sp-6`) and radii.
+`src/tokens/tokens.css` holds both blocks copied verbatim from the app's `styles.css` so the two cannot drift on values: 26 light variables and 24 dark. Surfaces `--bg` through `--baseline`, text `--ink` / `--ink-2` / `--muted`, accent `--amber` and `--accent-hi`, series `--s1` to `--s5`, status `--good` / `--warning` / `--serious` / `--critical`, plus `--shadow`, `--radius` and `--mono`.
 
-The app does not yet consume this file — it still has its own copy. Making `styles.css` import the package's tokens would remove the duplication, and is the obvious next step.
+The app does not consume this file yet, it still has its own copy. Making `styles.css` import the package tokens would remove the duplication, and is the obvious next step. Until then, if you change a colour in one place, change it in the other.

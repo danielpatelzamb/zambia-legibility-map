@@ -1,4 +1,4 @@
-# Build log — dataset, registry and terminal work
+# Build log: dataset, registry and terminal work
 
 This is the commit narrative from the original working branch, preserved because that branch
 was rebuilt to keep contact data out of git history. Nothing here is a contact detail; the
