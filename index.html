@@ -3,33 +3,53 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Zambia Minerals Legibility Terminal</title>
+<title>Zambia Minerals Register</title>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
       integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
-<link rel="stylesheet" href="styles.css?v=202608120200">
+<link rel="stylesheet" href="styles.css?v=202608120300">
 </head>
 <body>
 
 <header class="app-header">
   <div class="brand-row">
-    <h1><span class="tick">ZM◈CU</span>Zambia Minerals Legibility Terminal</h1>
+    <a class="brand" href="./" aria-label="Zambia Minerals Register, home">
+      <svg class="brand-mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true" focusable="false">
+        <defs>
+          <linearGradient id="cu" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#f5a623"/>
+            <stop offset="1" stop-color="#c8582a"/>
+          </linearGradient>
+        </defs>
+        <!-- three strata bars forming a Z: the register, stacked. The middle bar stops
+             short and leaves a gap, which is the verification void the tool is about. -->
+        <rect x="4"  y="5"  width="24" height="4" rx="1" fill="url(#cu)"/>
+        <rect x="4"  y="14" width="11" height="4" rx="1" fill="url(#cu)" opacity=".92"/>
+        <rect x="19" y="14" width="9"  height="4" rx="1" fill="#3a4557"/>
+        <rect x="4"  y="23" width="24" height="4" rx="1" fill="url(#cu)"/>
+      </svg>
+      <span class="brand-text">
+        <strong>ZAMBIA MINERALS</strong>
+        <span class="brand-sub">REGISTER &amp; SUPPLY CHAIN</span>
+      </span>
+    </a>
     <div class="global-search">
-      <span class="gs-icon">&gt;_</span>
-      <input type="text" id="global-search" placeholder="Run a KYC / smell test — company, holder, or license code…" autocomplete="off">
+      <svg class="gs-icon" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true">
+        <circle cx="6.5" cy="6.5" r="4.5" fill="none" stroke="currentColor" stroke-width="1.7"/>
+        <path d="M10 10l4 4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
+      </svg>
+      <input type="text" id="global-search" placeholder="Search a company, holder, or licence code" autocomplete="off">
       <kbd>/</kbd>
     </div>
   </div>
-  <p class="sub">Licenses, revocations, disputes, trade flows and corridors for the Zambian critical-minerals
-    supply chain — official register + MMMD notices + UN Comtrade, joined. Where verification ends, the void begins.</p>
   <nav class="tabs">
-    <button data-tab="map" class="active">Legibility Map</button>
-    <button data-tab="kyc">KYC Check</button>
-    <button data-tab="register">Register &amp; Ownership</button>
+    <button data-tab="map" class="active">Map</button>
+    <button data-tab="kyc">Counterparty Check</button>
+    <button data-tab="register">Register</button>
     <button data-tab="trace">Traceability</button>
-    <button data-tab="supply">Find a Supplier</button>
-    <button data-tab="siting">Siting Lab</button>
-    <button data-tab="trade">Trade Analysis</button>
-    <button data-tab="method">Methodology &amp; Caveats</button>
+    <button data-tab="supply">Suppliers</button>
+    <button data-tab="siting">Siting</button>
+    <button data-tab="trade">Trade</button>
+    <button data-tab="method">Method</button>
   </nav>
 </header>
 
@@ -39,48 +59,38 @@
 <section id="tab-map" class="tab-panel active">
   <div class="hero-stats" id="hero-stats"></div>
   <div class="card">
-    <h2>Licenses, operations &amp; export routes</h2>
-    <p class="note">The Zambian minerals map in one view: the official license register shaded by type
-      (red/amber where the Ministry's own notices flag a right), named mines · refiners · development projects
-      with EITI production, ZRA customs clearing hubs, documented disputes, and the five export corridors to
-      tidewater. Toggle layers top-right; filter licenses below.</p>
+    <h2>Licences, operations and export routes</h2>
+    <p class="note">The official licence register, shaded by type. Red and amber mark rights the Ministry's
+      own notices have flagged. Toggle layers top right, filter below.</p>
     <div class="lic-filter" id="lic-filter"></div>
     <div id="map"></div>
     <div class="map-legend" id="map-legend"></div>
     <div class="callout">
-      <strong>Provenance:</strong> license areas are the official NGDR register (see the card below).
-      Corridors are schematic polylines between real waypoints (redraw from Geofabrik OSM for production).
-      Named-operation badges are hand-placed from public sources at approximate site locations. Clearing-agent
-      points are city-level clusters of the ZRA licensed-agents list, not geocoded addresses. Dispute/fraud
-      markers are geolocated from public reporting — approximate site or town coordinates, not legal filings.
+      <strong>What is exact and what is not.</strong> Licence areas are the official NGDR register. Corridors
+      are schematic lines between real waypoints. Operation badges, clearing-agent clusters and dispute markers
+      are approximate locations from public sources, not surveyed coordinates.
     </div>
   </div>
 
   <div class="card" id="licenses-card" hidden>
-    <h2>Real licenses, real revocations — official government data</h2>
+    <h2>Licences and revocations</h2>
     <p class="note" id="licenses-note"></p>
     <div class="map-legend" id="licenses-stats"></div>
     <div class="callout">
-      <strong>Provenance &amp; how to read the flags:</strong> license parcels are the actual polygons served by
-      the Geological Survey's open NGDR GeoServer (gsb.gov.zm WFS snapshot of the <em>active</em> register,
-      18 Jun 2025), shaded by license type — zoom in for individual parcel borders. Flags join the Ministry's
-      MLC-78 cancellation list (Apr 2024) and the Final Public Default Notice (18 Jun 2025) by license code.
-      <strong>Every parcel shown is on the active register, so none is currently cancelled.</strong> The
-      18 Jun 2025 "Default Notice" is a Section-72 <em>show-cause</em> notice listing curable breaches (unpaid
-      area charges, unsubmitted quarterly/annual reports, unregistered pegging certificate) with a 30-day remedy
-      window — being listed is a flag to verify, not proof of current default; a holder still on the register most
-      likely cured it. MLC-78 flags are reinstated cancellations (adverse history). Amber = one such flag; red =
-      both (repeat non-compliance). Absence from this snapshot proves nothing. Holder names are the government's
-      own published records.
+      <strong>How to read the flags.</strong> Amber means one adverse flag, red means two. Every parcel shown
+      is on the active register, so none is currently cancelled.
+      <br><br>
+      The June 2025 default notice is a show-cause notice for curable breaches such as unpaid area charges or
+      missing reports, with a 30 day remedy window. <strong>Being listed is a flag to check, not proof of
+      default</strong>, and a holder still on the register most likely cured it. Absence from this snapshot
+      proves nothing.
     </div>
   </div>
 
   <div class="card" id="disputes-card" hidden>
-    <h2>Disputes, fraud &amp; enforcement index</h2>
-    <p class="note">Documented license conflicts, corporate/tax disputes, fraud and scam cases, illegal-mining
-      incidents and environmental litigation in the Zambian minerals sector. Each row is plotted on the map above
-      (toggle the "Disputes &amp; fraud cases" layer). Locations are approximate. This is the other half of the
-      legibility thesis: where verification is absent, disputes and fraud fill the gap.</p>
+    <h2>Disputes and enforcement</h2>
+    <p class="note">Licence conflicts, tax disputes, fraud cases, illegal mining and environmental
+      litigation. Each row is plotted on the map above. Locations are approximate.</p>
     <div class="controls">
       <label for="dispute-filter">Filter:</label>
       <select id="dispute-filter"><option value="all">All categories</option></select>
@@ -89,13 +99,10 @@
   </div>
 
   <div class="card" id="datasets-card" hidden>
-    <h2>License &amp; ownership datasets that actually exist</h2>
-    <p class="note"><strong>Revised verdict (2026-07-23):</strong> the Landfolio cadastre's ArcGIS endpoints are
-      token-gated and third-party portals carry no Zambian license polygons — but the Geological Survey's
-      <strong>NGDR GeoServer serves actual active-license polygons through an open WFS</strong> (~7,468 records,
-      fresher than the portal itself), and the Ministry's cancellation/default notices publish license codes and
-      holders. Joined by license code, those two official sources power the license and revocation layers on the
-      map above. The remaining sources below cover mine points, footprints, contracts and company data.</p>
+    <h2>Underlying datasets</h2>
+    <p class="note">The Geological Survey's NGDR GeoServer serves live active-licence polygons over an open
+      WFS, about 7,468 records. The Ministry's cancellation and default notices publish licence codes and
+      holders. Joined on licence code, those two feed the map above.</p>
     <table class="data" id="datasets-table"></table>
   </div>
 </section>
@@ -103,13 +110,11 @@
 <!-- ============ KYC ============ -->
 <section id="tab-kyc" class="tab-panel">
   <div class="card">
-    <h2>Counterparty check (KYC)</h2>
-    <p class="note">Search any company, holder, license code, <strong>or mineral</strong> (Beryllium, Lithium,
-      Tantalum, Cobalt — any commodity on the register) across the official register and adverse lists: the full NGDR
-      active-license register (7,468 records), the MLC-78 cancellation list (2,604), the 2023/2025 default notices
-      (7,702), published <strong>ZambiaLII court judgments</strong> (2,789 holder names checked as exact phrases;
-      158 with judgments), EITI company production, and this project's disputes index. A mineral match plots every
-      license listing it on the map. Everything runs locally in your browser; nothing is sent anywhere.</p>
+    <h2>Counterparty check</h2>
+    <p class="note">Search a company, holder, licence code or mineral against the register and every adverse
+      list: 7,468 active licences, 2,604 cancellations, 7,702 default notices, 2,789 holder names checked
+      against published court judgments, and EITI production.</p>
+    <p class="note" style="margin-top:-6px">Runs entirely in your browser. Nothing is sent anywhere.</p>
     <div class="controls">
       <input type="text" id="kyc-query" placeholder="e.g. Kansanshi, Grizzly, 23189-HQ-LEL…" style="min-width:340px" autocomplete="off">
       <span id="kyc-count" style="font-size:12.5px;color:var(--muted)"></span>
@@ -149,20 +154,20 @@
     </div>
     <div class="card" id="kyc-court-card" hidden>
       <h3 style="margin-top:0">Court &amp; tribunal records (ZambiaLII)</h3>
-      <p class="note">Exact-phrase matches in published Zambian judgments — the name may appear as plaintiff,
+      <p class="note">Exact-phrase matches in published Zambian judgments, the name may appear as plaintiff,
         defendant, or in passing. Read the judgment before drawing conclusions.</p>
       <table class="data" id="kyc-court-table"></table>
     </div>
     <div class="card" id="kyc-dispute-card" hidden>
       <h3 style="margin-top:0">Possible dispute-index mentions</h3>
-      <p class="note">Loose name matching against this project's disputes index — verify manually.</p>
+      <p class="note">Loose name matching against this project's disputes index: verify manually.</p>
       <table class="data" id="kyc-dispute-table"></table>
     </div>
     <div class="card">
       <div class="callout">
-        <strong>Limits of this check:</strong> formal-economy data only — a clean result means "no adverse
+        <strong>Limits of this check:</strong> formal-economy data only, a clean result means "no adverse
         findings in these sources", not "clean". Holder names are matched as published (spelling variants and
-        shell entities will evade string matching). Beneficial ownership is not in any open dataset — verify at
+        shell entities will evade string matching). Beneficial ownership is not in any open dataset: verify at
         PACRA. The NGDR snapshot covers the full active register (~7,468 records).
       </div>
     </div>
@@ -174,15 +179,12 @@
   <div class="hero-stats" id="reg-hero"></div>
 
   <div class="card">
-    <h2>Who owns the ground — and who won't say</h2>
-    <p class="note">Every organisational holder on the register (2,716) queried against
-      <strong>PACRA's public companies-registry API</strong>, which returns statutory standing per company:
-      whether beneficial ownership has been declared, whether annual returns are filed, and whether the company
-      meets the minimum share capital. This is the layer the KYC tab used to have to send you to PACRA for.</p>
+    <h2>Registry standing</h2>
+    <p class="note">All 2,716 organisational holders, checked against PACRA's public companies registry: beneficial ownership, annual returns, and minimum share capital.</p>
     <div class="chart-wrap" style="height:300px"><canvas id="reg-compliance-chart"></canvas></div>
     <div class="callout">
       <strong>One number was corrected downward.</strong> An earlier pass counted 559 holders as absent from the
-      companies registry. PACRA's search cannot handle ampersands — <em>VS Construction &amp; Mining Services
+      companies registry. PACRA's search cannot handle ampersands: <em>VS Construction &amp; Mining Services
       Limited</em> returns nothing while <em>VS Construction</em> returns it (registered 2008, active). Of the 559,
       229 are cooperatives that register with the Registrar of Cooperatives instead, and 116 were registered all
       along. <strong>214 are genuinely unexplained.</strong> 121 further companies are excluded from the
@@ -192,27 +194,16 @@
   </div>
 
   <div class="card">
-    <h2>Declared business vs mineral rights</h2>
-    <p class="note">How the companies registry classifies each holder's line of business, set against what the
-      licence register says it holds. <strong>732 of 2,128</strong> are not classified as mining — wholesale trade,
-      building construction, road freight, mixed farming — covering <strong>10.9 million hectares</strong>.
-      <strong>Read that as a statement about the registry, not about the companies.</strong> The classification is a
-      value captured on a registration form, not an audited account of activity, and it is provably wrong for some
-      miners: <em>Rio Tinto Exploration Zambia</em> is filed as "Construction of buildings" and <em>Yetu Mining
-      Limited</em> as "Radio broadcasting". Excluding every holder whose own registered name contradicts its
-      classification, the figure is <strong>27.7% of licensed ground</strong> — that is the defensible one.</p>
+    <h2>Declared business against mineral rights</h2>
+    <p class="note">Two government registers disagree about who mines. The companies registry says 732 of 2,128 holders are in wholesale trade, construction, freight or farming. The licence register says they hold mineral rights.<br><br>Treat this as a fact about the registry, not the companies. The classification is a form field, not an audit, and it is demonstrably wrong: Rio Tinto Exploration Zambia is filed as <em>Construction of buildings</em>. Excluding holders whose own name contradicts their filing, the defensible figure is <strong>27.7% of licensed ground</strong>.</p>
     <div class="chart-wrap" style="height:340px"><canvas id="reg-mismatch-chart"></canvas></div>
     <h3 style="margin:18px 0 6px">Largest holdings on a non-mining declaration</h3>
     <table class="data" id="reg-mismatch-table"></table>
   </div>
 
   <div class="card">
-    <h2>Which minerals sit under a non-mining declaration</h2>
-    <p class="note">The join worth staring at. A holder's line of business comes from the companies
-      registry; the minerals come from the licence register. Where the two disagree, this is what it looks
-      like — <strong>1,015 copper</strong> and <strong>911 gold</strong> licence-commodity entries are held
-      by companies that told the state they are in wholesale trade, construction, freight or farming.
-      Hover any bar for its share of all holders of that mineral.</p>
+    <h2>Minerals held under a non-mining declaration</h2>
+    <p class="note">Line of business comes from the companies registry. Minerals come from the licence register. Where they disagree: 1,015 copper and 911 gold entries sit with companies that told the state they do wholesale trade, construction, freight or farming.</p>
     <div class="controls">
       <label for="reg-mineral-sort">Rank by:</label>
       <select id="reg-mineral-sort">
@@ -224,11 +215,11 @@
     <div class="chart-wrap" style="height:420px"><canvas id="reg-mineral-chart"></canvas></div>
     <div class="callout">
       <strong>This measures registry quality as much as company behaviour.</strong> A construction firm can
-      legitimately hold a limestone right, and a farming company can own ground with copper under it — but the
+      legitimately hold a limestone right, and a farming company can own ground with copper under it, but the
       larger caveat is that the classification itself is unreliable. <strong>96 of the 732 (13.1%)</strong> carry a
       mining word in their own registered name while being classified as something else. That is a measurable
       <em>floor</em> on the error rate, not a ceiling: it cannot catch a mis-filed holder whose name is not
-      self-describing — <em>Willianda Investments</em>, filed under "processing and preserving of fruit and
+      self-describing: <em>Willianda Investments</em>, filed under "processing and preserving of fruit and
       vegetables" against 177,581 ha of iron ore, niobium and cobalt, is exactly that case. Filter on
       <code>name_contradicts_declaration</code> in <code>declared_business_vs_licences.csv</code> to exclude the
       detectable ones.
@@ -236,30 +227,20 @@
   </div>
 
   <div class="card">
-    <h2>Legibility by licence type — who can even be found</h2>
-    <p class="note">The register is not uniformly opaque. Production and processing licences are held by
-      companies you can mostly identify and sometimes reach; exploration is thinner; the artisanal tier is
-      effectively dark. The <strong>Bidding area</strong> row is the giveaway — 1,442 licences held by 4
-      holders, because gazetted blocks sit with the state until they are allocated.</p>
+    <h2>Who can be found, by licence type</h2>
+    <p class="note">Opacity is not uniform. Production and processing holders are mostly identifiable. Exploration is thinner. The artisanal tier is dark.<br><br>The <strong>Bidding area</strong> row gives the game away: 1,442 licences held by 4 holders, because gazetted blocks sit with the state until allocated.</p>
     <table class="data" id="reg-buckets-table"></table>
   </div>
 
   <div class="card">
     <h2>Gemstones: 28 licences, or 2,056?</h2>
-    <p class="note">Both, and the gap is the point. Only <strong>28</strong> licences were ever issued under
-      a dedicated <em>Gemstone Licence</em> type — a 2008-era category that has effectively lapsed. But
-      <strong>2,056</strong> licences actually list a gem commodity, held by <strong>1,459 distinct
-      holders</strong>. Gemstones in Zambia are mined under ordinary exploration, artisanal and small-scale
-      licences, so counting the licence type understates the sector by roughly seventy-fold.</p>
+    <p class="note">Both. Only 28 licences were issued under the dedicated Gemstone type, a 2008 category that has lapsed. But 2,056 licences list a gem commodity, across 1,459 holders.<br><br>Gemstones are mined under ordinary exploration and small-scale licences, so counting by licence type understates the sector roughly seventyfold.</p>
     <div class="chart-wrap" style="height:300px"><canvas id="reg-gem-chart"></canvas></div>
   </div>
 
   <div class="card">
-    <h2>The 189 processing licence holders</h2>
-    <p class="note">Mineral Processing Licences — 195 licences, 189 distinct holders. These are the plants:
-      smelters, refineries, leach and SX-EW circuits, gemstone cutting. <strong>152 of the 195 appear in the
-      18 June 2025 default notice</strong> and 35 carry a 2024 cancellation flag. They are already plotted
-      on the Legibility Map under the purple <em>Processing</em> filter.</p>
+    <h2>Processing licence holders</h2>
+    <p class="note">195 licences, 189 holders. Smelters, refineries, leach and SX-EW circuits, gemstone cutting. <strong>152 of the 195</strong> appear in the June 2025 default notice and 35 carry a 2024 cancellation flag.</p>
     <div class="controls">
       <label for="reg-proc-filter">Show:</label>
       <select id="reg-proc-filter">
@@ -273,15 +254,15 @@
   </div>
 
   <div class="card">
-    <h2>Copper, 1964–2025 — the whole arc</h2>
+    <h2>Copper production, 1964 to 2025</h2>
     <p class="note">National copper output from independence to now (USGS / BGS), with the structural events that
       bent the curve. 748,000 t at the 1969 state takeover, down to <strong>249,000 t by 2000</strong>, back to
       890,000 t in 2025. Hover any year for the tonnage and what happened. Cobalt is on the same series switch.</p>
     <div class="controls">
       <label for="reg-commodity">Commodity:</label>
       <select id="reg-commodity">
-        <option value="cu">Copper (1964–2025)</option>
-        <option value="co">Cobalt (1970–2024)</option>
+        <option value="cu">Copper (1964-2025)</option>
+        <option value="co">Cobalt (1970-2024)</option>
       </select>
       <span id="reg-spine-summary" style="font-size:12.5px;color:var(--muted)"></span>
     </div>
@@ -290,16 +271,13 @@
   </div>
 
   <div class="card">
-    <h2>What the Licensing Committee actually decided</h2>
-    <p class="note">16,120 holder mentions mined from 60 official documents — Mining Licensing Committee meetings
-      70 to 91, the extraordinary sitting of October 2023, the 2023 and 2025 default notices and the 2024
-      cancellation notice. This makes the licensing system itself legible: how much ground churns, how often the
-      committee defers.</p>
+    <h2>Licensing Committee decisions</h2>
+    <p class="note">16,120 holder mentions across 60 official documents: Licensing Committee meetings 70 to 91, the October 2023 extraordinary sitting, and the default and cancellation notices. This makes the licensing system itself legible.</p>
     <div class="chart-wrap" style="height:260px"><canvas id="reg-decisions-chart"></canvas></div>
   </div>
 
   <div class="card">
-    <h2>Where the money moves — offtakes, prepayments and corridors</h2>
+    <h2>Offtakes, prepayments and corridors</h2>
     <p class="note">31 documented supply-chain arrangements with disclosed value where published. This is the layer
       shipment manifests cannot see: Zambia is landlocked, so no ocean bill of lading is ever issued here and the
       shipper on a Durban or Dar manifest is a forwarder, not the mine.</p>
@@ -313,17 +291,14 @@
   <div class="card">
     <h2>Value addition: announced vs built</h2>
     <p class="note">28 policy instruments, zones, international initiatives and state vehicles aimed at moving
-      Zambia beyond cathode — with announced programme value where published. Read against the geolocated
+      Zambia beyond cathode: with announced programme value where published. Read against the geolocated
       facilities that actually exist.</p>
     <table class="data" id="reg-va-table"></table>
   </div>
 
   <div class="card">
-    <h2>How to reach them</h2>
-    <p class="note">The register names 3,622 distinct holders. Published contact channels exist for a small
-      fraction, and for the 229 mining cooperatives, for <strong>none at all</strong> — four independent sweeps of
-      the full licensing archive found no phone, email or address for any of them. The route in is institutional:
-      82 reachable offices below, from the national federation down to district councils.</p>
+    <h2>Institutional contact routes</h2>
+    <p class="note">3,622 holders. Published contact channels exist for a small fraction, and for the 229 mining cooperatives, none at all. Four sweeps of the full licensing archive found no phone, email or address for any of them.<br><br>The way in is institutional. 82 reachable offices below, from the national federation down to district councils.</p>
     <div class="controls">
       <label for="reg-chan-filter">Province:</label>
       <select id="reg-chan-filter"><option value="all">All provinces</option></select>
@@ -334,21 +309,16 @@
     <table class="data" id="reg-chan-table"></table>
     <div class="callout">
       <strong>Why the cooperative column is zero.</strong> These societies register with the Registrar of
-      Cooperatives — resolved to sit under the <strong>Ministry of Small and Medium Enterprise Development</strong>,
-      not Commerce — so no companies-registry record exists. Their artisanal rights, roughly 2 to 33 hectares, fall
+      Cooperatives: resolved to sit under the <strong>Ministry of Small and Medium Enterprise Development</strong>,
+      not Commerce, so no companies-registry record exists. Their artisanal rights, roughly 2 to 33 hectares, fall
       below the environmental-filing threshold, so they never lodge the documents that would carry a proponent
       contact. 186 of 229 are located to district, which is what makes the provincial route usable.
     </div>
   </div>
 
   <div class="card">
-    <h2>The rest of the sector: traders, processors, services and supply</h2>
-    <p class="note">The licence register only shows who holds ground. These <strong>354 companies</strong>
-      are the sector around it — mineral traders and gemstone dealers, smelters and refiners, drilling and
-      blasting contractors, equipment dealers, assay labs, hauliers and clearing agents, reagent and
-      grinding-media suppliers. <strong>299 are confirmed on an official register</strong> (PACRA number,
-      NCC contractor grade or a ZRA clearing-agent licence); 78 have operations evidenced by a source
-      beyond the registry. Contact details are held privately and are not in this app.</p>
+    <h2>Traders, processors and services</h2>
+    <p class="note">The licence register shows who holds ground. These 354 companies are the sector around it: traders, gemstone dealers, smelters, drilling and blasting contractors, equipment dealers, assay labs, hauliers, clearing agents, reagent suppliers.<br><br>299 are confirmed on an official register. 78 have operations evidenced beyond the registry. Contact details are held privately and are not in this app.</p>
     <div class="chart-wrap" style="height:460px"><canvas id="biz-segment-chart"></canvas></div>
     <div class="controls" style="margin-top:14px">
       <input type="text" id="biz-search" placeholder="Search company, activity, town or owner…"
@@ -366,20 +336,20 @@
     <table class="data" id="biz-table"></table>
     <div class="callout">
       <strong>How these were found, and what that means.</strong> Most came from sweeping PACRA's public
-      registry API by keyword — "DRILLING", "GEMSTONE", "HAULAGE" and so on — which surfaces registered
+      registry API by keyword: "DRILLING", "GEMSTONE", "HAULAGE" and so on, which surfaces registered
       Zambian companies that no directory lists. That is why the majority are marked
       <em>registry record only</em>: the company provably exists and is classified, but no source beyond
       the register has been checked. Treat those as a verified universe, not a researched profile. The 78
       marked <em>operations evidenced</em> have a company site, accreditation, tender award or news source
-      behind them. PACRA's own business classifications are sometimes registration-form artefacts — one
-      assay lab is filed under "hospital activities" — and those are flagged per record rather than
+      behind them. PACRA's own business classifications are sometimes registration-form artefacts, one
+      assay lab is filed under "hospital activities", and those are flagged per record rather than
       repeated as fact.
     </div>
   </div>
 
   <div class="card">
     <h2>Mining cooperatives by province</h2>
-    <p class="note">229 societies holding artisanal and small-scale rights. Central Province alone holds 53 — and
+    <p class="note">229 societies holding artisanal and small-scale rights. Central Province alone holds 53, and
       the Mkushi Regional Mining Bureau and Mkushi District Council share a town, which makes it the single most
       efficient point of contact for that cohort.</p>
     <div class="chart-wrap" style="height:280px"><canvas id="reg-coop-chart"></canvas></div>
@@ -389,11 +359,8 @@
 <!-- ============ TRADE ============ -->
 <section id="tab-trade" class="tab-panel">
   <div class="card">
-    <h2>Mirror-trade gap: what Zambia reports vs. what its partners report</h2>
-    <p class="note">Zambia-reported exports (FOB) vs. the sum of all partner countries' reported imports from
-      Zambia (mostly CIF), by HS code. Persistent gaps are the classic leakage / misinvoicing signal
-      (GFI methodology) — but CIF/FOB differences, re-export hubs, and landlocked transit inject noise.
-      Source: UN Comtrade public preview API.</p>
+    <h2>Mirror-trade gap</h2>
+    <p class="note">Zambia's reported exports against the sum of partner countries' reported imports, by HS code. Persistent gaps are the standard misinvoicing signal, but CIF/FOB differences, re-export hubs and landlocked transit all add noise.</p>
     <div class="controls">
       <label for="mirror-code">HS code:</label>
       <select id="mirror-code"></select>
@@ -403,12 +370,8 @@
   </div>
 
   <div class="card" id="production-card" hidden>
-    <h2>Copper production by company — official EITI data</h2>
-    <p class="note">Company-level copper production from the Zambia EITI Fusion portal (2018–2023) cross-checked
-      against the ZEITI "Copper Production by Company 2023" file; 2023 USD values where published. 2024
-      by-company figures are not yet published — only national totals (821,874 t copper in 2024). Kalumbila =
-      the Sentinel operation (FQM Trident). Note: Chambishi Copper Smelter and Chambishi Metals report
-      <em>smelter/refinery</em> output, which includes feed from the mines listed — don't sum the bars.</p>
+    <h2>Copper production by company</h2>
+    <p class="note">Company copper production from the Zambia EITI portal, 2018 to 2023, cross-checked against the ZEITI by-company file. 2024 exists only as a national total of 821,874 t.<br><br><strong>Do not sum the bars.</strong> Chambishi Copper Smelter and Chambishi Metals report smelter output, which already includes feed from the mines listed.</p>
     <div class="controls">
       <label for="prod-year">Year:</label>
       <select id="prod-year"></select>
@@ -418,15 +381,12 @@
   </div>
 
   <div class="card">
-    <h2>Unit-value spread: cathode vs. concentrate</h2>
-    <p class="note">Distribution of monthly partner-level unit values (USD/tonne), Zambian exports 2023–2024.
-      Cathode (7403.11) is grade-controlled — LME Grade A is a commodity — so its unit values should cluster
-      tightly. Concentrate (2603) varies in grade, contract and documentation, so its spread is wide.
-      Residual spread in the grade-controlled product is the suggestive signal for a documentation/legibility premium.</p>
+    <h2>Unit-value spread, cathode against concentrate</h2>
+    <p class="note">Monthly partner-level unit values, USD per tonne, 2023 to 2024. Cathode is grade-controlled, so its values should cluster tightly. Concentrate varies by grade and contract, so its spread is wide. Residual spread in the grade-controlled product is the suggestive signal.</p>
     <div class="chart-wrap"><canvas id="dist-chart"></canvas></div>
     <div class="callout">
       <strong>Correlational, not causal.</strong> Unit-value spread reflects grade, firm size, contract type,
-      destination and incoterms — not only paperwork. See Methodology for the causal DAG and the identification
+      destination and incoterms, not only paperwork. See Methodology for the causal DAG and the identification
       strategy this MVP cannot yet run.
     </div>
   </div>
@@ -434,7 +394,7 @@
   <div class="card">
     <h2>Annual unit-value spread across partners, by HS code</h2>
     <p class="note">P10 / median / P90 of partner-level unit values (USD/t) in Zambia-reported exports.
-      Partners with &lt;20&nbsp;t excluded. The P90/P10 ratio is the "spread" — compare the grade-controlled
+      Partners with &lt;20&nbsp;t excluded. The P90/P10 ratio is the "spread": compare the grade-controlled
       cathode row against concentrate.</p>
     <div class="controls">
       <label for="spread-year">Year:</label>
@@ -449,7 +409,7 @@
   <div class="hero-stats" id="trace-hero"></div>
 
   <div class="card">
-    <h2>Chain of custody — where the metal actually goes</h2>
+    <h2>Chain of custody</h2>
     <p class="note">Follow a commodity from licensed ground to destination market. Every stage is drawn from
       the datasets already in this terminal: the licence register, the facilities table, offtake and prepayment
       arrangements, corridor assignments and mirror-verified trade flows. Click a stage to see who sits in it.</p>
@@ -469,11 +429,10 @@
   </div>
 
   <div class="card">
-    <h2>Verified counterparties — standard by standard</h2>
-    <p class="note">"Verified" here means <strong>checkable against a named public record</strong>, not an
-      endorsement. Four independent standards: beneficial ownership on the companies registry (PACRA),
-      payment disclosure under EITI, physical flows on US customs manifests, and LME brand registration.
-      Most of the sector clears none of them — that sparsity <em>is</em> the verification void.</p>
+    <h2>Verified counterparties</h2>
+    <p class="note"><strong>Verified</strong> means checkable against a named public record, not endorsed.
+      Four standards: beneficial ownership (PACRA), payment disclosure (EITI), physical flows on US customs
+      manifests, and LME brand registration.<br><br>Most of the sector clears none of them.</p>
     <div class="controls">
       <label for="trace-std-filter">Standard:</label>
       <select id="trace-std-filter"><option value="all">Any standard</option></select>
@@ -485,12 +444,8 @@
   </div>
 
   <div class="card">
-    <h2>Supply-chain advisor — tell it what you're trying to do</h2>
-    <p class="note">Describe the transaction and this builds a tailored brief: which corridor and port,
-      which categories of counterparty you need and who is actually registered in them, which verification
-      standards a lender or buyer will ask for, and — the part most advisors skip — <strong>which of those
-      things do not exist in Zambia yet</strong>. Every recommendation is traceable to a dataset in this
-      terminal, not to a generic playbook.</p>
+    <h2>Supply-chain advisor</h2>
+    <p class="note">Set the four fields. You get the corridor and port, the counterparty categories the deal needs and who is registered in them, the standards a buyer or lender will ask for, and what to watch out for.</p>
     <div class="controls">
       <label for="adv-role">I am a:</label>
       <select id="adv-role">
@@ -523,7 +478,7 @@
       <label for="adv-scale">Scale:</label>
       <select id="adv-scale">
         <option value="small">Artisanal / small (&lt;1,000 t/yr)</option>
-        <option value="mid" selected>Mid-tier (1,000–50,000 t/yr)</option>
+        <option value="mid" selected>Mid-tier (1,000-50,000 t/yr)</option>
         <option value="large">Large (&gt;50,000 t/yr)</option>
       </select>
     </div>
@@ -531,17 +486,17 @@
   </div>
 
   <div class="card">
-    <h2>Customs-manifest evidence — bills of lading</h2>
+    <h2>Bills of lading</h2>
     <p class="note">US CBP sea-import manifests naming Zambian shippers: cargo, weight, load port and
-      destination. This is what third-party verification looks like when it exists — a foreign customs
+      destination. This is what third-party verification looks like when it exists, a foreign customs
       service with no stake in the story recorded the container.</p>
     <table class="data" id="trace-bol-table"></table>
     <div class="callout void">
       <strong>The gap this table proves.</strong> These manifests exist only because the US publishes
-      import manifests. Zambia's own export side — the ZRA CD-1 form chain — is not public, so the
+      import manifests. Zambia's own export side, the ZRA CD-1 form chain: is not public, so the
       equivalent record for the ~75% of exports that go to China and the region cannot be checked by
       anyone outside government. Upstream of the port, nothing here verifies which licence the metal
-      came off — that chain-of-custody layer does not exist yet in any public record.
+      came off, that chain-of-custody layer does not exist yet in any public record.
     </div>
   </div>
 </section>
@@ -553,7 +508,7 @@
   <div class="card">
     <h2>Find a supplier</h2>
     <p class="note">Search 1,730 companies: every customs clearing agent licensed by the ZRA, plus the
-      firms that supply the mines &mdash; reagents, explosives, equipment, drilling, freight, assay labs,
+      firms that supply the mines: reagents, explosives, equipment, drilling, freight, assay labs,
       fuel, fabrication. Type what you need, or pick a category and a town.</p>
     <div class="controls">
       <input type="text" id="supply-q" placeholder="Search by name, town, or what they do…"
@@ -569,7 +524,7 @@
     <table class="data" id="supply-table"></table>
     <div class="callout">
       <strong>How to get the contact details.</strong> Phone numbers and emails are kept out of this
-      site on purpose &mdash; it is public, so anything published here is scrapable. They sit in
+      site on purpose, it is public, so anything published here is scrapable. They sit in
       <code>private/dataset/clearing_agents.csv</code> on the project owner's machine, alongside the
       ZRA register they came from. Clearing agent details are published by the ZRA itself at
       <a href="https://www.zra.org.zm/clearing-agents/" target="_blank" rel="noopener">zra.org.zm/clearing-agents</a>,
@@ -585,7 +540,7 @@
     <div class="chart-wrap" style="height:300px"><canvas id="supply-town-chart"></canvas></div>
     <div class="callout">
       <strong>One thing worth knowing before you sign.</strong> 105 of these licensed agents share just
-      39 email addresses between them &mdash; one operator holds up to ten separate licensed companies.
+      39 email addresses between them, one operator holds up to ten separate licensed companies.
       That is in the ZRA's own register. If you are comparing quotes from several agents, check you are
       not comparing the same person to himself.
     </div>
@@ -597,22 +552,22 @@
   <div class="hero-stats" id="siting-hero"></div>
 
   <div class="card">
-    <h2>Where should the next plant go?</h2>
+    <h2>Site screening</h2>
     <p class="note">Pick a facility type, then <strong>click anywhere on the map</strong> or choose a town.
       The score weighs what that facility actually needs: distance to the transmission grid (and whether the
-      voltage class is sufficient), rail and trunk-road access, and licensed feedstock within trucking range —
-      all computed live from the grid, rail, road and licence layers below. Smelting off-grid is not a plan;
-      a lapidary runs on a genset. The tool knows the difference.</p>
+      voltage class is sufficient), rail and trunk road access, feedstock within trucking range, and market
+      access.<br><br>Smelting off grid is not a plan. A lapidary runs on a generator. The weights differ
+      accordingly.</p>
     <div class="controls">
       <label for="siting-ftype">Facility:</label>
       <select id="siting-ftype"></select>
       <label for="siting-town">Town:</label>
-      <select id="siting-town"><option value="">— click map or pick —</option></select>
+      <select id="siting-town"><option value="">: click map or pick: </option></select>
       <span id="siting-hint" style="font-size:12.5px;color:var(--muted)"></span>
     </div>
     <div class="siting-grid">
       <div id="siting-map"></div>
-      <div id="siting-score"><p class="note" style="margin-top:6px">No site selected yet — click the map or pick a town.</p></div>
+      <div id="siting-score"><p class="note" style="margin-top:6px">No site selected yet: click the map or pick a town.</p></div>
     </div>
     <p class="note" style="margin-top:8px">Grid, substations, rail and roads &copy; OpenStreetMap contributors (ODbL),
       snapshot 2026-08-12. Feedstock = licence centroids from the NGDR cadastre. Scores are a screening heuristic for
@@ -620,9 +575,9 @@
   </div>
 
   <div class="card">
-    <h2>League table — every town, ranked for this facility</h2>
+    <h2>Town rankings</h2>
     <p class="note">All 124 OSM-mapped towns and cities scored for the selected facility type. The ranking
-      shifts as you change facility — a ferroalloy smelter wants the 330&nbsp;kV backbone, a gemstone works
+      shifts as you change facility, a ferroalloy smelter wants the 330&nbsp;kV backbone, a gemstone works
       wants to be an hour from the Lufwanyama emerald fields.</p>
     <table class="data" id="siting-league-table"></table>
   </div>
@@ -631,9 +586,9 @@
 <!-- ============ METHODOLOGY ============ -->
 <section id="tab-method" class="tab-panel">
   <div class="card">
-    <h2>The causal problem with the "certification spread"</h2>
-    <p class="note">The motivating claim — a trader's report of a ~2× price spread between no-paperwork and
-      clean-paper material — is a single-interview datapoint and confounded. Any spread computed from Comtrade
+    <h2>Limits of the certification-spread claim</h2>
+    <p class="note">The motivating claim, a trader's report of a ~2× price spread between no-paperwork and
+      clean-paper material: is a single-interview datapoint and confounded. Any spread computed from Comtrade
       unit values is <strong>correlational</strong>. The DAG below shows the back-door paths.</p>
     <div class="dag-wrap">
       <svg viewBox="0 0 720 300" width="720" height="300" xmlns="http://www.w3.org/2000/svg" role="img"
@@ -670,12 +625,7 @@
 
   <div class="card">
     <h2>Mirror-trade method (GFI)</h2>
-    <p class="note">Following Global Financial Integrity's trade-misinvoicing methodology: compare Zambia-reported
-      exports against partner-reported imports for the same HS code and period. GFI flags flows where mirror volumes
-      differ by &gt;2.5% and the import/export unit-value ratio falls outside 0.8–1.8. Positive gaps
-      (partners report more than Zambia) suggest export under-reporting. Known noise sources: CIF vs FOB valuation,
-      re-export hubs (Switzerland, UAE, Hong Kong), and Zambia's landlocked transit through Tanzania, South Africa,
-      Mozambique, Namibia and Angola.</p>
+    <p class="note">Compares Zambia's reported exports against partner-reported imports for the same HS code and period, following Global Financial Integrity's method. GFI flags flows where mirror volumes differ by more than 2.5% and the unit-value ratio falls outside 0.8 to 1.8.<br><br>Known noise: CIF against FOB valuation, re-export hubs, and Zambia's landlocked transit through five neighbours.</p>
   </div>
 
   <div class="card">
@@ -683,27 +633,27 @@
     <ul class="sources">
       <li><strong>Formal-economy bias (the central caveat):</strong> Comtrade, EITI, PACRA, the cadastre and the
         clearing-agent list all see only the formal economy. The informal/artisanal streams where the arbitrage is
-        largest are invisible by construction — this map illuminates the formal shell and <em>infers</em> the void.</li>
+        largest are invisible by construction: this map illuminates the formal shell and <em>infers</em> the void.</li>
       <li><strong>Cadastre:</strong> the Landfolio portal's ArcGIS query endpoint is login-gated; license markers here
         are illustrative, not cadastre records.</li>
       <li><strong>Preview-tier trade data:</strong> the free Comtrade preview caps 500 records/query; any capped query
         is flagged in the data file metadata.</li>
-      <li><strong>Corridors are schematic</strong> — waypoint polylines, not surveyed alignments.</li>
+      <li><strong>Corridors are schematic</strong>: waypoint polylines, not surveyed alignments.</li>
       <li><strong>Legal transition:</strong> the Minerals Regulation Commission Act (No. 14 of 2024) may change portal
         URLs/access; re-verify sources before publication.</li>
     </ul>
   </div>
 
   <div class="card">
-    <h2>Data sources &amp; attribution</h2>
+    <h2>Sources and attribution</h2>
     <ul class="sources">
-      <li>UN Comtrade public preview API — trade values/quantities. Redistributable with attribution.</li>
-      <li>OpenStreetMap contributors — base map tiles (© OpenStreetMap, ODbL).</li>
-      <li>Corridor waypoints, operation markers, LME locations, clearing hubs — hand-authored from public sources
+      <li>UN Comtrade public preview API: trade values/quantities. Redistributable with attribution.</li>
+      <li>OpenStreetMap contributors: base map tiles (© OpenStreetMap, ODbL).</li>
+      <li>Corridor waypoints, operation markers, LME locations, clearing hubs: hand-authored from public sources
         (Trafigura/LAR releases, TAZARA MoU coverage, ZRA clearing-agents list, LME approved-warehouse locations,
         company disclosures). Illustrative.</li>
-      <li>Zambia EITI — production/export context (copper production 822,824 t in 2024).</li>
-      <li>GFI trade-misinvoicing methodology — mirror-analysis thresholds.</li>
+      <li>Zambia EITI: production/export context (copper production 822,824 t in 2024).</li>
+      <li>GFI trade-misinvoicing methodology: mirror-analysis thresholds.</li>
     </ul>
     <footer class="attrib">Built as a research MVP. Not investment advice. Rebuild the trade data with
       <code>pipeline/fetch_trade_data.ps1</code>.</footer>
@@ -712,23 +662,23 @@
 
 </main>
 
-<script src="data/trade_data.js?v=202608120200"></script>
-<script src="data/geo_layers.js?v=202608120200"></script>
-<script src="data/legal_layers.js?v=202608120200"></script>
+<script src="data/trade_data.js?v=202608120300"></script>
+<script src="data/geo_layers.js?v=202608120300"></script>
+<script src="data/legal_layers.js?v=202608120300"></script>
 <script src="data/zambia_adm0.js"></script>
-<script src="data/licenses_points.js?v=202608120200"></script>
-<script src="data/licenses_geo.js?v=202608120200"></script>
-<script src="data/kyc_data.js?v=202608120200"></script>
-<script src="data/kyc_court.js?v=202608120200"></script>
-<script src="data/production_data.js?v=202608120200"></script>
-<script src="data/register_data.js?v=202608120200"></script>
-<script src="data/business_data.js?v=202608120200"></script>
-<script src="data/trace_data.js?v=202608120200"></script>
-<script src="data/infra_layers.js?v=202608120200"></script>
-<script src="data/supply_data.js?v=202608120200"></script>
+<script src="data/licenses_points.js?v=202608120300"></script>
+<script src="data/licenses_geo.js?v=202608120300"></script>
+<script src="data/kyc_data.js?v=202608120300"></script>
+<script src="data/kyc_court.js?v=202608120300"></script>
+<script src="data/production_data.js?v=202608120300"></script>
+<script src="data/register_data.js?v=202608120300"></script>
+<script src="data/business_data.js?v=202608120300"></script>
+<script src="data/trace_data.js?v=202608120300"></script>
+<script src="data/infra_layers.js?v=202608120300"></script>
+<script src="data/supply_data.js?v=202608120300"></script>
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
         integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
-<script src="app.js?v=202608120200"></script>
+<script src="app.js?v=202608120300"></script>
 </body>
 </html>

@@ -1,13 +1,13 @@
-/* Zambian Copper Legibility Map & Bankability Scorecard — app logic */
+/* Zambian Copper Legibility Map & Bankability Scorecard: app logic */
 "use strict";
 
 const HS_LABELS = {
-  "740311": "7403.11 — Refined copper cathodes",
-  "2603": "2603 — Copper ores & concentrates",
-  "7402": "7402 — Unrefined / blister copper",
-  "7404": "7404 — Copper waste & scrap",
-  "7408": "7408 — Copper wire",
-  "8105": "8105 — Cobalt (mattes, unwrought, powders)",
+  "740311": "7403.11. Refined copper cathodes",
+  "2603": "2603. Copper ores & concentrates",
+  "7402": "7402. Unrefined / blister copper",
+  "7404": "7404. Copper waste & scrap",
+  "7408": "7408. Copper wire",
+  "8105": "8105. Cobalt (mattes, unwrought, powders)",
 };
 const PALETTE = ["#3987e5", "#e06a3a", "#22b381", "#eda100", "#d55181"];
 
@@ -39,10 +39,10 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
   // Zambia in focus: dim outside the border + a crisp light outline.
   if (window.ZMB_ADM0) {
     const geom = ZMB_ADM0.features[0].geometry;
-    const polys = geom.type === "MultiPolygon" ? geom.coordinates : [geom.coordinates];
+    const polys = geom.type === "MultiPolygon" ? geom.coordinates: [geom.coordinates];
     const holes = polys.map((rings) => rings[0].map(([lng, lat]) => [lat, lng]));
     const world = [[-89, -180], [-89, 180], [89, 180], [89, -180]];
-    L.polygon([world, ...holes], {
+    L.polygon([world,...holes], {
       stroke: false, fillColor: "#000000", fillOpacity: 0.32, interactive: false,
     }).addTo(map);
     L.geoJSON(ZMB_ADM0, {
@@ -53,34 +53,27 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
 
   const overlays = {};
 
-  // Corridors — white casing under the colored line for legibility on any tile
+  // Corridors: white casing under the colored line for legibility on any tile
   const corridorLayer = L.layerGroup();
   GEO.corridors.forEach((c) => {
-    L.polyline(c.waypoints, { color: "#ffffff", weight: 6, opacity: 0.85, interactive: false })
-      .addTo(corridorLayer);
+    L.polyline(c.waypoints, { color: "#ffffff", weight: 6, opacity: 0.85, interactive: false }).addTo(corridorLayer);
     L.polyline(c.waypoints, {
       color: c.color, weight: 3, opacity: 0.95,
-      dashArray: c.mode === "rail" ? null : "9 6",
-    })
-      .bindPopup(`<b>${c.name}</b><br><i>${c.mode} → ${c.port}</i><br>${c.status}`)
-      .bindTooltip(c.name, { sticky: true })
-      .addTo(corridorLayer);
+      dashArray: c.mode === "rail" ? null: "9 6",
+    }).bindPopup(`<b>${c.name}</b><br><i>${c.mode} → ${c.port}</i><br>${c.status}`).bindTooltip(c.name, { sticky: true }).addTo(corridorLayer);
   });
   overlays["Export corridors (schematic)"] = corridorLayer.addTo(map);
 
-  // Ports — labeled anchors at the corridor endpoints
+  // Ports: labeled anchors at the corridor endpoints
   const portLayer = L.layerGroup();
   GEO.ports.forEach((p) => {
-    L.circleMarker(p.latlng, { radius: 6.5, color: "#0b0b0b", weight: 2, fillColor: "#ffffff", fillOpacity: 1 })
-      .bindPopup(`<b>Port of ${p.name}</b>`)
-      .bindTooltip(p.name, {
+    L.circleMarker(p.latlng, { radius: 6.5, color: "#0b0b0b", weight: 2, fillColor: "#ffffff", fillOpacity: 1 }).bindPopup(`<b>Port of ${p.name}</b>`).bindTooltip(p.name, {
         permanent: true, direction: "bottom", offset: [0, 6], className: "port-label",
-      })
-      .addTo(portLayer);
+      }).addTo(portLayer);
   });
   overlays["Seaports"] = portLayer.addTo(map);
 
-  // Named operations — badge symbology, not dots: M = mine, R = refiner/smelter,
+  // Named operations: badge symbology, not dots: M = mine, R = refiner/smelter,
   // D = development project. Distinct shapes + letters read at a glance.
   const OP_BADGE = {
     mining:      { letter: "M", color: "#e06a3a", shape: "border-radius:4px" },
@@ -99,10 +92,8 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
           font:700 10.5px system-ui,sans-serif;color:#0d1117;">${b.letter}</div>`,
         iconSize: [22, 22], iconAnchor: [11, 11],
       }),
-    })
-      .bindTooltip(s.name.split("(")[0].trim(), { direction: "top", offset: [0, -10] })
-      .bindPopup(() => {
-        // production join is lazy — PRODUCTION and productionFor load after buildMap
+    }).bindTooltip(s.name.split("(")[0].trim(), { direction: "top", offset: [0, -10] }).bindPopup(() => {
+        // production join is lazy. PRODUCTION and productionFor load after buildMap
         let prod = "";
         if (typeof productionFor === "function") {
           const c = productionFor(s.name.toUpperCase());
@@ -110,14 +101,13 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
             const years = Object.keys(c.series).sort();
             const latest = years[years.length - 1];
             prod = `<br><b style="color:#e06a3a">${Number(c.series[latest]).toLocaleString()} t Cu (${latest})</b>` +
-              (years.length > 1 ? ` · ${years[0]}: ${Number(c.series[years[0]]).toLocaleString()} t` : "") +
-              (c.usd2023 ? ` · $${(c.usd2023 / 1e6).toFixed(0)}M value (2023)` : "") +
-              ` <span style="color:#8b98a5">— EITI</span>`;
+              (years.length > 1 ? ` · ${years[0]}: ${Number(c.series[years[0]]).toLocaleString()} t`: "") +
+              (c.usd2023 ? ` · $${(c.usd2023 / 1e6).toFixed(0)}M value (2023)`: "") +
+              ` <span style="color:#8b98a5">. EITI</span>`;
           }
         }
-        return `<b>${s.name}</b><br><i>${s.type === "processing" ? "Refiner / smelter" : s.type === "development" ? "Development project" : "Mine (large-scale)"}</i><br>${s.note}${prod}<br><span style="color:#8b98a5">Named-operation marker — approximate site location.</span>`;
-      })
-      .addTo(opLayer);
+        return `<b>${s.name}</b><br><i>${s.type === "processing" ? "Refiner / smelter": s.type === "development" ? "Development project": "Mine (large-scale)"}</i><br>${s.note}${prod}<br><span style="color:#8b98a5">Named-operation marker: approximate site location.</span>`;
+      }).addTo(opLayer);
   });
   overlays["Named operations: mines · refiners · projects"] = opLayer.addTo(map);
 
@@ -127,12 +117,11 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
     L.circleMarker(h.latlng, {
       radius: 4 + h.weight * 1.6, color: "#22b381", weight: 2,
       fillColor: "#22b381", fillOpacity: 0.25,
-    }).bindPopup(`<b>${h.name}</b><br>Licensed clearing agents: ${"●".repeat(h.weight)}<br>${h.note}<br><span style="color:#8b98a5">City-level cluster from the ZRA licensed-agents list.</span>`)
-      .addTo(clearLayer);
+    }).bindPopup(`<b>${h.name}</b><br>Licensed clearing agents: ${"●".repeat(h.weight)}<br>${h.note}<br><span style="color:#8b98a5">City-level cluster from the ZRA licensed-agents list.</span>`).addTo(clearLayer);
   });
   overlays["Customs clearing hubs (ZRA)"] = clearLayer.addTo(map);
 
-  // Real license layer — NGDR open-WFS centroids joined with MMMD revocation lists
+  // Real license layer. NGDR open-WFS centroids joined with MMMD revocation lists
   const LIC_GROUPS = {
     LEL: ["Exploration", "#3987e5"], SEL: ["Exploration", "#3987e5"], PL: ["Exploration", "#3987e5"], P_LEL: ["Exploration", "#3987e5"],
     SML: ["Mining", "#e06a3a"], LML: ["Mining", "#e06a3a"], P_SML: ["Mining", "#e06a3a"], P_LML: ["Mining", "#e06a3a"],
@@ -143,18 +132,18 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
   };
   // IMPORTANT: every license shown is ON the Jun-2025 ACTIVE register, so none is
   // currently cancelled. The flags are point-in-time official NOTICES about
-  // curable or historical matters — not proof of current bad standing:
+  // curable or historical matters, not proof of current bad standing:
   //  - The "Final Public Default Notice" (18 Jun 2025) is a Section-72 SHOW-CAUSE
   //    notice: it lists curable breaches (unpaid area charges, unsubmitted
   //    quarterly/annual reports, unregistered pegging certificate) with a 30-DAY
   //    remedy window. A holder still on the active register most likely cured it.
   //  - An MLC-78 (Apr 2024) cancellation on an active-register license did NOT
-  //    stick (~1,200 appealed; many reinstated) — adverse history, not status.
+  //    stick (~1,200 appealed; many reinstated): adverse history, not status.
   // Amber = single flag (verify). Red = BOTH (repeat non-compliance).
   const FLAG_TEXT = {
-    1: "◉ Listed in the 18 Jun 2025 default (show-cause) notice — a curable compliance breach with a 30-day remedy window. Still on the active register: verify, not proof of current default.",
-    2: "◉ Cancelled at MLC-78 (Apr 2024) but on the Jun-2025 active register — reinstated. Adverse history, not current status.",
-    3: "⚠ Repeat non-compliance: an MLC-78 (Apr 2024) cancellation AND the Jun-2025 show-cause notice. Still on the active register — verify.",
+    1: "◉ Listed in the 18 Jun 2025 default (show-cause) notice, a curable compliance breach with a 30-day remedy window. Still on the active register: verify, not proof of current default.",
+    2: "◉ Cancelled at MLC-78 (Apr 2024) but on the Jun-2025 active register: reinstated. Adverse history, not current status.",
+    3: "⚠ Repeat non-compliance: an MLC-78 (Apr 2024) cancellation AND the Jun-2025 show-cause notice. Still on the active register: verify.",
   };
   const isRed = (f) => f === 3; // red only for repeat non-compliance
   if (window.LICENSES_GEO && LICENSES_GEO.features.length) {
@@ -164,7 +153,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
       "Processing": { color: "#9a7fd1", desc: "smelters/refineries (MPL)" },
       "Artisanal": { color: "#22b381", desc: "artisanal rights (AMR)" },
       "Gemstone": { color: "#d55181", desc: "gemstone licenses" },
-      "Exploration": { color: "#3987e5", desc: "exploration only — no production" },
+      "Exploration": { color: "#3987e5", desc: "exploration only, no production" },
       "Bidding area": { color: "#8b98a5", desc: "gazetted for bidding" },
     };
     const DEFAULT_ON = new Set(["Mining", "Processing", "Artisanal", "Gemstone"]);
@@ -174,19 +163,19 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
       { min: 1000, label: "≥1,000 ha" },
       { min: 10000, label: "≥10,000 ha" },
     ];
-    const bucketOf = (ha) => (ha >= 10000 ? 3 : ha >= 1000 ? 2 : ha >= 100 ? 1 : 0);
+    const bucketOf = (ha) => (ha >= 10000 ? 3: ha >= 1000 ? 2: ha >= 100 ? 1: 0);
 
     const polyPopup = (p) => {
       const g = LIC_GROUPS[p.t] || [p.t, "#9aa7b6"];
       return `<b>${p.c}</b><br><i style="color:${g[1]}">${g[0]} (${p.t})</i>` +
-        (p.h ? `<br>${p.h}` : "") +
-        (p.m ? `<br><span style="color:#9aa7b6">${p.m}</span>` : "") +
-        (p.e ? `<br>Expires: ${p.e}` : "") + (p.a ? ` · ${Number(p.a).toLocaleString()} ha` : "") +
-        (p.f ? `<br><b style="color:${isRed(p.f) ? "#f85149" : "#f5a623"}">${FLAG_TEXT[p.f]}</b>` : "") +
-        `<br><span style="color:#8b98a5">License parcel — NGDR GeoServer snapshot (active register, Jun 2025).</span>`;
+        (p.h ? `<br>${p.h}`: "") +
+        (p.m ? `<br><span style="color:#9aa7b6">${p.m}</span>`: "") +
+        (p.e ? `<br>Expires: ${p.e}`: "") + (p.a ? ` · ${Number(p.a).toLocaleString()} ha`: "") +
+        (p.f ? `<br><b style="color:${isRed(p.f) ? "#f85149": "#f5a623"}">${FLAG_TEXT[p.f]}</b>`: "") +
+        `<br><span style="color:#8b98a5">License parcel. NGDR GeoServer snapshot (active register, Jun 2025).</span>`;
     };
 
-    // Partition features by group × size bucket. SHADED PARCELS ONLY — no dot mode.
+    // Partition features by group × size bucket. SHADED PARCELS ONLY, no dot mode.
     const featsBy = {};
     const groups = {};
     Object.keys(GROUP_META).forEach((g) => {
@@ -204,7 +193,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
 
     // One batched GeoJSON layer per group × bucket (clean licenses) and the same
     // for flagged: red = in the current (Jun-2025) default notice; amber = only a
-    // historical MLC-78 cancellation — the license is on the active register, so
+    // historical MLC-78 cancellation, the license is on the active register, so
     // the cancellation didn't stick (likely reinstated on appeal). Never label
     // an active-register license "cancelled".
     const polyLayer = {}, flagPolyLayer = {};
@@ -218,18 +207,15 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
               renderer: licCanvas, smoothFactor: 1.1,
               style: { color, weight: 1.2, opacity: 0.9, fillColor: color, fillOpacity: 0.3 },
               onEachFeature: (f, layer) => layer.bindPopup(() => polyPopup(f.properties)),
-            })
-          : null;
+            }): null;
         const flagged = feats.filter((f) => f.properties.f > 0);
         flagPolyLayer[g][b] = flagged.length
           ? L.geoJSON({ type: "FeatureCollection", features: flagged }, {
               renderer: licCanvas, smoothFactor: 1.1,
               style: (f) => isRed(f.properties.f)
-                ? { color: "#f85149", weight: 1.3, opacity: 0.95, fillColor: "#f85149", fillOpacity: 0.35 }
-                : { color: "#f5a623", weight: 1.3, opacity: 0.95, fillColor: "#f5a623", fillOpacity: 0.3 },
+                ? { color: "#f85149", weight: 1.3, opacity: 0.95, fillColor: "#f85149", fillOpacity: 0.35 }: { color: "#f5a623", weight: 1.3, opacity: 0.95, fillColor: "#f5a623", fillOpacity: 0.3 },
               onEachFeature: (f, layer) => layer.bindPopup(() => polyPopup(f.properties)),
-            })
-          : null;
+            }): null;
       }
     });
 
@@ -249,11 +235,11 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
     // Scale-dependent parcel styling: zoomed out, thick strokes + heavy fill make
     // license clusters read as FILLED REGIONS (not specks); zoomed in, thin crisp
     // parcel borders like the cadastre portal.
-    const zoomBand = () => { const z = map.getZoom(); return z >= 9 ? 2 : z >= 7 ? 1 : 0; };
+    const zoomBand = () => { const z = map.getZoom(); return z >= 9 ? 2: z >= 7 ? 1: 0; };
     const BAND_STYLE = [
-      { w: 4.5, fo: 0.55 },  // national view — solid filled coverage
+      { w: 4.5, fo: 0.55 },  // national view: solid filled coverage
       { w: 2.6, fo: 0.45 },  // regional view
-      { w: 1.2, fo: 0.30 },  // parcel view — crisp borders
+      { w: 1.2, fo: 0.30 },  // parcel view: crisp borders
     ];
     let lastBand = -1;
     function applyZoomStyle() {
@@ -266,8 +252,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
         arr.forEach((l) => l && l.setStyle({ color, weight: w, opacity: 0.95, fillColor: color, fillOpacity: fo }));
       });
       const flagStyle = (f) => isRed(f.properties.f)
-        ? { color: "#f85149", weight: w, opacity: 0.95, fillColor: "#f85149", fillOpacity: Math.min(0.65, fo + 0.05) }
-        : { color: "#f5a623", weight: w, opacity: 0.95, fillColor: "#f5a623", fillOpacity: fo };
+        ? { color: "#f85149", weight: w, opacity: 0.95, fillColor: "#f85149", fillOpacity: Math.min(0.65, fo + 0.05) }: { color: "#f5a623", weight: w, opacity: 0.95, fillColor: "#f5a623", fillOpacity: fo };
       Object.values(flagPolyLayer).forEach((arr) => arr.forEach((l) => l && l.setStyle(flagStyle)));
       Object.values(mineralCache).forEach((entry) => {
         if (entry.lic) entry.lic.setStyle({ color: entry.color, weight: w, opacity: 0.95, fillColor: entry.color, fillOpacity: fo });
@@ -295,14 +280,13 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
             renderer: licCanvas, smoothFactor: 1.1,
             style: { color, weight: w, opacity: 0.95, fillColor: color, fillOpacity: fo },
             onEachFeature: (f, layer) => layer.bindPopup(() => polyPopup(f.properties)),
-          }) : null,
+          }): null,
           flag: flagged.length ? L.geoJSON({ type: "FeatureCollection", features: flagged }, {
             renderer: licCanvas, smoothFactor: 1.1,
             style: (f) => isRed(f.properties.f)
-              ? { color: "#f85149", weight: w, opacity: 0.95, fillColor: "#f85149", fillOpacity: Math.min(0.65, fo + 0.05) }
-              : { color: "#f5a623", weight: w, opacity: 0.95, fillColor: "#f5a623", fillOpacity: fo },
+              ? { color: "#f85149", weight: w, opacity: 0.95, fillColor: "#f85149", fillOpacity: Math.min(0.65, fo + 0.05) }: { color: "#f5a623", weight: w, opacity: 0.95, fillColor: "#f5a623", fillOpacity: fo },
             onEachFeature: (f, layer) => layer.bindPopup(() => polyPopup(f.properties)),
-          }) : null,
+          }): null,
         };
       }
       return mineralCache[key];
@@ -326,7 +310,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
     applyZoomStyle(); // apply the current zoom band's style at load, not just on first zoom
 
     overlays["Active license areas (filters below)"] = licContainer.addTo(map);
-    overlays["⚑ Flagged in an official notice (verify — not current cancellation)"] = flagContainer.addTo(map);
+    overlays["⚑ Flagged in an official notice (verify, not current cancellation)"] = flagContainer.addTo(map);
     window._licLayers = { licContainer, flagContainer, groups, state, refreshLicenses, polyLayer };
 
     // Filter bar: type pills + size pills
@@ -338,7 +322,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
           if (!grp.n) return "";
           return `<button class="lic-pill" data-group="${g}" aria-pressed="${DEFAULT_ON.has(g)}"
             style="--pill-color:${meta.color}" title="${meta.desc}">
-            <span class="dot"></span>${g} <span class="n">${grp.n.toLocaleString()}${grp.nFlag ? " · " + grp.nFlag.toLocaleString() + "⚑" : ""}</span>
+            <span class="dot"></span>${g} <span class="n">${grp.n.toLocaleString()}${grp.nFlag ? " · " + grp.nFlag.toLocaleString() + "⚑": ""}</span>
           </button>`;
         }).join("") +
         '<span class="flt-label" style="margin-left:12px">Min size:</span>' +
@@ -398,7 +382,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
         }),
       }).bindPopup(
         `<b>${c.name}</b><br><i style="color:${st.color}">${st.label} · ${c.years}</i><br>${c.summary}` +
-        (c.source ? `<br><a href="${c.sourceUrl || "#"}" target="_blank" rel="noopener">${c.source}</a>` : "") +
+        (c.source ? `<br><a href="${c.sourceUrl || "#"}" target="_blank" rel="noopener">${c.source}</a>`: "") +
         `<br><span style="color:#8b98a5">Location approximate.</span>`
       );
       m._case = c; m._idx = i;
@@ -424,12 +408,12 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
     [badge("D", "#22b381", "border-radius:3px;border-style:dashed;"), "Development project"],
     ['<span class="swatch" style="background:rgba(224,106,58,0.45);border:1.5px solid #e06a3a"></span>', "License area (shaded by type; filled at low zoom)"],
     ['<span class="swatch" style="background:rgba(248,81,73,0.5);border:1.5px solid #f85149"></span>', "Repeat non-compliance (2024 cancellation + 2025 notice)"],
-    ['<span class="swatch" style="background:rgba(245,166,35,0.45);border:1.5px solid #f5a623"></span>', "Flagged in an official notice — show-cause default or reinstated cancellation (verify)"],
+    ['<span class="swatch" style="background:rgba(245,166,35,0.45);border:1.5px solid #f5a623"></span>', "Flagged in an official notice: show-cause default or reinstated cancellation (verify)"],
     ['<span class="swatch dot" style="background:rgba(34,179,129,0.25);border:2px solid #22b381"></span>', "Clearing-agent hub (size = concentration)"],
     ['<span class="swatch dot" style="background:#fcfcfb;border:2px solid #0b0b0b"></span>', "Seaport"],
     ['<span class="swatch line" style="background:#e4572e"></span>', "Lobito (rail)"],
     ['<span class="swatch line" style="background:#2e9db5"></span>', "TAZARA / Dar (rail)"],
-    ['<span class="swatch line" style="background:#8d76c9"></span>', "North–South / Durban"],
+    ['<span class="swatch line" style="background:#8d76c9"></span>', "North-South / Durban"],
     ['<span class="swatch line" style="background:#2fb59f"></span>', "Beira"],
     ['<span class="swatch line" style="background:#bc6c25"></span>', "Walvis Bay"],
   ].map(([sw, label]) => `<span class="item">${sw}${label}</span>`).join("");
@@ -438,7 +422,7 @@ document.querySelectorAll("nav.tabs button").forEach((btn) => {
 /* ================================================================
    CORRIDORS 3D (deck.gl + MapLibre dark basemap)
 ================================================================ */
-const CORRIDOR_HUB = [28.21, -12.8]; // Kitwe — the Copperbelt origin for arcs
+const CORRIDOR_HUB = [28.21, -12.8]; // Kitwe, the Copperbelt origin for arcs
 
 function haversineKm(a, b) {
   const R = 6371, toR = Math.PI / 180;
@@ -461,9 +445,8 @@ const CORRIDOR_3D = GEO.corridors.map((c) => {
     return km;
   });
   const total = km || 1;
-  return {
-    ...c, path, km: Math.round(km),
-    timestamps: timestamps.map((t) => (t / total) * 100), // normalize to 0–100 loop
+  return {...c, path, km: Math.round(km),
+    timestamps: timestamps.map((t) => (t / total) * 100), // normalize to 0-100 loop
     rgb: hexToRgb(c.color),
     endpoint: path[path.length - 1],
   };
@@ -516,8 +499,7 @@ function corridorLayers(time) {
     new deck.ScatterplotLayer({
       id: "nodes",
       data: [
-        { pos: CORRIDOR_HUB, r: 9, color: [237, 161, 0], name: "Copperbelt (Kitwe hub)" },
-        ...CORRIDOR_3D.map((d) => ({ pos: d.endpoint, r: 6, color: d.rgb, name: d.port })),
+        { pos: CORRIDOR_HUB, r: 9, color: [237, 161, 0], name: "Copperbelt (Kitwe hub)" },...CORRIDOR_3D.map((d) => ({ pos: d.endpoint, r: 6, color: d.rgb, name: d.port })),
       ],
       getPosition: (d) => d.pos,
       getRadius: (d) => d.r, radiusUnits: "pixels",
@@ -529,8 +511,7 @@ function corridorLayers(time) {
     new deck.TextLayer({
       id: "labels",
       data: [
-        { pos: CORRIDOR_HUB, text: "COPPERBELT", size: 13 },
-        ...GEO.ports.map((p) => ({ pos: [p.latlng[1], p.latlng[0]], text: p.name.toUpperCase(), size: 11 })),
+        { pos: CORRIDOR_HUB, text: "COPPERBELT", size: 13 },...GEO.ports.map((p) => ({ pos: [p.latlng[1], p.latlng[0]], text: p.name.toUpperCase(), size: 11 })),
       ],
       getPosition: (d) => d.pos,
       getText: (d) => d.text,
@@ -548,7 +529,7 @@ function initCorridors3D() {
   if (_deck || typeof deck === "undefined") return;
   _deck = new deck.DeckGL({
     container: "deck-container",
-    map: typeof maplibregl !== "undefined" ? maplibregl : undefined,
+    map: typeof maplibregl !== "undefined" ? maplibregl: undefined,
     mapStyle: "https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json",
     initialViewState: { longitude: 27.5, latitude: -16.5, zoom: 4.05, pitch: 52, bearing: -12 },
     controller: true,
@@ -556,11 +537,11 @@ function initCorridors3D() {
     getTooltip: ({ object }) =>
       object && (object.name || object.port) && {
         html: `<div style="font-family:system-ui;font-size:12px;max-width:240px">
-                 <b>${object.name || object.port}</b>${object.status ? "<br>" + object.status : ""}</div>`,
+                 <b>${object.name || object.port}</b>${object.status ? "<br>" + object.status: ""}</div>`,
         style: { background: "#16181d", color: "#eceade", borderRadius: "8px", padding: "8px 10px" },
       },
   });
-  // Animation runs ONLY while the corridors tab is visible — a permanent RAF loop
+  // Animation runs ONLY while the corridors tab is visible, a permanent RAF loop
   // re-rendering a hidden WebGL scene was janking the whole app.
   const LOOP = 114; // 100 route + trail
   const start = performance.now();
@@ -585,7 +566,7 @@ function initCorridors3D() {
   // infographic cards
   document.getElementById("corridor-cards").innerHTML = CORRIDOR_3D.map((c, i) => `
     <div class="corridor-card" style="border-top-color:${c.color}" data-i="${i}">
-      <div class="meta">${c.mode === "rail" ? "🚂 rail" : c.mode === "road" ? "🚛 road" : "🚛/🚂 road + rail"} → ${c.port.split(",")[0].replace("Port of ", "")}</div>
+      <div class="meta">${c.mode === "rail" ? "🚂 rail": c.mode === "road" ? "🚛 road": "🚛/🚂 road + rail"} → ${c.port.split(",")[0].replace("Port of ", "")}</div>
       <h4>${c.name}</h4>
       <div class="dist">~${c.km.toLocaleString()} <small>km (schematic)</small></div>
       <p class="status">${c.status}</p>
@@ -611,13 +592,13 @@ function initCorridors3D() {
 (function buildHeroStats() {
   const el = document.getElementById("hero-stats");
   if (!el) return;
-  const nLic = window.LICENSES ? LICENSES.points.length : 0;
-  const nFlag = window.LICENSES ? LICENSES.points.filter((p) => p[8] > 0).length : 0;
+  const nLic = window.LICENSES ? LICENSES.points.length: 0;
+  const nFlag = window.LICENSES ? LICENSES.points.filter((p) => p[8] > 0).length: 0;
   const nCases = (window.LEGAL && LEGAL.cases.length) || 0;
-  const nAdverse = window.KYC ? Object.values(KYC.lists).reduce((s, l) => s + l.rows.length, 0) : 0;
+  const nAdverse = window.KYC ? Object.values(KYC.lists).reduce((s, l) => s + l.rows.length, 0): 0;
   el.innerHTML = [
     [nLic.toLocaleString(), "active licenses mapped", "var(--s1)"],
-    [nLic ? Math.round((100 * nFlag) / nLic) + "%" : "–", "flagged in official notices", "var(--critical)"],
+    [nLic ? Math.round((100 * nFlag) / nLic) + "%": "-", "flagged in official notices", "var(--critical)"],
     [nAdverse.toLocaleString(), "adverse-list records", "var(--serious)"],
     [nCases, "documented disputes & scams", "#9a7fd1"],
     ["5", "export corridors to tidewater", "var(--s3)"],
@@ -633,7 +614,7 @@ const KYC_ENGINE = (() => {
   const GENERIC = new Set(["MINING", "MINERALS", "MINERAL", "LIMITED", "LTD", "COMPANY", "RESOURCES",
     "ZAMBIA", "ZAMBIAN", "ENTERPRISES", "ENTERPRISE", "INVESTMENTS", "INVESTMENT", "GROUP", "HOLDINGS",
     "GENERAL", "DEALERS", "SUPPLIERS", "AND", "THE", "CORPORATION", "INTERNATIONAL", "GLOBAL",
-    // domain words that appear in case narratives — too generic to identify an entity
+    // domain words that appear in case narratives: too generic to identify an entity
     "METAL", "METALS", "COPPER", "COBALT", "GOLD", "GEMSTONE", "GEMSTONES", "STONE", "STONES",
     "QUARRY", "QUARRYING", "EXPLORATION", "DEVELOPMENT", "CONSTRUCTION", "TRADING", "SERVICES",
     "LOGISTICS", "VENTURES", "INDUSTRIES", "COMMODITIES", "AGGREGATES", "CONCRETE", "MINES", "MINE"]);
@@ -641,8 +622,7 @@ const KYC_ENGINE = (() => {
 
   function splitParties(s) {
     if (!s) return [];
-    return s.replace(/\(\s*[\d.]+\s*%\s*\)/g, "|").split(/[|;]+/)
-      .map((x) => x.replace(/^[,\s]+|[,\s]+$/g, "")).filter((x) => x.length > 2);
+    return s.replace(/\(\s*[\d.]+\s*%\s*\)/g, "|").split(/[|;]+/).map((x) => x.replace(/^[,\s]+|[,\s]+$/g, "")).filter((x) => x.length > 2);
   }
   const norm = (s) => s.toUpperCase().replace(/[^A-Z0-9 ]/g, " ").replace(/\s+/g, " ").trim();
 
@@ -672,14 +652,14 @@ const KYC_ENGINE = (() => {
         });
       });
     }
-    // ZambiaLII judgment hits (scraped, exact-phrase) — keyed by uppercase holder name
+    // ZambiaLII judgment hits (scraped, exact-phrase): keyed by uppercase holder name
     if (window.KYC_COURT) {
       Object.entries(KYC_COURT.names).forEach(([nm, rec]) => {
         const e = ent(nm);
         if (e) e.court = rec;
       });
     }
-    // Commodity index — every mineral named on any license → the point rows that list it
+    // Commodity index, every mineral named on any license → the point rows that list it
     window._mineralIndex = new Map();
     if (window.LICENSES) {
       LICENSES.points.forEach((pt, i) => {
@@ -695,7 +675,7 @@ const KYC_ENGINE = (() => {
     return index;
   }
 
-  // Mineral / commodity search — matches the query against commodity names on the
+  // Mineral / commodity search: matches the query against commodity names on the
   // register (Beryllium, Neodymium, Cobalt, …), returns matching minerals with
   // holder/parcel counts.
   function mineralSearch(q) {
@@ -736,7 +716,7 @@ const KYC_ENGINE = (() => {
     return out.sort((a, b) => (b.licenses.length + b.adverse.length) - (a.licenses.length + a.adverse.length));
   }
 
-  // Near-name lookup for the no-exact-match case — "Metalex" vs "Metalix" style
+  // Near-name lookup for the no-exact-match case: "Metalex" vs "Metalix" style
   // confusions are a classic KYC trap, deliberate or accidental.
   function lev(a, b) {
     if (Math.abs(a.length - b.length) > 2) return 99;
@@ -745,7 +725,7 @@ const KYC_ENGINE = (() => {
     for (let i = 1; i <= m; i++) {
       const cur = [i];
       for (let j = 1; j <= n; j++) {
-        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+        cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0: 1));
       }
       prev = cur;
     }
@@ -760,7 +740,7 @@ const KYC_ENGINE = (() => {
       const eTokens = e.key.split(" ").filter((t) => t.length >= 5 && !GENERIC.has(t));
       const close = qTokens.some((qt) => eTokens.some((et) => {
         const d = lev(qt, et);
-        return d > 0 && d <= (qt.length >= 8 ? 2 : 1);
+        return d > 0 && d <= (qt.length >= 8 ? 2: 1);
       }));
       if (close) out.push(e);
       if (out.length >= 5) break;
@@ -773,7 +753,7 @@ const KYC_ENGINE = (() => {
     const tokens = entity.key.split(" ").filter((t) => t.length >= 4 && !GENERIC.has(t));
     if (!tokens.length) return [];
     return LEGAL.cases.filter((c) => {
-      // exact word match, not substring — "METAL" must not hit "METALS"
+      // exact word match, not substring: "METAL" must not hit "METALS"
       const words = new Set(norm(c.name + " " + c.summary).split(" "));
       return tokens.some((t) => words.has(t));
     });
@@ -792,7 +772,7 @@ const KYC_ENGINE = (() => {
     // MLC-78 (Apr 2024) cancellations vs the Jun-2025 ACTIVE register: a code still
     // on the register means the cancellation didn't stick (reinstated on appeal).
     // Absence from the register is only "not currently active", never proof the
-    // cancellation was executed — statuses change and the snapshot is one date.
+    // cancellation was executed: statuses change and the snapshot is one date.
     if (!window._activeCodeSet && window.LICENSES) {
       window._activeCodeSet = new Set(LICENSES.points.map((pt) => pt[2]));
     }
@@ -803,42 +783,42 @@ const KYC_ENGINE = (() => {
     let level = "green";
     if (unresolved.length) {
       // still-operating entities (active licenses on the register) get CAUTION, not HIGH RISK
-      level = entity.licenses.length ? "amber" : "red";
-      reasons.push(`${entity.licenses.length ? "⚠" : "✖"} ${unresolved.length} license(s) cancelled at MLC-78 (Apr 2024) and not on the Jun-2025 active register — the cancellation appears to have stuck (verify current status on the cadastre portal).`);
+      level = entity.licenses.length ? "amber": "red";
+      reasons.push(`${entity.licenses.length ? "⚠": "✖"} ${unresolved.length} license(s) cancelled at MLC-78 (Apr 2024) and not on the Jun-2025 active register, the cancellation appears to have stuck (verify current status on the cadastre portal).`);
     }
     if (reinstated.length) {
       if (level === "green") level = "amber";
-      reasons.push(`◉ ${reinstated.length} license(s) were cancelled at MLC-78 (Apr 2024) but appear on the Jun-2025 active register — likely reinstated on appeal. Adverse history, not current status.`);
+      reasons.push(`◉ ${reinstated.length} license(s) were cancelled at MLC-78 (Apr 2024) but appear on the Jun-2025 active register: likely reinstated on appeal. Adverse history, not current status.`);
     }
-    if (fraudDisputes.length) { level = "red"; reasons.push(`✖ Possible mention in fraud/scam case(s): ${fraudDisputes.map((c) => c.name).join("; ")} — verify identity match.`); }
+    if (fraudDisputes.length) { level = "red"; reasons.push(`✖ Possible mention in fraud/scam case(s): ${fraudDisputes.map((c) => c.name).join("; ")}: verify identity match.`); }
     if (defaults.length) {
       // Show-cause default notices list CURABLE breaches (unpaid area charges,
       // unsubmitted reports) with a 30-day remedy window. A holder still on the
-      // active register most likely cured it — a note to verify, not proof of
+      // active register most likely cured it, a note to verify, not proof of
       // bad standing, and NOT a reason to raise the risk level on its own.
       const reportOnly = defaults.every((d) => /report|submission|pegging|program/i.test(d.detail || ""));
-      const breachKind = reportOnly ? "unsubmitted reports / paperwork" : "unpaid area charges or compliance breaches";
-      reasons.push(`◉ ${defaults.length} license(s) listed in an official show-cause default notice (${breachKind}) — curable, 30-day remedy window; the license(s) remain on the active register. Verify current standing; not proof of default.`);
+      const breachKind = reportOnly ? "unsubmitted reports / paperwork": "unpaid area charges or compliance breaches";
+      reasons.push(`◉ ${defaults.length} license(s) listed in an official show-cause default notice (${breachKind}): curable, 30-day remedy window; the license(s) remain on the active register. Verify current standing; not proof of default.`);
     }
     if (expired.length) {
       if (level === "green") level = "amber";
       reasons.push(`⚠ ${expired.length} of ${lics.length} register license(s) show expiry dates in the past.`);
     }
     const otherDisputes = disputes.filter((c) => c.category !== "fraud-scam");
-    if (otherDisputes.length) reasons.push(`◆ Possible dispute-index mention(s): ${otherDisputes.map((c) => c.name).join("; ")} — verify identity match.`);
-    // EITI-verified producer — a strong positive signal for the smell test
-    const prod = typeof productionFor === "function" ? productionFor(entity.key) : null;
+    if (otherDisputes.length) reasons.push(`◆ Possible dispute-index mention(s): ${otherDisputes.map((c) => c.name).join("; ")}: verify identity match.`);
+    // EITI-verified producer, a strong positive signal for the smell test
+    const prod = typeof productionFor === "function" ? productionFor(entity.key): null;
     if (prod) {
       const years = Object.keys(prod.series).sort();
       const latest = years[years.length - 1];
       reasons.push(`✓ EITI-verified producer: ${Number(prod.series[latest]).toLocaleString()} t copper in ${latest}` +
-        (prod.usd2023 ? ` ($${(prod.usd2023 / 1e6).toFixed(0)}M value, 2023)` : "") +
-        ` — company-level production published via the EITI Fusion portal.`);
+        (prod.usd2023 ? ` ($${(prod.usd2023 / 1e6).toFixed(0)}M value, 2023)`: "") +
+        `: company-level production published via the EITI Fusion portal.`);
     }
     const court = entity.court || null;
     if (court && court.n > 0) {
       if (level === "green") level = "amber";
-      reasons.push(`⚖ ${court.n} published judgment(s) on ZambiaLII match this name exactly — review the cases below (party role not determined automatically).`);
+      reasons.push(`⚖ ${court.n} published judgment(s) on ZambiaLII match this name exactly: review the cases below (party role not determined automatically).`);
     }
     if (!reasons.length) reasons.push("No adverse findings in the sources checked (register snapshot, MLC-78 list, 2023/2025 default notices, disputes index, ZambiaLII judgments). Absence of findings is not proof of good standing.");
     return { level, reasons, disputes, lics, cancelled, defaults, court };
@@ -865,38 +845,33 @@ const KYC_ENGINE = (() => {
       // Also offer dispute-index cases whose text mentions the query (e.g. "Vedanta"
       // appears in cases but holds no Zambian license under that name).
       const nq = q.toUpperCase();
-      const caseHits = (window.LEGAL ? LEGAL.cases : [])
-        .map((c, i) => ({ c, i }))
-        .filter(({ c }) => (c.name + " " + c.summary).toUpperCase().includes(nq))
-        .slice(0, 6);
+      const caseHits = (window.LEGAL ? LEGAL.cases: []).map((c, i) => ({ c, i })).filter(({ c }) => (c.name + " " + c.summary).toUpperCase().includes(nq)).slice(0, 6);
       // No exact match → surface near-spellings we DO know. "Metalex" vs
-      // "Metalix" style confusion is a classic KYC trap — make it visible.
-      const similar = (!hits.length && !minerals.length && q.length >= 5) ? KYC_ENGINE.similarNames(q) : [];
+      // "Metalix" style confusion is a classic KYC trap: make it visible.
+      const similar = (!hits.length && !minerals.length && q.length >= 5) ? KYC_ENGINE.similarNames(q): [];
       const bits = [];
-      if (hits.length) bits.push(`${hits.length}${hits.length >= 30 ? "+" : ""} entities`);
+      if (hits.length) bits.push(`${hits.length}${hits.length >= 30 ? "+": ""} entities`);
       if (minerals.length) bits.push(`${minerals.length} mineral(s)`);
       if (caseHits.length) bits.push(`${caseHits.length} dispute case(s)`);
-      countEl.textContent = bits.length ? bits.join(" · ")
-        : similar.length ? "no exact match — similar names below (verify: these may be DIFFERENT entities)"
-        : "no matches in holders, license codes, minerals, disputes, or similar spellings";
+      countEl.textContent = bits.length ? bits.join(" · "): similar.length ? "no exact match: similar names below (verify: these may be DIFFERENT entities)": "no matches in holders, license codes, minerals, disputes, or similar spellings";
       suggest.innerHTML =
         minerals.map((m) => `
         <div class="kyc-suggestion kyc-mineral" data-mineral="${encodeURIComponent(m.mineral.toUpperCase())}" style="border-color:var(--s3)">
-          <span>⬡ ${m.mineral} <span style="color:var(--muted);font-weight:400">— show all licenses listing this mineral</span></span>
+          <span>⬡ ${m.mineral} <span style="color:var(--muted);font-weight:400">: show all licenses listing this mineral</span></span>
           <span class="tags">${m.parcels.toLocaleString()} parcel(s) · ${m.holders.toLocaleString()} holder(s)</span>
         </div>`).join("") +
         (similar.length ? `
         <div style="font-size:11.5px;color:var(--warning);margin:2px 0 6px">⚠ No exact match for “${q.replace(/</g, "&lt;")}”.
-        Similar names in the official data — a close spelling can be a different company entirely:</div>` : "") +
+        Similar names in the official data, a close spelling can be a different company entirely:</div>`: "") +
         similar.map((e) => `
         <div class="kyc-suggestion" data-key="${encodeURIComponent(e.key)}" style="border-color:var(--warning)">
           <span>≈ ${e.name}</span>
-          <span class="tags">${e.licenses.length} license(s)${e.adverse.length ? ` · <span class="hit">${e.adverse.length} adverse</span>` : ""}</span>
+          <span class="tags">${e.licenses.length} license(s)${e.adverse.length ? ` · <span class="hit">${e.adverse.length} adverse</span>`: ""}</span>
         </div>`).join("") +
         hits.map((e) => `
         <div class="kyc-suggestion" data-key="${encodeURIComponent(e.key)}">
           <span>${e.name}</span>
-          <span class="tags">${e.licenses.length} license(s)${e.adverse.length ? ` · <span class="hit">${e.adverse.length} adverse</span>` : ""}${e.court && e.court.n ? ` · ⚖ ${e.court.n}` : ""}</span>
+          <span class="tags">${e.licenses.length} license(s)${e.adverse.length ? ` · <span class="hit">${e.adverse.length} adverse</span>`: ""}${e.court && e.court.n ? ` · ⚖ ${e.court.n}`: ""}</span>
         </div>`).join("") +
         caseHits.map(({ c, i }) => `
         <div class="kyc-suggestion kyc-case" data-case="${i}">
@@ -960,7 +935,7 @@ const KYC_ENGINE = (() => {
       `${entity.licenses.length} register license(s) · ${entity.adverse.length} adverse-list entr(ies)`;
     const badge = document.getElementById("kyc-badge");
     badge.className = "risk-badge " + a.level;
-    badge.textContent = a.level === "red" ? "HIGH RISK" : a.level === "amber" ? "CAUTION" : "NO ADVERSE FINDINGS";
+    badge.textContent = a.level === "red" ? "HIGH RISK": a.level === "amber" ? "CAUTION": "NO ADVERSE FINDINGS";
     document.getElementById("kyc-reasons").innerHTML = a.reasons.map((r) => `<li>${r}</li>`).join("");
 
     const q = encodeURIComponent(entity.name);
@@ -978,12 +953,9 @@ const KYC_ENGINE = (() => {
         a.lics.map((p) => `<tr>
           <td style="text-align:left;font-weight:600">${p[2]}</td><td style="text-align:left">${p[3]}</td>
           <td style="text-align:left;max-width:280px">${p[5]}</td>
-          <td>${Number(p[7]).toLocaleString()}</td><td>${p[6]}${p[6] && p[6] < "2026-07" ? " ⚠" : ""}</td>
-          <td style="text-align:left;color:${p[8] === 3 ? "var(--critical)" : p[8] ? "var(--warning)" : "var(--good)"}">${
-            p[8] === 3 ? "Active — repeat non-compliance (MLC-78 + Jun-2025 notice)"
-            : (p[8] & 1) ? "Active — in Jun-2025 show-cause notice (verify)"
-            : (p[8] & 2) ? "Active — reinstated after MLC-78"
-            : "Active"}</td>
+          <td>${Number(p[7]).toLocaleString()}</td><td>${p[6]}${p[6] && p[6] < "2026-07" ? " ⚠": ""}</td>
+          <td style="text-align:left;color:${p[8] === 3 ? "var(--critical)": p[8] ? "var(--warning)": "var(--good)"}">${
+            p[8] === 3 ? "Active: repeat non-compliance (MLC-78 + Jun-2025 notice)": (p[8] & 1) ? "Active: in Jun-2025 show-cause notice (verify)": (p[8] & 2) ? "Active: reinstated after MLC-78": "Active"}</td>
         </tr>`).join("") + "</tbody>";
     } else licCard.hidden = true;
 
@@ -995,7 +967,7 @@ const KYC_ENGINE = (() => {
         entity.adverse.map((h) => `<tr>
           <td style="text-align:left">${h.label}</td>
           <td style="text-align:left;font-weight:600">${h.code}</td>
-          <td style="text-align:left;max-width:380px">${h.detail || "—"}</td>
+          <td style="text-align:left;max-width:380px">${h.detail || ": "}</td>
         </tr>`).join("") + "</tbody>";
     } else advCard.hidden = true;
 
@@ -1006,12 +978,11 @@ const KYC_ENGINE = (() => {
         "<thead><tr><th>Judgment</th><th>Date</th><th>Court</th></tr></thead><tbody>" +
         a.court.hits.map((h) => `<tr>
           <td style="text-align:left;font-weight:600"><a href="${h.u}" target="_blank" rel="noopener">${h.t}</a></td>
-          <td style="white-space:nowrap">${h.d || "—"}</td>
-          <td style="text-align:left">${h.c || "—"}</td>
+          <td style="white-space:nowrap">${h.d || ": "}</td>
+          <td style="text-align:left">${h.c || ": "}</td>
         </tr>`).join("") +
         (a.court.n > a.court.hits.length
-          ? `<tr><td colspan="3" style="text-align:left;color:var(--muted)">…and ${a.court.n - a.court.hits.length} more — <a href="https://zambialii.org/search/?q=%22${encodeURIComponent(entity.name)}%22" target="_blank" rel="noopener">see all on ZambiaLII ↗</a></td></tr>`
-          : "") + "</tbody>";
+          ? `<tr><td colspan="3" style="text-align:left;color:var(--muted)">…and ${a.court.n - a.court.hits.length} more: <a href="https://zambialii.org/search/?q=%22${encodeURIComponent(entity.name)}%22" target="_blank" rel="noopener">see all on ZambiaLII ↗</a></td></tr>`: "") + "</tbody>";
     } else courtCard.hidden = true;
 
     const dispCard = document.getElementById("kyc-dispute-card");
@@ -1063,9 +1034,9 @@ const KYC_ENGINE = (() => {
   document.getElementById("licenses-note").innerHTML =
     `<strong>${n.toLocaleString()} active license records mapped</strong> from the Geological Survey's open ` +
     `GeoServer (snapshot ${LICENSES.meta.snapshot}). Every record shown is on the <em>active</em> register, so none is ` +
-    `currently cancelled — the flags are point-in-time official notices, not current status. ` +
+    `currently cancelled, the flags are point-in-time official notices, not current status. ` +
     `<strong style="color:var(--amber)">${nDefault.toLocaleString()} (${Math.round((100 * nDefault) / n)}%) are listed in the ` +
-    `18 Jun 2025 Final Public Default Notice</strong> — a Section-72 <em>show-cause</em> notice for curable breaches ` +
+    `18 Jun 2025 Final Public Default Notice</strong>, a Section-72 <em>show-cause</em> notice for curable breaches ` +
     `(unpaid area charges, unsubmitted reports) with a 30-day remedy window; a holder still on the active register most ` +
     `likely cured it. <strong style="color:var(--critical)">${nRepeat.toLocaleString()}</strong> carry <em>both</em> that notice ` +
     `and an Apr-2024 MLC-78 cancellation (repeat non-compliance, drawn red). Treat flags as "verify," not "in default." ` +
@@ -1107,10 +1078,7 @@ function productionFor(normName) {
   });
   let prodChart = null;
   const draw = (year) => {
-    const rows = PRODUCTION.companies
-      .map((c) => ({ name: c.display, t: c.series[year] || 0 }))
-      .filter((r) => r.t > 0)
-      .sort((a, b) => b.t - a.t);
+    const rows = PRODUCTION.companies.map((c) => ({ name: c.display, t: c.series[year] || 0 })).filter((r) => r.t > 0).sort((a, b) => b.t - a.t);
     const total = rows.reduce((s, r) => s + r.t, 0);
     document.getElementById("prod-total").textContent =
       `${rows.length} companies reporting · ${Math.round(total).toLocaleString()} t combined`;
@@ -1162,10 +1130,7 @@ function productionFor(normName) {
 
     const render = () => {
       const f = filterSel.value;
-      const rows = cases
-        .map((c, i) => ({ ...c, i }))
-        .filter((c) => f === "all" || c.category === f)
-        .sort((a, b) => (b.years || "").localeCompare(a.years || ""));
+      const rows = cases.map((c, i) => ({...c, i })).filter((c) => f === "all" || c.category === f).sort((a, b) => (b.years || "").localeCompare(a.years || ""));
       document.getElementById("disputes-table").innerHTML =
         "<thead><tr><th>Case</th><th>Category</th><th>Years</th><th>Summary</th><th>Source</th></tr></thead><tbody>" +
         rows.map((c) => {
@@ -1175,7 +1140,7 @@ function productionFor(normName) {
             <td style="text-align:left;white-space:nowrap;color:${st.color}">${st.label}</td>
             <td style="white-space:nowrap">${c.years}</td>
             <td style="text-align:left;max-width:480px">${c.summary}</td>
-            <td style="text-align:left;white-space:nowrap">${c.sourceUrl ? `<a href="${c.sourceUrl}" target="_blank" rel="noopener">${c.source}</a>` : (c.source || "")}</td>
+            <td style="text-align:left;white-space:nowrap">${c.sourceUrl ? `<a href="${c.sourceUrl}" target="_blank" rel="noopener">${c.source}</a>`: (c.source || "")}</td>
           </tr>`;
         }).join("") + "</tbody>";
 
@@ -1212,7 +1177,7 @@ function productionFor(normName) {
 /* ================================================================
    TRADE ANALYSIS
 ================================================================ */
-const ROWS = (window.TRADE_ROWS || []).map((r) => ({ ...r, period: String(r.period) }));
+const ROWS = (window.TRADE_ROWS || []).map((r) => ({...r, period: String(r.period) }));
 const HAS_DATA = ROWS.length > 0;
 
 function fmtUsd(v) {
@@ -1238,12 +1203,12 @@ function drawMirror(code) {
   // Zambia-reported exports to World (annual, flow X, reporter 894, partner 0)
   const zmbX = years.map((y) => {
     const r = ROWS.find((r) => r.freq === "A" && r.flow === "X" && r.rep === 894 && r.par === 0 && r.code === code && r.period === y);
-    return r ? r.usd : null;
+    return r ? r.usd: null;
   });
   // Mirror: sum of all reporters' imports FROM Zambia (flow M, partner 894)
   const mirror = years.map((y) => {
     const rs = ROWS.filter((r) => r.freq === "A" && r.flow === "M" && r.par === 894 && r.code === code && r.period === y && r.rep !== 0);
-    return rs.length ? rs.reduce((s, r) => s + r.usd, 0) : null;
+    return rs.length ? rs.reduce((s, r) => s + r.usd, 0): null;
   });
 
   const ctx = document.getElementById("mirror-chart");
@@ -1262,7 +1227,7 @@ function drawMirror(code) {
       interaction: { mode: "index", intersect: false },
       plugins: {
         legend: { position: "bottom" },
-        tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${c.parsed.y == null ? "n/a" : fmtUsd(c.parsed.y)}` } },
+        tooltip: { callbacks: { label: (c) => ` ${c.dataset.label}: ${c.parsed.y == null ? "n/a": fmtUsd(c.parsed.y)}` } },
       },
       scales: {
         y: { ticks: { callback: (v) => fmtUsd(v) }, grid: { color: "#1b2330" } },
@@ -1277,10 +1242,10 @@ function drawMirror(code) {
     if (zmbX[i] != null && mirror[i] != null && zmbX[i] > 0) {
       const gap = mirror[i] - zmbX[i];
       if (zmbX[i] < 1e6) {
-        summary.textContent = `${years[i]}: Zambia reports almost none of this flow (${fmtUsd(zmbX[i])}) while partners report ${fmtUsd(mirror[i])} — the gap IS the finding.`;
+        summary.textContent = `${years[i]}: Zambia reports almost none of this flow (${fmtUsd(zmbX[i])}) while partners report ${fmtUsd(mirror[i])}, the gap IS the finding.`;
       } else {
         const pct = (gap / zmbX[i]) * 100;
-        summary.textContent = `${years[i]}: mirror ${gap >= 0 ? "exceeds" : "falls short of"} Zambia-reported by ${fmtUsd(Math.abs(gap))} (${pct.toFixed(0)}%).`;
+        summary.textContent = `${years[i]}: mirror ${gap >= 0 ? "exceeds": "falls short of"} Zambia-reported by ${fmtUsd(Math.abs(gap))} (${pct.toFixed(0)}%).`;
       }
       return;
     }
@@ -1290,15 +1255,13 @@ function drawMirror(code) {
 
 /* ----- Unit value distribution (monthly, partner-level) ----- */
 function monthlyUnitValues(code) {
-  return ROWS
-    .filter((r) => r.freq === "M" && r.flow === "X" && r.code === code && r.par !== 0 && r.kg >= 20000 && r.usd > 0)
-    .map((r) => (r.usd / r.kg) * 1000); // USD per tonne
+  return ROWS.filter((r) => r.freq === "M" && r.flow === "X" && r.code === code && r.par !== 0 && r.kg >= 20000 && r.usd > 0).map((r) => (r.usd / r.kg) * 1000); // USD per tonne
 }
 function drawDistribution() {
   const cat = monthlyUnitValues("740311");
   const con = monthlyUnitValues("2603");
   if (!cat.length && !con.length) return;
-  // Clamp the domain to the 2nd–98th percentile so a single misreported
+  // Clamp the domain to the 2nd-98th percentile so a single misreported
   // partner-month doesn't stretch the axis; edge bins absorb the tails.
   const all = cat.concat(con).sort((a, b) => a - b);
   const min = quantile(all, 0.02), max = quantile(all, 0.98);
@@ -1338,10 +1301,7 @@ function drawSpreadTable(year) {
   const codes = Object.keys(HS_LABELS);
   let html = "<thead><tr><th>HS code</th><th>Partners</th><th>P10 USD/t</th><th>Median USD/t</th><th>P90 USD/t</th><th>P90 / P10</th></tr></thead><tbody>";
   codes.forEach((code) => {
-    const uvs = ROWS
-      .filter((r) => r.freq === "A" && r.flow === "X" && r.rep === 894 && r.par !== 0 && r.code === code && r.period === year && r.kg >= 20000 && r.usd > 0)
-      .map((r) => (r.usd / r.kg) * 1000)
-      .sort((a, b) => a - b);
+    const uvs = ROWS.filter((r) => r.freq === "A" && r.flow === "X" && r.rep === 894 && r.par !== 0 && r.code === code && r.period === year && r.kg >= 20000 && r.usd > 0).map((r) => (r.usd / r.kg) * 1000).sort((a, b) => a - b);
     if (uvs.length < 3) {
       html += `<tr><td>${HS_LABELS[code]}</td><td>${uvs.length}</td><td colspan="4" style="color:var(--muted)">insufficient partner coverage</td></tr>`;
       return;
@@ -1352,7 +1312,7 @@ function drawSpreadTable(year) {
       <td>${Math.round(p10).toLocaleString()}</td>
       <td>${Math.round(p50).toLocaleString()}</td>
       <td>${Math.round(p90).toLocaleString()}</td>
-      <td style="font-weight:600;color:${ratio > 1.8 ? "var(--critical)" : "var(--ink)"}">${ratio.toFixed(2)}×</td></tr>`;
+      <td style="font-weight:600;color:${ratio > 1.8 ? "var(--critical)": "var(--ink)"}">${ratio.toFixed(2)}×</td></tr>`;
   });
   tbl.innerHTML = html + "</tbody>";
 }
@@ -1379,7 +1339,7 @@ if (HAS_DATA) {
   drawSpreadTable("2023");
 
   // ---- Financial benchmarks (computed from the fetched Comtrade rows) ----
-  const medOf = (arr) => { const s = [...arr].sort((a, b) => a - b); return s.length ? quantile(s, 0.5) : null; };
+  const medOf = (arr) => { const s = [...arr].sort((a, b) => a - b); return s.length ? quantile(s, 0.5): null; };
   const annualUV = (code) => {
     for (const y of ["2024", "2023", "2022"]) {
       const r = ROWS.find((r) => r.freq === "A" && r.flow === "X" && r.rep === 894 && r.par === 0 && r.code === code && r.period === y && r.kg > 0);
@@ -1393,7 +1353,7 @@ if (HAS_DATA) {
   window.BENCH = {
     cathodeUV: medOf(catM),
     concUV: medOf(conM),
-    concP10: conSorted.length ? quantile(conSorted, 0.1) : null,
+    concP10: conSorted.length ? quantile(conSorted, 0.1): null,
     blister: annualUV("7402"),
     cobalt: annualUV("8105"),
     uvFor(code) {
@@ -1409,19 +1369,18 @@ if (HAS_DATA) {
   const kpiCodes = ["740311", "2603", "7402", "7404", "7408"];
   const exp24 = kpiCodes.reduce((s, c) => {
     const r = ROWS.find((r) => r.freq === "A" && r.flow === "X" && r.rep === 894 && r.par === 0 && r.code === c && r.period === "2024");
-    return s + (r ? r.usd : 0);
+    return s + (r ? r.usd: 0);
   }, 0);
   const zx = ROWS.find((r) => r.freq === "A" && r.flow === "X" && r.rep === 894 && r.par === 0 && r.code === "2603" && r.period === "2024");
-  const mir = ROWS.filter((r) => r.freq === "A" && r.flow === "M" && r.par === 894 && r.code === "2603" && r.period === "2024" && r.rep !== 0)
-    .reduce((s, r) => s + r.usd, 0);
-  const payability = BENCH.cathodeUV && BENCH.concUV ? Math.round((100 * BENCH.concUV) / BENCH.cathodeUV) : null;
+  const mir = ROWS.filter((r) => r.freq === "A" && r.flow === "M" && r.par === 894 && r.code === "2603" && r.period === "2024" && r.rep !== 0).reduce((s, r) => s + r.usd, 0);
+  const payability = BENCH.cathodeUV && BENCH.concUV ? Math.round((100 * BENCH.concUV) / BENCH.cathodeUV): null;
   const kpi = document.createElement("div");
   kpi.className = "hero-stats";
   kpi.innerHTML = [
     [fmtUsd(exp24), "2024 copper-group exports (Zambia-reported)", "var(--s1)"],
-    [BENCH.cathodeUV ? "$" + Math.round(BENCH.cathodeUV).toLocaleString() + "/t" : "–", "cathode median unit value (partner-months '23–24)", "var(--ink)"],
-    [BENCH.concUV ? "$" + Math.round(BENCH.concUV).toLocaleString() + "/t" : "–", `concentrate median${payability ? " · ≈" + payability + "% of cathode" : ""}`, "var(--s2)"],
-    [zx && mir ? "+" + fmtUsd(mir - zx.usd) : "–", "2024 concentrate mirror gap (partners vs Zambia)", "var(--critical)"],
+    [BENCH.cathodeUV ? "$" + Math.round(BENCH.cathodeUV).toLocaleString() + "/t": "-", "cathode median unit value (partner-months '23-24)", "var(--ink)"],
+    [BENCH.concUV ? "$" + Math.round(BENCH.concUV).toLocaleString() + "/t": "-", `concentrate median${payability ? " · ≈" + payability + "% of cathode": ""}`, "var(--s2)"],
+    [zx && mir ? "+" + fmtUsd(mir - zx.usd): "-", "2024 concentrate mirror gap (partners vs Zambia)", "var(--critical)"],
   ].map(([num, lbl, color]) =>
     `<div class="hero-stat"><div class="num" style="color:${color}">${num}</div><div class="lbl">${lbl}</div></div>`
   ).join("");
@@ -1432,24 +1391,24 @@ if (HAS_DATA) {
 }
 
 /* ================================================================
-   SCORECARD — bankability rubric + financing cost model
+   SCORECARD: bankability rubric + financing cost model
 ================================================================ */
 const PILLARS = [
   {
     id: "resource", name: "Resource / product verification", max: 25,
     options: [
-      { pts: 25, label: "Independent & certified — JORC / NI 43-101 resource, or LME brand / accredited assay" },
-      { pts: 12, label: "Partial — internal estimate or non-accredited assay" },
-      { pts: 0, label: "None — no verifiable resource statement or assay ('no paperwork')" },
+      { pts: 25, label: "Independent & certified. JORC / NI 43-101 resource, or LME brand / accredited assay" },
+      { pts: 12, label: "Partial: internal estimate or non-accredited assay" },
+      { pts: 0, label: "None, no verifiable resource statement or assay ('no paperwork')" },
     ],
     fix: "Commission a JORC/NI 43-101 compliant resource statement or an ISO 17025-accredited assay chain",
   },
   {
     id: "recovery", name: "Recovery & metallurgical certainty", max: 15,
     options: [
-      { pts: 15, label: "Demonstrated — operating plant or completed DFS metallurgy" },
-      { pts: 8, label: "Intermediate — PFS or pilot-scale testwork" },
-      { pts: 0, label: "Untested — no metallurgical testwork" },
+      { pts: 15, label: "Demonstrated: operating plant or completed DFS metallurgy" },
+      { pts: 8, label: "Intermediate. PFS or pilot-scale testwork" },
+      { pts: 0, label: "Untested, no metallurgical testwork" },
     ],
     fix: "Complete pilot-scale metallurgical testwork on representative samples",
   },
@@ -1485,21 +1444,21 @@ const PILLARS = [
 const PRESET_A = { resource: 25, recovery: 15, offtake: 20, counterparty: 20, logistics: 12 };
 const PRESET_B = { resource: 0, recovery: 8, offtake: 5, counterparty: 10, logistics: 4 };
 
-// Financing ladder — instruments and INDICATIVE effective annual rates by band.
+// Financing ladder: instruments and INDICATIVE effective annual rates by band.
 // Rates are directional market ranges for African commodity trade finance, not quotes.
 const FIN_BANDS = [
-  { min: 80, name: "Bankable — structured trade finance grade", color: "#0ca30c", rate: 0.08,
-    inst: "Pre-export finance, borrowing-base revolvers, receivables discounting", rateLabel: "SOFR + 250–450 bps (≈8% eff.)" },
+  { min: 80, name: "Bankable: structured trade finance grade", color: "#0ca30c", rate: 0.08,
+    inst: "Pre-export finance, borrowing-base revolvers, receivables discounting", rateLabel: "SOFR + 250-450 bps (≈8% eff.)" },
   { min: 60, name: "Financeable with enhancements", color: "#eda100", rate: 0.105,
-    inst: "Structured trade finance + credit insurance, collateral management (CMA)", rateLabel: "SOFR + 450–700 bps (≈10–11% eff.)" },
+    inst: "Structured trade finance + credit insurance, collateral management (CMA)", rateLabel: "SOFR + 450-700 bps (≈10-11% eff.)" },
   { min: 40, name: "High-cost capital only", color: "#ec835a", rate: 0.15,
-    inst: "Offtaker prepayment, streaming / royalty structures", rateLabel: "≈12–18% eff." },
-  { min: 0, name: "Informal only — inside the void", color: "#f85149", rate: 0.25,
-    inst: "No formal lenders. Farm-gate sale at deep discount, or equity", rateLabel: "20%+ eff. — or paid via price discount" },
+    inst: "Offtaker prepayment, streaming / royalty structures", rateLabel: "≈12-18% eff." },
+  { min: 0, name: "Informal only: inside the void", color: "#f85149", rate: 0.25,
+    inst: "No formal lenders. Farm-gate sale at deep discount, or equity", rateLabel: "20%+ eff.: or paid via price discount" },
 ];
 const PRODUCT_LABELS = { "740311": "copper cathode", "7402": "blister copper", "2603": "copper concentrate", "8105": "cobalt intermediates" };
 
-const scoreState = { ...PRESET_A };
+const scoreState = {...PRESET_A };
 
 (function buildScorecard() {
   const wrap = document.getElementById("pillars");
@@ -1530,7 +1489,7 @@ const scoreState = { ...PRESET_A };
 function bandFor(total) { return FIN_BANDS.find((b) => total >= b.min); }
 
 function renderScore() {
-  const scores = PILLARS.map((p) => ({ ...p, pts: scoreState[p.id],
+  const scores = PILLARS.map((p) => ({...p, pts: scoreState[p.id],
     chosen: (p.options.find((o) => o.pts === scoreState[p.id]) || {}).label || "" }));
   const total = scores.reduce((s, p) => s + p.pts, 0);
   const band = bandFor(total);
@@ -1560,9 +1519,9 @@ function renderScore() {
 
   // financing ladder
   document.getElementById("finance-ladder").innerHTML = FIN_BANDS.map((b) => `
-    <div class="fin-band ${b === band ? "current" : ""}">
+    <div class="fin-band ${b === band ? "current": ""}">
       <span class="bar" style="background:${b.color}"></span>
-      <span class="inst"><b>${b.min}–${b.min === 80 ? 100 : FIN_BANDS[FIN_BANDS.indexOf(b) - 1].min - 1}</b> · ${b.inst}</span>
+      <span class="inst"><b>${b.min}-${b.min === 80 ? 100: FIN_BANDS[FIN_BANDS.indexOf(b) - 1].min - 1}</b> · ${b.inst}</span>
       <span class="rate">${b.rateLabel}</span>
     </div>`).join("");
 
@@ -1570,41 +1529,39 @@ function renderScore() {
   const product = document.getElementById("calc-product").value;
   const volume = Math.max(0, Number(document.getElementById("calc-volume").value) || 0);
   const out = document.getElementById("calc-out");
-  const uv = window.BENCH ? BENCH.uvFor(product) : null;
+  const uv = window.BENCH ? BENCH.uvFor(product): null;
   if (!uv || !volume) {
-    out.innerHTML = `<p class="note">Benchmark unit values need the Comtrade data (Trade tab) — or enter a volume above.</p>`;
+    out.innerHTML = `<p class="note">Benchmark unit values need the Comtrade data (Trade tab): or enter a volume above.</p>`;
   } else {
     const revenue = uv * volume;
     const wc = revenue * (60 / 365); // 60-day sell-and-collect cycle in transit
     const finCost = wc * band.rate;
     const idx = FIN_BANDS.indexOf(band);
-    const nextBand = idx > 0 ? FIN_BANDS[idx - 1] : null;
-    const saving = nextBand ? wc * (band.rate - nextBand.rate) : 0;
-    // documentation-linked price gap — observed concentrate P10 vs median (correlational)
+    const nextBand = idx > 0 ? FIN_BANDS[idx - 1]: null;
+    const saving = nextBand ? wc * (band.rate - nextBand.rate): 0;
+    // documentation-linked price gap: observed concentrate P10 vs median (correlational)
     let docGap = 0;
     if (product === "2603" && BENCH.concP10 && scoreState.resource < 25) {
       const fullGap = (BENCH.concUV - BENCH.concP10) * volume;
-      docGap = scoreState.resource === 0 ? fullGap : fullGap / 2;
+      docGap = scoreState.resource === 0 ? fullGap: fullGap / 2;
     }
     const L = (label, v, cls = "") => `<div class="calc-line ${cls}"><span>${label}</span><span class="v">${v}</span></div>`;
     out.innerHTML =
-      L(`Indicative revenue — ${volume.toLocaleString()} t of ${PRODUCT_LABELS[product]} @ $${Math.round(uv).toLocaleString()}/t`, fmtUsd(revenue) + "/yr") +
+      L(`Indicative revenue: ${volume.toLocaleString()} t of ${PRODUCT_LABELS[product]} @ $${Math.round(uv).toLocaleString()}/t`, fmtUsd(revenue) + "/yr") +
       L("Working capital in transit (60-day cycle)", fmtUsd(wc)) +
       L(`Financing cost at this band (${Math.round(band.rate * 1000) / 10}% eff.)`, fmtUsd(finCost) + "/yr") +
-      (nextBand ? L(`Reaching "${nextBand.name.split("—")[0].trim()}" saves`, fmtUsd(saving) + "/yr", "gain") : "") +
-      (docGap > 0 ? L("Documentation-linked price-realization gap (observed P10 vs median — correlational)", "up to " + fmtUsd(docGap) + "/yr", "hl") : "") +
+      (nextBand ? L(`Reaching "${nextBand.name.split(": ")[0].trim()}" saves`, fmtUsd(saving) + "/yr", "gain"): "") +
+      (docGap > 0 ? L("Documentation-linked price-realization gap (observed P10 vs median: correlational)", "up to " + fmtUsd(docGap) + "/yr", "hl"): "") +
       `<p class="note" style="margin-top:8px">Unit values are medians computed from the UN Comtrade pulls on the Trade tab.
         Rates are indicative market ranges for African commodity trade finance, not quotes. The price-gap line is
-        correlational — see Methodology.</p>`;
+        correlational: see Methodology.</p>`;
     window._calcSnapshot = { product: PRODUCT_LABELS[product], volume, uv, revenue, wc, band: band.name, rate: band.rate, saving, docGap };
   }
 
   // improvements
-  const gaps = scores.map((p) => ({ ...p, forgone: p.max - p.pts })).filter((p) => p.forgone > 0)
-    .sort((a, b) => b.forgone - a.forgone);
+  const gaps = scores.map((p) => ({...p, forgone: p.max - p.pts })).filter((p) => p.forgone > 0).sort((a, b) => b.forgone - a.forgone);
   document.getElementById("improvements").innerHTML = gaps.length
-    ? gaps.map((p) => `<li><strong>+${p.forgone} pts</strong> — ${p.fix}.</li>`).join("")
-    : "<li>Maximum score — nothing left on the table.</li>";
+    ? gaps.map((p) => `<li><strong>+${p.forgone} pts</strong>: ${p.fix}.</li>`).join(""): "<li>Maximum score: nothing left on the table.</li>";
 }
 
 /* ----- Optional AI lender memo (raw HTTP; static site, no SDK) ----- */
@@ -1622,16 +1579,16 @@ if (document.getElementById("gen-narrative")) document.getElementById("gen-narra
 
   const prompt = `You are a commodity trade-finance credit analyst writing a short internal memo about a Zambian copper/cobalt stream.
 
-Deterministic scorecard result (do NOT change or invent any numbers — explain them):
-Total: ${total}/100 — ${band.name}
-${scores.map((p) => `- ${p.name}: ${p.pts}/${p.max} — "${p.chosen}"`).join("\n")}
+Deterministic scorecard result (do NOT change or invent any numbers: explain them):
+Total: ${total}/100: ${band.name}
+${scores.map((p) => `- ${p.name}: ${p.pts}/${p.max}: "${p.chosen}"`).join("\n")}
 ${c ? `
 Financial model (computed from UN Comtrade benchmark unit values; rates indicative):
 - Stream: ${c.volume.toLocaleString()} t/yr of ${c.product} @ $${Math.round(c.uv).toLocaleString()}/t → revenue ≈ ${Math.round(c.revenue / 1e6)}M USD/yr
 - Working capital in transit (60d): ≈ ${Math.round(c.wc / 1e6)}M USD
 - Current band effective rate: ${Math.round(c.rate * 1000) / 10}%
 - Annual saving from reaching the next band: ≈ ${Math.round(c.saving / 1e6 * 10) / 10}M USD/yr
-${c.docGap > 0 ? `- Documentation-linked price-realization gap (correlational): up to ${Math.round(c.docGap / 1e6 * 10) / 10}M USD/yr` : ""}` : ""}
+${c.docGap > 0 ? `- Documentation-linked price-realization gap (correlational): up to ${Math.round(c.docGap / 1e6 * 10) / 10}M USD/yr`: ""}`: ""}
 
 Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this stream legible or illegible to capital, (3) the single highest-value fix and roughly what it is worth per the figures above. Plain prose, no headers.`;
 
@@ -1704,13 +1661,13 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
   if (!R) return;
   const S = R.STATS;
   const fmt = (n) => Number(n).toLocaleString("en-US");
-  const fmtHa = (n) => n >= 1e6 ? (n / 1e6).toFixed(2) + "M ha" : n >= 1e3 ? Math.round(n / 1e3) + "k ha" : n + " ha";
-  const usd = (v) => v == null ? "" :
-    v >= 1e9 ? "$" + (v / 1e9).toFixed(v / 1e9 >= 10 ? 1 : 2) + "bn" :
-    v >= 1e6 ? "$" + Math.round(v / 1e6) + "m" : "$" + fmt(v);
+  const fmtHa = (n) => n >= 1e6 ? (n / 1e6).toFixed(2) + "M ha": n >= 1e3 ? Math.round(n / 1e3) + "k ha": n + " ha";
+  const usd = (v) => v == null ? "":
+    v >= 1e9 ? "$" + (v / 1e9).toFixed(v / 1e9 >= 10 ? 1: 2) + "bn":
+    v >= 1e6 ? "$" + Math.round(v / 1e6) + "m": "$" + fmt(v);
   const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
-  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const link = (u, t) => u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(t || "source") + '</a>' : "";
+  const esc = (s) => String(s == null ? "": s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const link = (u, t) => u ? '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + esc(t || "source") + '</a>': "";
 
   /* ----- hero counters ----- */
   const pctGround = Math.round((100 * S.nonMiningHa) / S.allHa);
@@ -1758,7 +1715,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
   new Chart(document.getElementById("reg-mismatch-chart"), {
     type: "bar",
     data: {
-      labels: mis.map((m) => m.b.length > 42 ? m.b.slice(0, 40) + "..." : m.b),
+      labels: mis.map((m) => m.b.length > 42 ? m.b.slice(0, 40) + "...": m.b),
       datasets: [{
         label: "Companies holding mineral rights",
         data: mis.map((m) => m.n),
@@ -1785,9 +1742,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
     "<thead><tr><th>Holder</th><th>Licensed ground</th><th>Declared line of business</th>" +
     "<th>Beneficial owners</th><th>In 2025 default notice</th></tr></thead><tbody>" +
     R.MISMATCH_BIG.map((m) => {
-      const boCell = m.bo === "0" ? '<span style="color:var(--critical)">undeclared</span>'
-                   : m.bo === "1" ? '<span style="color:var(--good)">declared</span>'
-                   : '<span style="color:var(--muted)">unresolved</span>';
+      const boCell = m.bo === "0" ? '<span style="color:var(--critical)">undeclared</span>': m.bo === "1" ? '<span style="color:var(--good)">declared</span>': '<span style="color:var(--muted)">unresolved</span>';
       const dfn = Number(m.df) || 0;
       return '<tr>' +
         '<td style="font-weight:600">' + esc(m.h) + '</td>' +
@@ -1795,8 +1750,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         '<td style="text-align:left">' + esc(m.b) + '</td>' +
         '<td style="white-space:nowrap">' + boCell + '</td>' +
         '<td style="white-space:nowrap">' + (dfn > 0
-          ? '<span style="color:var(--serious)">' + dfn + ' licence' + (dfn > 1 ? "s" : "") + '</span>'
-          : "&ndash;") + '</td>' +
+          ? '<span style="color:var(--serious)">' + dfn + ' licence' + (dfn > 1 ? "s": "") + '</span>': "-") + '</td>' +
       '</tr>';
     }).join("") + "</tbody>";
 
@@ -1805,11 +1759,11 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
   R.EVENTS.forEach((e) => { (evByYear[e.y] = evByYear[e.y] || []).push(e); });
   let spineChart = null;
   function drawSpine(which) {
-    const series = which === "co" ? R.CO : R.CU;
-    const unit = which === "co" ? "t cobalt" : "t copper";
-    const colour = which === "co" ? "#22b381" : "#3987e5";
-    const peak = series.reduce((a, b) => (b.v > a.v ? b : a));
-    const trough = series.reduce((a, b) => (b.v < a.v ? b : a));
+    const series = which === "co" ? R.CO: R.CU;
+    const unit = which === "co" ? "t cobalt": "t copper";
+    const colour = which === "co" ? "#22b381": "#3987e5";
+    const peak = series.reduce((a, b) => (b.v > a.v ? b: a));
+    const trough = series.reduce((a, b) => (b.v < a.v ? b: a));
     const last = series[series.length - 1];
     document.getElementById("reg-spine-summary").textContent =
       "peak " + fmt(peak.v) + " (" + peak.y + ") · trough " + fmt(trough.v) + " (" + trough.y +
@@ -1823,7 +1777,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
           label: unit, data: series.map((p) => p.v),
           borderColor: colour, backgroundColor: colour + "22",
           borderWidth: 2, fill: true, tension: 0.15,
-          pointRadius: (c) => (series[c.dataIndex] && evByYear[series[c.dataIndex].y]) ? 4 : 0,
+          pointRadius: (c) => (series[c.dataIndex] && evByYear[series[c.dataIndex].y]) ? 4: 0,
           pointBackgroundColor: colour, pointBorderColor: "#0a0e14", pointBorderWidth: 1.5,
           pointHoverRadius: 6,
         }],
@@ -1846,7 +1800,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         scales: {
           x: { grid: { display: false }, ticks: { maxTicksLimit: 14, font: { size: 11 } } },
           y: { beginAtZero: true, grid: { color: "#1b2330" },
-               ticks: { callback: (v) => v >= 1000 ? (v / 1000) + "k" : v } },
+               ticks: { callback: (v) => v >= 1000 ? (v / 1000) + "k": v } },
         },
       },
     });
@@ -1910,7 +1864,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
           '<td style="white-space:nowrap">' + esc(c.c) + '</td>' +
           '<td style="white-space:nowrap;color:var(--s1)">' + tc(c.t) + '</td>' +
           '<td style="white-space:nowrap;font-family:var(--mono)">' +
-            (c.v ? usd(c.v) : '<span style="color:var(--muted)">not disclosed</span>') + '</td>' +
+            (c.v ? usd(c.v): '<span style="color:var(--muted)">not disclosed</span>') + '</td>' +
           '<td style="white-space:nowrap">' + esc(c.vol) + '</td>' +
           '<td style="text-align:left;max-width:460px">' + esc(c.d) + '</td>' +
           '<td style="text-align:left;white-space:nowrap">' + link(c.u) + '</td>' +
@@ -1929,7 +1883,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
       '<td style="white-space:nowrap;font-family:var(--mono)">' + esc(v.y) + '</td>' +
       '<td style="white-space:nowrap">' + esc(v.st) + '</td>' +
       '<td style="white-space:nowrap;font-family:var(--mono)">' +
-        (v.v ? usd(v.v) : '<span style="color:var(--muted)">&ndash;</span>') + '</td>' +
+        (v.v ? usd(v.v): '<span style="color:var(--muted)">-</span>') + '</td>' +
       '<td style="text-align:left;white-space:nowrap">' + link(v.u) + '</td>' +
     '</tr>').join("") + "</tbody>";
 
@@ -1952,10 +1906,10 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         "<thead><tr><th>Office</th><th>Type</th><th>Level</th><th>Province / district</th></tr></thead><tbody>" +
         rows.map((c) => '<tr>' +
           '<td style="font-weight:600;text-align:left;max-width:340px">' + esc(c.n) +
-            (c.r ? '<div style="font-weight:400;font-size:11.5px;color:var(--muted)">' + esc(c.r) + '</div>' : "") + '</td>' +
+            (c.r ? '<div style="font-weight:400;font-size:11.5px;color:var(--muted)">' + esc(c.r) + '</div>': "") + '</td>' +
           '<td style="white-space:nowrap;color:var(--s3)">' + tc(c.cat) + '</td>' +
           '<td style="white-space:nowrap">' + esc(c.l) + '</td>' +
-          '<td style="white-space:nowrap">' + (esc(c.pr) || esc(c.di) || "&ndash;") + '</td>' +
+          '<td style="white-space:nowrap">' + (esc(c.pr) || esc(c.di) || "-") + '</td>' +
         '</tr>').join("") + "</tbody>";
     };
     pSel.addEventListener("change", render);
@@ -1987,7 +1941,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
   });
 
   /* These charts are built while the panel is display:none, so Chart.js measures the canvas at
-     0x0 and does not recover on its own. Resize them when the tab is actually shown — the same
+     0x0 and does not recover on its own. Resize them when the tab is actually shown, the same
      shape as the map's invalidateSize() hook. */
   const regBtn = document.querySelector('nav.tabs button[data-tab="register"]');
   if (regBtn) {
@@ -2012,10 +1966,8 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
 (function kycEnrich() {
   const R = window.REGISTER;
   if (!R) return;
-  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-  const norm = (n) => String(n || "").toUpperCase().replace(/[^A-Z0-9 ]/g, " ")
-    .replace(/\b(LIMITED|LTD|PLC|COMPANY|CO|INCORPORATED|INC|THE)\b/g, " ")
-    .replace(/\s+/g, " ").trim();
+  const esc = (s) => String(s == null ? "": s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const norm = (n) => String(n || "").toUpperCase().replace(/[^A-Z0-9 ]/g, " ").replace(/\b(LIMITED|LTD|PLC|COMPANY|CO|INCORPORATED|INC|THE)\b/g, " ").replace(/\s+/g, " ").trim();
 
   const host = document.getElementById("kyc-report");
   if (!host) return;
@@ -2049,14 +2001,14 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
       regCard.innerHTML =
         '<h3 style="margin-top:0">Companies-registry standing (PACRA)</h3>' +
         '<p class="note">Statutory status straight from the public companies registry. Beneficial ownership is ' +
-        'the field the old KYC caveat sent you to PACRA for &mdash; it is now in the check.</p>' +
+        'the field the old KYC caveat sent you to PACRA for, it is now in the check.</p>' +
         '<table class="data"><tbody>' +
         '<tr><td style="text-align:left;width:210px">Registered name</td><td style="text-align:left;font-weight:600">' + esc(reg.n) + '</td></tr>' +
         '<tr><td style="text-align:left">Registration number</td><td style="text-align:left;font-family:var(--mono)">' + esc(reg.no) + '</td></tr>' +
         '<tr><td style="text-align:left">Registered</td><td style="text-align:left;font-family:var(--mono)">' + esc(reg.d) + '</td></tr>' +
         '<tr><td style="text-align:left">Status</td><td style="text-align:left">' + esc(reg.st) + '</td></tr>' +
         '<tr><td style="text-align:left">Declared line of business</td><td style="text-align:left">' +
-          (reg.b ? esc(reg.b) : '<span style="color:var(--muted)">several candidate entities &mdash; not resolved</span>') + '</td></tr>' +
+          (reg.b ? esc(reg.b): '<span style="color:var(--muted)">several candidate entities, not resolved</span>') + '</td></tr>' +
         '<tr><td style="text-align:left">Beneficial ownership</td><td style="text-align:left">' +
           flag(reg.bo, "declared", "NOT declared") + '</td></tr>' +
         '<tr><td style="text-align:left">Annual returns</td><td style="text-align:left">' +
@@ -2079,12 +2031,12 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         '<p class="note">Registers with the Registrar of Cooperatives (Ministry of Small and Medium Enterprise ' +
         'Development), not the companies registry, so no company record exists by design.</p>' +
         '<table class="data"><tbody>' +
-        '<tr><td style="text-align:left;width:210px">District</td><td style="text-align:left">' + (esc(coop.d) || "&ndash;") + '</td></tr>' +
-        '<tr><td style="text-align:left">Province</td><td style="text-align:left">' + (esc(coop.p) || "&ndash;") + '</td></tr>' +
-        '<tr><td style="text-align:left">Licence reference</td><td style="text-align:left;font-family:var(--mono)">' + (esc(coop.lr) || "&ndash;") + '</td></tr>' +
+        '<tr><td style="text-align:left;width:210px">District</td><td style="text-align:left">' + (esc(coop.d) || "-") + '</td></tr>' +
+        '<tr><td style="text-align:left">Province</td><td style="text-align:left">' + (esc(coop.p) || "-") + '</td></tr>' +
+        '<tr><td style="text-align:left">Licence reference</td><td style="text-align:left;font-family:var(--mono)">' + (esc(coop.lr) || "-") + '</td></tr>' +
         '</tbody></table>' +
         '<div class="callout">No mining cooperative in this register publishes a phone, email or address. Reach ' +
-        'them through the Zambia Federation of Cooperatives in Mining or the provincial cooperative office &mdash; ' +
+        'them through the Zambia Federation of Cooperatives in Mining or the provincial cooperative office: ' +
         'see the Register &amp; Ownership tab.</div>';
     } else {
       regCard.hidden = true;
@@ -2098,7 +2050,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
       '<div class="callout">Contact details are <strong>held privately and not published with this app</strong>. ' +
       'Where a channel was found it came from the company'+"'"+'s own published sources; those records live in ' +
       '<code>private/</code> alongside the dataset and are excluded from the repository. For the artisanal and ' +
-      'cooperative population no contact exists in any public source at all &mdash; the route there is the ' +
+      'cooperative population no contact exists in any public source at all, the route there is the ' +
       'institutional one listed under <strong>Register &amp; Ownership</strong>.</div>';
   }
 
@@ -2123,22 +2075,20 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
   const R = window.REGISTER;
   if (!R || !R.MINERAL_LINK) return;
   const fmt = (n) => Number(n).toLocaleString("en-US");
-  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const esc = (s) => String(s == null ? "": s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   /* ----- minerals under a non-mining declaration ----- */
   let mineralChart = null;
   function drawMineral(sortBy) {
-    const rows = R.MINERAL_LINK.slice()
-      .sort((a, b) => sortBy === "sh" ? b.sh - a.sh : b.nm - a.nm)
-      .slice(0, 20);
+    const rows = R.MINERAL_LINK.slice().sort((a, b) => sortBy === "sh" ? b.sh - a.sh: b.nm - a.nm).slice(0, 20);
     if (mineralChart) mineralChart.destroy();
     mineralChart = new Chart(document.getElementById("reg-mineral-chart"), {
       type: "bar",
       data: {
         labels: rows.map((r) => r.m),
         datasets: [{
-          label: sortBy === "sh" ? "Share of that mineral's entries (%)" : "Licence-commodity entries",
-          data: rows.map((r) => sortBy === "sh" ? r.sh : r.nm),
+          label: sortBy === "sh" ? "Share of that mineral's entries (%)": "Licence-commodity entries",
+          data: rows.map((r) => sortBy === "sh" ? r.sh: r.nm),
           backgroundColor: "#d55181", borderRadius: 4, borderSkipped: false,
         }],
       },
@@ -2155,7 +2105,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         },
         scales: {
           x: { beginAtZero: true, grid: { color: "#1b2330" },
-               ticks: { callback: (v) => sortBy === "sh" ? v + "%" : fmt(v) } },
+               ticks: { callback: (v) => sortBy === "sh" ? v + "%": fmt(v) } },
           y: { grid: { display: false }, ticks: { font: { size: 11 } } },
         },
       },
@@ -2171,8 +2121,8 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
       "<thead><tr><th>Licence tier</th><th>Licences</th><th>Distinct holders</th><th>Researched</th>" +
       "<th>Reachable</th><th>Reach rate</th><th>In 2025 default notice</th><th>Declared non-mining</th></tr></thead><tbody>" +
       R.BUCKETS.filter((b) => b.b !== "Portal / test").map((b) => {
-        const pct = b.h ? Math.round((100 * b.rch) / b.h) : 0;
-        const col = pct >= 15 ? "var(--good)" : pct > 0 ? "var(--warning)" : "var(--critical)";
+        const pct = b.h ? Math.round((100 * b.rch) / b.h): 0;
+        const col = pct >= 15 ? "var(--good)": pct > 0 ? "var(--warning)": "var(--critical)";
         return '<tr>' +
           '<td style="font-weight:600;text-align:left">' + esc(b.b) + '</td>' +
           '<td class="num" style="font-family:var(--mono)">' + fmt(b.lic) + '</td>' +
@@ -2196,7 +2146,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         datasets: [{
           label: "Licences listing a gem commodity",
           data: g.map((x) => x.n),
-          backgroundColor: g.map((x) => /Gemstone/.test(x.t) ? "#d55181" : "#3987e5"),
+          backgroundColor: g.map((x) => /Gemstone/.test(x.t) ? "#d55181": "#3987e5"),
           borderRadius: 4, borderSkipped: false,
         }],
       },
@@ -2207,7 +2157,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
           tooltip: { callbacks: {
             title: (it) => g[it[0].dataIndex].t,
             label: (c) => fmt(c.parsed.y) + " licences list a gem commodity" +
-              (/Gemstone/.test(g[c.dataIndex].t) ? " (dedicated gemstone type)" : ""),
+              (/Gemstone/.test(g[c.dataIndex].t) ? " (dedicated gemstone type)": ""),
           } },
         },
         scales: {
@@ -2226,7 +2176,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
     const render = () => {
       const f = sel.value;
       const rows = R.PROCESSORS.filter((p) =>
-        f === "all" ? true : f === "def" ? p.def > 0 : !!p.nm);
+        f === "all" ? true: f === "def" ? p.def > 0: !!p.nm);
       document.getElementById("reg-proc-count").textContent =
         rows.length + " of " + R.PROCESSORS.length + " holders";
       tbl.innerHTML =
@@ -2236,12 +2186,12 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
           const flags = [];
           if (p.def > 0) flags.push('<span style="color:var(--serious)">default ' + p.def + '</span>');
           if (p.can > 0) flags.push('<span style="color:var(--critical)">cancelled ' + p.can + '</span>');
-          return '<tr' + (p.lat && p.lng ? ' style="cursor:pointer" data-lat="' + p.lat + '" data-lng="' + p.lng + '"' : '') + '>' +
+          return '<tr' + (p.lat && p.lng ? ' style="cursor:pointer" data-lat="' + p.lat + '" data-lng="' + p.lng + '"': '') + '>' +
             '<td style="font-weight:600;text-align:left">' + esc(p.h) + '</td>' +
             '<td style="font-family:var(--mono)">' + p.n + '</td>' +
             '<td style="text-align:left;max-width:330px;font-size:12px">' + esc(p.comm) + '</td>' +
-            '<td style="white-space:nowrap">' + (flags.join(" · ") || "&ndash;") + '</td>' +
-            '<td style="text-align:left;color:var(--s5)">' + (p.nm ? esc(p.nm) : "&ndash;") + '</td>' +
+            '<td style="white-space:nowrap">' + (flags.join(" · ") || "-") + '</td>' +
+            '<td style="text-align:left;color:var(--s5)">' + (p.nm ? esc(p.nm): "-") + '</td>' +
           '</tr>';
         }).join("") + "</tbody>";
       // clicking a processor flies the map to its plant
@@ -2262,15 +2212,12 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
   /* ----- map overlay: shade licences whose holder declared a non-mining business ----- */
   (function mapOverlay() {
     if (!window.LICENSES || !window._leafletMap || !R.NM_HOLDERS) return;
-    const norm = (n) => String(n || "").toUpperCase().replace(/\s*\(\d+(\.\d+)?%\)/g, "")
-      .replace(/[^A-Z0-9 ]/g, " ")
-      .replace(/\b(LIMITED|LTD|PLC|COMPANY|CO|INCORPORATED|INC|THE)\b/g, " ")
-      .replace(/\s+/g, " ").trim();
+    const norm = (n) => String(n || "").toUpperCase().replace(/\s*\(\d+(\.\d+)?%\)/g, "").replace(/[^A-Z0-9 ]/g, " ").replace(/\b(LIMITED|LTD|PLC|COMPANY|CO|INCORPORATED|INC|THE)\b/g, " ").replace(/\s+/g, " ").trim();
     const nm = new Set(R.NM_HOLDERS);
     const layer = L.layerGroup();
     let n = 0;
     LICENSES.points.forEach((pt) => {
-      // point shape: [lat, lng, code, type, holder, ...]
+      // point shape: [lat, lng, code, type, holder,...]
       const holders = String(pt[4] || "").split(/\s*;\s*|\s*\/\s*/);
       if (!holders.some((h) => nm.has(norm(h)))) return;
       n++;
@@ -2302,7 +2249,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
   const B = window.BIZ;
   if (!B) return;
   const fmt = (n) => Number(n).toLocaleString("en-US");
-  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const esc = (s) => String(s == null ? "": s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   const SEG_COLOR = {
@@ -2365,7 +2312,7 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         (sv === "all" || b.s === sv) &&
         (cv === "all" || b.c === cv) &&
         (!qv || (b.n + " " + (b.w || "") + " " + (b.t || "") + " " + (b.o || "")).toUpperCase().includes(qv))
-      ).sort((a, b) => (a.c === "high" ? -1 : 1) - (b.c === "high" ? -1 : 1) || a.n.localeCompare(b.n));
+      ).sort((a, b) => (a.c === "high" ? -1: 1) - (b.c === "high" ? -1: 1) || a.n.localeCompare(b.n));
       document.getElementById("biz-count").textContent =
         fmt(rows.length) + " of " + fmt(B.ALL.length) + " companies";
       tbl.innerHTML =
@@ -2374,24 +2321,23 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         rows.slice(0, 400).map((b) => {
           const col = SEG_COLOR[b.s] || "#64718a";
           const conf = b.c === "high"
-            ? '<span style="color:var(--good)">operations evidenced</span>'
-            : '<span style="color:var(--muted)">registry only</span>';
+            ? '<span style="color:var(--good)">operations evidenced</span>': '<span style="color:var(--muted)">registry only</span>';
           return '<tr>' +
             '<td style="font-weight:600;text-align:left">' + esc(b.n) + '</td>' +
             '<td style="white-space:nowrap;color:' + col + '">' + tc(b.s) + '</td>' +
             '<td style="text-align:left;max-width:340px;font-size:12px">' + esc(b.w) + '</td>' +
-            '<td style="white-space:nowrap">' + (esc(b.t) || "&ndash;") + '</td>' +
-            '<td style="text-align:left;max-width:200px;font-size:12px">' + (esc(b.o) || "&ndash;") + '</td>' +
-            '<td style="text-align:left;max-width:240px;font-size:12px">' + (esc(b.sc) || "&ndash;") + '</td>' +
+            '<td style="white-space:nowrap">' + (esc(b.t) || "-") + '</td>' +
+            '<td style="text-align:left;max-width:200px;font-size:12px">' + (esc(b.o) || "-") + '</td>' +
+            '<td style="text-align:left;max-width:240px;font-size:12px">' + (esc(b.sc) || "-") + '</td>' +
             '<td style="white-space:nowrap;font-family:var(--mono);font-size:11px">' +
-              (b.pn ? esc(b.pn) + (b.ps && b.ps !== "Active" ? ' <span style="color:var(--warning)">' + esc(b.ps) + '</span>' : "") : "&ndash;") +
-              (b.g ? ' <span style="color:var(--s3)">NCC ' + esc(b.g) + '</span>' : "") + '</td>' +
+              (b.pn ? esc(b.pn) + (b.ps && b.ps !== "Active" ? ' <span style="color:var(--warning)">' + esc(b.ps) + '</span>': ""): "-") +
+              (b.g ? ' <span style="color:var(--s3)">NCC ' + esc(b.g) + '</span>': "") + '</td>' +
             '<td style="white-space:nowrap">' + conf + '</td>' +
           '</tr>';
         }).join("") + "</tbody>";
       if (rows.length > 400) {
         tbl.insertAdjacentHTML("afterend",
-          '<p class="note" style="margin-top:6px">Showing the first 400 of ' + fmt(rows.length) + ' — narrow the filters.</p>');
+          '<p class="note" style="margin-top:6px">Showing the first 400 of ' + fmt(rows.length) + ': narrow the filters.</p>');
       }
     };
     [segSel, confSel].forEach((el) => el.addEventListener("change", render));
@@ -2413,10 +2359,10 @@ Write a ~220-word memo: (1) one-sentence credit verdict, (2) what makes this str
         '<strong>' + esc(b.n) + '</strong><br>' +
         '<span style="color:' + (SEG_COLOR[b.s] || "#64718a") + '">' + tc(b.s) + '</span><br>' +
         esc(b.w) + '<br>' +
-        (b.o ? '<em>' + esc(b.o) + '</em><br>' : "") +
-        (b.sc ? esc(b.sc) + '<br>' : "") +
-        (b.pn ? '<span style="font-family:monospace">PACRA ' + esc(b.pn) + ' · ' + esc(b.ps) + '</span><br>' : "") +
-        '<em style="color:#9aa7b6">Plotted at ' + esc(b.t) + ' town centroid — not a company address</em>'
+        (b.o ? '<em>' + esc(b.o) + '</em><br>': "") +
+        (b.sc ? esc(b.sc) + '<br>': "") +
+        (b.pn ? '<span style="font-family:monospace">PACRA ' + esc(b.pn) + ' · ' + esc(b.ps) + '</span><br>': "") +
+        '<em style="color:#9aa7b6">Plotted at ' + esc(b.t) + ' town centroid, not a company address</em>'
       ).addTo(layer);
     });
     window._leafletLayerControl.addOverlay(layer,
@@ -2446,7 +2392,7 @@ const M49 = {
   const T = window.TRACE;
   if (!T) return;
   const fmt = (n) => Number(n).toLocaleString("en-US");
-  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const esc = (s) => String(s == null ? "": s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const STD_KEYS = Object.keys(T.STANDARDS);
 
@@ -2458,7 +2404,7 @@ const M49 = {
     [fmt(T.PARTNERS.length), "counterparties in the chain layer", "var(--s1)"],
     [fmt(anyStd), "clear at least one verification standard", "var(--s3)"],
     [fmt(twoPlus), "clear two or more", "var(--warning)"],
-    [Math.round((100 * (T.PARTNERS.length - anyStd)) / T.PARTNERS.length) + "%", "clear none — the verification void", "var(--critical)"],
+    [Math.round((100 * (T.PARTNERS.length - anyStd)) / T.PARTNERS.length) + "%", "clear none, the verification void", "var(--critical)"],
     [fmt(T.BOL.length), "bills of lading recovered", "var(--s4)"],
     [(bolKg / 1e6).toFixed(1) + "kt", "cargo weight on those manifests", "var(--s2)"],
   ].map(([n, l, c]) =>
@@ -2503,7 +2449,7 @@ const M49 = {
       { n: "Processing", v: fmt(procN), s: "smelters, refiners, plants, labs, lapidaries", d: "proc", key },
       { n: "Chain of custody", v: "0", s: "nothing public links a shipment to the licence it came off", d: "void", key, void: true },
       { n: "Export", v: fmt(T.BOL.length), s: "manifest-verified consignments", d: "bol", key },
-      { n: "Destination", v: dest.size ? fmt(dest.size) : "–", s: dest.size ? "partner markets in mirrored trade data" : "no HS line mapped for this commodity", d: "dest", key },
+      { n: "Destination", v: dest.size ? fmt(dest.size): "-", s: dest.size ? "partner markets in mirrored trade data": "no HS line mapped for this commodity", d: "dest", key },
     ];
   }
 
@@ -2514,13 +2460,13 @@ const M49 = {
     const key = document.getElementById("trace-commodity").value;
     const st = stagesFor(key);
     flowEl.innerHTML = st.map((s, i) =>
-      '<div class="trace-stage' + (s.void ? " void-stage" : "") + '" data-i="' + i + '" tabindex="0">' +
+      '<div class="trace-stage' + (s.void ? " void-stage": "") + '" data-i="' + i + '" tabindex="0">' +
       '<div class="st-name">' + esc(s.n) + '</div>' +
       '<div class="st-num">' + s.v + '</div>' +
       '<div class="st-sub">' + esc(s.s) + '</div></div>'
     ).join("");
     document.getElementById("trace-flow-note").textContent =
-      "Counts recomputed live from the licence, business and trade layers — click any stage.";
+      "Counts recomputed live from the licence, business and trade layers: click any stage.";
     flowEl.querySelectorAll(".trace-stage").forEach((el) => {
       const open = () => {
         flowEl.querySelectorAll(".trace-stage").forEach((x) => x.classList.remove("sel"));
@@ -2544,7 +2490,7 @@ const M49 = {
         'You can trace a shipment back to its exporter, and a licence back to its holder. But nothing public connects the two, so ' +
         'you cannot show which licence a given cargo came off.' +
         '<p style="margin:8px 0 0">Zambia does issue an export permit, and the ZRA issues a CD-1 form. Neither is published, and ' +
-        'neither records the licence number. The fix is not complicated — the licence code already appears on both the cadastre and ' +
+        'neither records the licence number. The fix is not complicated, the licence code already appears on both the cadastre and ' +
         'the Ministry\'s committee notices, so it is the obvious key to put on the export paperwork.</p></div>';
       return;
     }
@@ -2566,17 +2512,16 @@ const M49 = {
           '<tr><td style="font-weight:600">' + esc(h) + '</td>' +
           '<td style="font-family:var(--mono)">' + v.n + '</td>' +
           '<td style="font-family:var(--mono)">' + fmt(Math.round(v.ha)) + '</td>' +
-          '<td>' + (v.flag ? '<span style="color:var(--serious)">' + (v.flag === 2 ? "cancelled at MLC-78" : v.flag === 3 ? "default + cancelled" : "in 2025 default notice") + '</span>' : "&ndash;") + '</td></tr>').join(""));
+          '<td>' + (v.flag ? '<span style="color:var(--serious)">' + (v.flag === 2 ? "cancelled at MLC-78": v.flag === 3 ? "default + cancelled": "in 2025 default notice") + '</span>': "-") + '</td></tr>').join(""));
       return;
     }
     if (s.d === "proc") {
-      const rows = ((window.BIZ && window.BIZ.ALL) || []).filter((r) => PROC_SEGS.includes(r.s))
-        .sort((a, b) => String(a.s).localeCompare(String(b.s)) || String(a.n).localeCompare(String(b.n)));
+      const rows = ((window.BIZ && window.BIZ.ALL) || []).filter((r) => PROC_SEGS.includes(r.s)).sort((a, b) => String(a.s).localeCompare(String(b.s)) || String(a.n).localeCompare(String(b.n)));
       detailEl.innerHTML = tbl(["Company", "Segment", "Town", "Registry"],
         rows.slice(0, 20).map((r) =>
           '<tr><td style="font-weight:600">' + esc(r.n) + '</td><td>' + esc(tc(r.s)) + '</td>' +
-          '<td>' + esc(r.t || "–") + '</td>' +
-          '<td style="white-space:nowrap;color:' + (r.ps === "Active" ? "var(--good)" : "var(--muted)") + '">' + esc(r.ps || "–") + '</td></tr>').join(""));
+          '<td>' + esc(r.t || "-") + '</td>' +
+          '<td style="white-space:nowrap;color:' + (r.ps === "Active" ? "var(--good)": "var(--muted)") + '">' + esc(r.ps || "-") + '</td></tr>').join(""));
       return;
     }
     if (s.d === "dest") {
@@ -2594,10 +2539,10 @@ const M49 = {
       detailEl.innerHTML = tbl(["Destination", "Reported exports (all years)", "Share"],
         top.map(([p, v]) =>
           '<tr><td style="font-weight:600">' + esc(M49[p] || "code " + p) + '</td>' +
-          '<td style="font-family:var(--mono)">$' + (v >= 1e9 ? (v / 1e9).toFixed(2) + "bn" : Math.round(v / 1e6) + "m") + '</td>' +
+          '<td style="font-family:var(--mono)">$' + (v >= 1e9 ? (v / 1e9).toFixed(2) + "bn": Math.round(v / 1e6) + "m") + '</td>' +
           '<td style="font-family:var(--mono)">' + (100 * v / total).toFixed(1) + '%</td></tr>').join("")) +
         '<p class="note" style="margin-top:8px">Switzerland and Hong Kong lead because copper is <em>invoiced</em> through trading ' +
-        'desks there, not consumed there. Declared destination is a financial fact, not a physical one — another reason a ' +
+        'desks there, not consumed there. Declared destination is a financial fact, not a physical one: another reason a ' +
         'physical chain of custody cannot be inferred from trade statistics.</p>';
     }
   }
@@ -2622,10 +2567,10 @@ const M49 = {
     return STD_KEYS.map((k) => {
       const on = !!(p.f && p.f[k]);
       const s = T.STANDARDS[k];
-      const tip = s.n + " — " + s.w + " (source: " + s.s + ")" +
-        (on && s.check === "verify" ? " [asterisk: re-verify against the live list]" : "");
-      return '<span class="std-badge b-' + k + (on ? " on" : "") + '" title="' + esc(tip) + '">' +
-        k.toUpperCase() + (on && s.check === "verify" ? "*" : "") + "</span>";
+      const tip = s.n + ": " + s.w + " (source: " + s.s + ")" +
+        (on && s.check === "verify" ? " [asterisk: re-verify against the live list]": "");
+      return '<span class="std-badge b-' + k + (on ? " on": "") + '" title="' + esc(tip) + '">' +
+        k.toUpperCase() + (on && s.check === "verify" ? "*": "") + "</span>";
     }).join("");
   }
   function drawPartners() {
@@ -2639,11 +2584,11 @@ const M49 = {
       "<thead><tr><th>Counterparty</th><th>Role in the chain</th><th>Standards cleared</th><th>Score</th></tr></thead><tbody>" +
       rows.slice(0, 130).map((p) =>
         '<tr><td style="font-weight:600">' + esc(p.n) +
-        (p.note ? ' <span style="color:var(--muted);font-size:11px">(' + esc(p.note) + ')</span>' : "") + '</td>' +
+        (p.note ? ' <span style="color:var(--muted);font-size:11px">(' + esc(p.note) + ')</span>': "") + '</td>' +
         '<td style="text-align:left">' + esc(tc(p.r)) + '</td>' +
         '<td style="white-space:nowrap">' + badges(p) + '</td>' +
         '<td style="font-family:var(--mono);color:' +
-          (p.sc >= 2 ? "var(--good)" : p.sc === 1 ? "var(--warning)" : "var(--critical)") + '">' +
+          (p.sc >= 2 ? "var(--good)": p.sc === 1 ? "var(--warning)": "var(--critical)") + '">' +
           p.sc + "/4</td></tr>").join("") + "</tbody>";
   }
   stdSel.addEventListener("change", drawPartners);
@@ -2659,9 +2604,9 @@ const M49 = {
       '<td style="text-align:left">' + esc(r.co) + '</td>' +
       '<td style="text-align:left">' + esc(r.p) + '</td>' +
       '<td style="font-family:var(--mono)">' + esc(r.hs) + '</td>' +
-      '<td style="font-family:var(--mono);white-space:nowrap">' + (r.kg ? fmt(r.kg) + " kg" : "&ndash;") + '</td>' +
+      '<td style="font-family:var(--mono);white-space:nowrap">' + (r.kg ? fmt(r.kg) + " kg": "-") + '</td>' +
       '<td style="text-align:left;font-size:11.5px">' + esc(r.o) + " &rarr; " + esc(r.de) +
-      (r.u ? ' <a href="' + esc(r.u) + '" target="_blank" rel="noopener">src</a>' : "") + '</td></tr>').join("") +
+      (r.u ? ' <a href="' + esc(r.u) + '" target="_blank" rel="noopener">src</a>': "") + '</td></tr>').join("") +
     "</tbody>";
 })();
 
@@ -2676,35 +2621,35 @@ const M49 = {
   const I = window.INFRA;
   if (!I) return;
   const fmt = (n) => Number(n).toLocaleString("en-US");
-  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const esc = (s) => String(s == null ? "": s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
   /* Facility archetypes. minKv is the transmission class the load actually needs;
      feed is the commodity regex for feedstock within haulRadius km. Weights sum to 100. */
   /* Weights sum to 100 across five components. `road` scores distance to the TRUNK network
-     (653 segments), not any road — every town sits on some road, so scoring "nearest road"
+     (653 segments), not any road, every town sits on some road, so scoring "nearest road"
      made all 124 towns identical and the league table meaningless. `mkt` is distance to the
      nearest export gateway or domestic demand centre, which is what actually separates a
      Copperbelt site from a Western Province one. */
   const FTYPES = [
-    { id: "cu_smelter", n: "Copper smelter / converter", minKv: 132, mw: "60–150 MW",
+    { id: "cu_smelter", n: "Copper smelter / converter", minKv: 132, mw: "60-150 MW",
       feed: /copper|\bcu\b/i, haul: 150, w: { power: 34, rail: 20, road: 12, feed: 20, mkt: 14 },
       note: "Continuous high load and a concentrate stream measured in millions of tonnes. Rail matters as much as grid." },
-    { id: "cu_refinery", n: "Copper refinery (electrowinning)", minKv: 132, mw: "40–120 MW",
+    { id: "cu_refinery", n: "Copper refinery (electrowinning)", minKv: 132, mw: "40-120 MW",
       feed: /copper|\bcu\b/i, haul: 120, w: { power: 42, rail: 12, road: 12, feed: 20, mkt: 14 },
       note: "Electrowinning is the most power-intensive step in the chain. Off-grid generation is not economic." },
-    { id: "co_refinery", n: "Cobalt / battery-precursor plant", minKv: 66, mw: "15–40 MW",
+    { id: "co_refinery", n: "Cobalt / battery-precursor plant", minKv: 66, mw: "15-40 MW",
       feed: /cobalt|\bco\b|copper/i, haul: 200, w: { power: 30, rail: 14, road: 16, feed: 22, mkt: 18 },
       note: "Reagent-intensive; road access for imported chemicals often binds harder than raw power." },
-    { id: "mn_ferro", n: "Manganese / ferroalloy smelter", minKv: 220, mw: "80–200 MW",
+    { id: "mn_ferro", n: "Manganese / ferroalloy smelter", minKv: 220, mw: "80-200 MW",
       feed: /manganese|\bmn\b/i, haul: 250, w: { power: 44, rail: 18, road: 10, feed: 16, mkt: 12 },
       note: "Submerged-arc furnaces need the 220/330 kV backbone. Nothing else on this list is as power-bound." },
-    { id: "gem_cutting", n: "Gemstone cutting & polishing", minKv: 33, mw: "0.2–2 MW",
+    { id: "gem_cutting", n: "Gemstone cutting & polishing", minKv: 33, mw: "0.2-2 MW",
       feed: /emerald|amethyst|beryl|tourmaline|aquamarine|gemstone/i, haul: 120, w: { power: 10, rail: 4, road: 20, feed: 40, mkt: 26 },
-      note: "Low load — a genset covers it. Value is in skilled labour, proximity to the rough, and a flight out for buyers." },
-    { id: "assay_lab", n: "Assay laboratory (ISO 17025)", minKv: 33, mw: "0.5–3 MW",
+      note: "Low load, a genset covers it. Value is in skilled labour, proximity to the rough, and a flight out for buyers." },
+    { id: "assay_lab", n: "Assay laboratory (ISO 17025)", minKv: 33, mw: "0.5-3 MW",
       feed: /./, haul: 250, w: { power: 14, rail: 4, road: 28, feed: 32, mkt: 22 },
       note: "Sample turnaround is the product, so trunk-road reach across many mines dominates. This is verification infrastructure itself." },
-    { id: "cathode_fab", n: "Copper fabrication (rod / wire / tube)", minKv: 66, mw: "5–20 MW",
+    { id: "cathode_fab", n: "Copper fabrication (rod / wire / tube)", minKv: 66, mw: "5-20 MW",
       feed: /copper|\bcu\b/i, haul: 150, w: { power: 22, rail: 16, road: 18, feed: 22, mkt: 22 },
       note: "The value-addition step Zambia keeps announcing. Needs cathode nearby and a route to a market that will buy it." },
   ];
@@ -2770,16 +2715,16 @@ const M49 = {
       if (dKm(lat, lng, p[1], p[0]) <= ft.haul) { feedN++; feedHa += Number(p[7]) || 0; }
     }
 
-    let gw = { km: Infinity, n: "–" };
+    let gw = { km: Infinity, n: "-" };
     for (const g of GATEWAYS) {
       const d = dKm(lat, lng, g.ll[0], g.ll[1]);
       if (d < gw.km) gw = { km: d, n: g.n };
     }
 
     const parts = {
-      power: { v: decay(adequate.km, 30), km: adequate.km, extra: (adequate.seg ? adequate.seg.kv + " kV" : "none in range") },
-      rail:  { v: decay(rail.km, 40), km: rail.km, extra: rail.seg ? rail.seg.net : "–" },
-      road:  { v: decay(road.km, 30), km: road.km, extra: road.seg && road.seg.ref ? road.seg.ref : (road.seg ? "trunk" : "–") },
+      power: { v: decay(adequate.km, 30), km: adequate.km, extra: (adequate.seg ? adequate.seg.kv + " kV": "none in range") },
+      rail:  { v: decay(rail.km, 40), km: rail.km, extra: rail.seg ? rail.seg.net: "-" },
+      road:  { v: decay(road.km, 30), km: road.km, extra: road.seg && road.seg.ref ? road.seg.ref: (road.seg ? "trunk": "-") },
       feed:  { v: Math.min(100, 100 * Math.log10(1 + feedN) / Math.log10(201)), n: feedN, ha: feedHa },
       mkt:   { v: decay(gw.km, 120), km: gw.km, extra: gw.n },
     };
@@ -2793,22 +2738,18 @@ const M49 = {
     attribution: '&copy; OpenStreetMap, &copy; CARTO', subdomains: "abcd", maxZoom: 14,
   }).addTo(map);
 
-  const KV_STYLE = (kv) => kv >= 330 ? { color: "#f85149", weight: 2.4 }
-    : kv >= 220 ? { color: "#e06a3a", weight: 2.1 }
-    : kv >= 132 ? { color: "#eda100", weight: 1.8 }
-    : kv >= 66 ? { color: "#d9a114", weight: 1.3, opacity: 0.75 }
-    : { color: "#6b5a2a", weight: 1, opacity: 0.5 };
+  const KV_STYLE = (kv) => kv >= 330 ? { color: "#f85149", weight: 2.4 }: kv >= 220 ? { color: "#e06a3a", weight: 2.1 }: kv >= 132 ? { color: "#eda100", weight: 1.8 }: kv >= 66 ? { color: "#d9a114", weight: 1.3, opacity: 0.75 }: { color: "#6b5a2a", weight: 1, opacity: 0.5 };
 
   const gridHi = L.layerGroup(), gridLo = L.layerGroup(), railL = L.layerGroup(), roadL = L.layerGroup(), subL = L.layerGroup();
   I.power.forEach((s) => {
     const st = KV_STYLE(s.kv);
-    const ln = L.polyline(s.pts, { ...st, interactive: false });
-    (s.kv >= 132 ? gridHi : gridLo).addLayer(ln);
+    const ln = L.polyline(s.pts, {...st, interactive: false });
+    (s.kv >= 132 ? gridHi: gridLo).addLayer(ln);
   });
   I.rail.forEach((s) => railL.addLayer(L.polyline(s.pts, {
-    color: s.net === "TAZARA" ? "#d55181" : "#9aa7b6", weight: 1.6, dashArray: "5,4", interactive: false })));
+    color: s.net === "TAZARA" ? "#d55181": "#9aa7b6", weight: 1.6, dashArray: "5,4", interactive: false })));
   I.roads.forEach((s) => roadL.addLayer(L.polyline(s.pts, {
-    color: "#3987e5", weight: s.c === "t" ? 1.5 : 0.9, opacity: 0.55, interactive: false })));
+    color: "#3987e5", weight: s.c === "t" ? 1.5: 0.9, opacity: 0.55, interactive: false })));
   I.subs.forEach((s) => subL.addLayer(L.circleMarker(s.ll, {
     radius: 2.6, color: "#22b381", weight: 1, fillOpacity: 0.85, interactive: false })));
   gridHi.addTo(map); railL.addTo(map); roadL.addTo(map); subL.addTo(map);
@@ -2826,15 +2767,14 @@ const M49 = {
   FTYPES.forEach((f) => { const o = document.createElement("option"); o.value = f.id; o.textContent = f.n; ftSel.appendChild(o); });
   I.towns.slice().sort((a, b) => a.n.localeCompare(b.n)).forEach((t) => {
     const o = document.createElement("option");
-    o.value = t.n; o.textContent = t.n + (t.pop ? " (" + fmt(t.pop) + ")" : "");
+    o.value = t.n; o.textContent = t.n + (t.pop ? " (" + fmt(t.pop) + ")": "");
     townSel.appendChild(o);
   });
   document.getElementById("siting-hint").textContent = I.power.length + " grid segments · " +
     I.subs.length + " substations · " + I.rail.length + " rail · " + I.roads.length + " road segments";
 
   const bar = (v, c) => '<div class="score-bar"><div style="width:' + Math.max(2, Math.round(v)) + '%;background:' + c + '"></div></div>';
-  const band = (t) => t >= 70 ? ["var(--good)", "Strong site"] : t >= 50 ? ["var(--warning)", "Workable with investment"]
-    : t >= 32 ? ["var(--serious)", "Marginal — needs dedicated infrastructure"] : ["var(--critical)", "Poor — infrastructure-led cost"];
+  const band = (t) => t >= 70 ? ["var(--good)", "Strong site"]: t >= 50 ? ["var(--warning)", "Workable with investment"]: t >= 32 ? ["var(--serious)", "Marginal: needs dedicated infrastructure"]: ["var(--critical)", "Poor: infrastructure-led cost"];
 
   let selected = null;
   function renderScore(lat, lng, label) {
@@ -2849,15 +2789,15 @@ const M49 = {
         '<span class="sr-v" style="color:' + col + ';font-size:17px">' + s.total.toFixed(0) + '/100</span></div>' +
       bar(s.total, col) +
       '<div class="score-row"><span class="sr-l">Grid ≥ ' + ft.minKv + ' kV</span><span class="sr-v">' +
-        (isFinite(s.adequateKm) ? s.adequateKm.toFixed(1) + " km · " + esc(P.power.extra) : "none mapped") + '</span></div>' + bar(P.power.v, "#eda100") +
+        (isFinite(s.adequateKm) ? s.adequateKm.toFixed(1) + " km · " + esc(P.power.extra): "none mapped") + '</span></div>' + bar(P.power.v, "#eda100") +
       '<div class="score-row"><span class="sr-l">Nearest substation</span><span class="sr-v">' +
-        (isFinite(s.subKm) ? s.subKm.toFixed(1) + " km" : "–") + '</span></div>' +
+        (isFinite(s.subKm) ? s.subKm.toFixed(1) + " km": "-") + '</span></div>' +
       '<div class="score-row"><span class="sr-l">Rail (' + esc(P.rail.extra) + ')</span><span class="sr-v">' +
         P.rail.km.toFixed(1) + ' km</span></div>' + bar(P.rail.v, "#d55181") +
       '<div class="score-row"><span class="sr-l">Trunk road (' + esc(P.road.extra) + ')</span><span class="sr-v">' +
         P.road.km.toFixed(1) + ' km</span></div>' + bar(P.road.v, "#3987e5") +
       '<div class="score-row"><span class="sr-l">Feedstock licences within ' + ft.haul + ' km</span><span class="sr-v">' +
-        fmt(P.feed.n) + (P.feed.ha ? " · " + fmt(Math.round(P.feed.ha / 1000)) + "k ha" : "") + '</span></div>' + bar(P.feed.v, "#22b381") +
+        fmt(P.feed.n) + (P.feed.ha ? " · " + fmt(Math.round(P.feed.ha / 1000)) + "k ha": "") + '</span></div>' + bar(P.feed.v, "#22b381") +
       '<div class="score-row"><span class="sr-l">Nearest gateway/market</span><span class="sr-v">' +
         P.mkt.km.toFixed(0) + ' km</span></div>' +
       '<div class="score-row" style="margin-top:-4px"><span class="sr-l" style="font-size:11px;color:var(--muted)">' +
@@ -2869,16 +2809,14 @@ const M49 = {
           '<strong style="color:var(--critical)">Off-grid for this load class.</strong> The nearest ' + ft.minKv +
           '&nbsp;kV+ line is ' + s.adequateKm.toFixed(0) + ' km away' +
           (isFinite(s.anyPowerKm) && s.anyPowerKm < s.adequateKm
-            ? ' (a lower-voltage line runs within ' + s.anyPowerKm.toFixed(0) + ' km, but it cannot carry ' + esc(ft.mw) + ')'
-            : "") +
-          '. This site needs a dedicated transmission spur or on-site generation — typically the single largest line item in a ' +
-          'Zambian plant budget, and the reason announced value-addition projects stall.</div>'
-        : '<div class="siting-verdict" style="border-left:3px solid var(--good);background:rgba(63,185,80,.06)">' +
+            ? ' (a lower-voltage line runs within ' + s.anyPowerKm.toFixed(0) + ' km, but it cannot carry ' + esc(ft.mw) + ')': "") +
+          '. This site needs a dedicated transmission spur or on-site generation: typically the single largest line item in a ' +
+          'Zambian plant budget, and the reason announced value-addition projects stall.</div>': '<div class="siting-verdict" style="border-left:3px solid var(--good);background:rgba(63,185,80,.06)">' +
           '<strong style="color:var(--good)">Grid-connectable.</strong> A ' + esc(P.power.extra) + ' line is within ' +
           s.adequateKm.toFixed(1) + ' km, adequate for the ' + esc(ft.mw) + ' this facility class draws.</div>') +
       '<p class="note" style="margin-top:10px;font-size:11.5px">Weights for this facility: power ' + ft.w.power +
         '%, rail ' + ft.w.rail + '%, trunk road ' + ft.w.road + '%, feedstock ' + ft.w.feed +
-        '%, market access ' + ft.w.mkt + '%. Screening heuristic only — no land, water, tailings or community assessment.</p>';
+        '%, market access ' + ft.w.mkt + '%. Screening heuristic only, no land, water, tailings or community assessment.</p>';
 
     if (pin) map.removeLayer(pin);
     if (haulRing) map.removeLayer(haulRing);
@@ -2895,14 +2833,13 @@ const M49 = {
     const t = I.towns.find((x) => x.n === townSel.value);
     if (!t) return;
     map.setView(t.ll, 8);
-    renderScore(t.ll[0], t.ll[1], t.n + (t.c ? " (city)" : "") + (t.pop ? " · pop. " + fmt(t.pop) : ""));
+    renderScore(t.ll[0], t.ll[1], t.n + (t.c ? " (city)": "") + (t.pop ? " · pop. " + fmt(t.pop): ""));
   });
 
   /* ---- league table ---- */
   function drawLeague() {
     const ft = FTYPES.find((f) => f.id === ftSel.value);
-    const rows = I.towns.map((t) => ({ t, s: score(t.ll[0], t.ll[1], ft) }))
-      .sort((a, b) => b.s.total - a.s.total);
+    const rows = I.towns.map((t) => ({ t, s: score(t.ll[0], t.ll[1], ft) })).sort((a, b) => b.s.total - a.s.total);
     document.getElementById("siting-league-table").innerHTML =
       "<thead><tr><th>#</th><th>Town</th><th>Score</th><th>Grid ≥" + ft.minKv + "kV</th><th>Rail</th><th>Trunk rd</th>" +
       "<th>Feed &lt;" + ft.haul + "km</th><th>Gateway</th><th>Verdict</th></tr></thead><tbody>" +
@@ -2911,7 +2848,7 @@ const M49 = {
         return '<tr><td style="font-family:var(--mono);color:var(--muted)">' + (i + 1) + '</td>' +
           '<td style="font-weight:600"><a href="#" data-town="' + esc(r.t.n) + '" style="color:inherit">' + esc(r.t.n) + '</a></td>' +
           '<td style="font-family:var(--mono);color:' + col + ';font-weight:700">' + r.s.total.toFixed(0) + '</td>' +
-          '<td style="font-family:var(--mono)">' + (isFinite(r.s.adequateKm) ? r.s.adequateKm.toFixed(0) + " km" : "–") + '</td>' +
+          '<td style="font-family:var(--mono)">' + (isFinite(r.s.adequateKm) ? r.s.adequateKm.toFixed(0) + " km": "-") + '</td>' +
           '<td style="font-family:var(--mono)">' + r.s.parts.rail.km.toFixed(0) + ' km</td>' +
           '<td style="font-family:var(--mono)">' + r.s.parts.road.km.toFixed(0) + ' km</td>' +
           '<td style="font-family:var(--mono)">' + fmt(r.s.feedN) + '</td>' +
@@ -2952,7 +2889,7 @@ const M49 = {
   const out = document.getElementById("adv-output");
   if (!out) return;
   const fmt = (n) => Number(n).toLocaleString("en-US");
-  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const esc = (s) => String(s == null ? "": s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
   const BIZ = (window.BIZ && window.BIZ.ALL) || [];
   const PARTNERS = (window.TRACE && window.TRACE.PARTNERS) || [];
@@ -2997,7 +2934,7 @@ const M49 = {
     investor: "Investor building a facility",
   };
   /* Corridor fit by destination. Chosen on where the cargo physically has to reach,
-     not on invoicing geography — Switzerland is a desk, not a port. */
+     not on invoicing geography. Switzerland is a desk, not a port. */
   const CORRIDOR_FIT = {
     156: ["TAZARA", "Durban", "Beira"], 757: ["Durban", "TAZARA"], eu: ["Lobito", "Durban", "Walvis"],
     842: ["Lobito", "Durban"], 784: ["TAZARA", "Durban"], region: ["Durban", "Beira"], dom: [],
@@ -3028,14 +2965,14 @@ const M49 = {
     const fits = CORRIDOR_FIT[dest] || [];
     const picked = fits.map((f) => CORR.find((c) => c.name.indexOf(f) >= 0)).filter(Boolean);
     if (dest === "dom") {
-      blocks.push(card("Route", '<p class="note" style="margin:0">Domestic sale — no corridor decision. The ' +
+      blocks.push(card("Route", '<p class="note" style="margin:0">Domestic sale, no corridor decision. The ' +
         'binding constraint becomes the trunk-road link to Lusaka or the Copperbelt, which the Siting Lab tab ' +
         'scores for any point in the country.</p>'));
     } else if (picked.length) {
-      blocks.push(card("Route — ranked for " + DEST_LABEL[dest],
+      blocks.push(card("Route: ranked for " + DEST_LABEL[dest],
         '<table class="data"><thead><tr><th>Corridor</th><th>Port</th><th>Mode</th><th>Standing</th></tr></thead><tbody>' +
         picked.map((c, i) =>
-          '<tr><td style="font-weight:600">' + (i === 0 ? '<span style="color:var(--good)">1st choice</span> · ' : (i + 1) + '. ') +
+          '<tr><td style="font-weight:600">' + (i === 0 ? '<span style="color:var(--good)">1st choice</span> · ': (i + 1) + '. ') +
           esc(c.name) + '</td><td>' + esc(c.port) + '</td><td>' + esc(c.mode) + '</td>' +
           '<td style="text-align:left;font-size:11.5px">' + esc(String(c.status).slice(0, 180)) + '</td></tr>').join("") +
         '</tbody></table>'));
@@ -3054,7 +2991,7 @@ const M49 = {
       rows.map((r) =>
         '<tr><td style="font-weight:600">' + esc(tc(r.s)) + '</td>' +
         '<td style="font-family:var(--mono)">' + r.n + '</td>' +
-        '<td style="font-family:var(--mono);color:' + (r.act ? "var(--good)" : "var(--critical)") + '">' + r.act + '</td>' +
+        '<td style="font-family:var(--mono);color:' + (r.act ? "var(--good)": "var(--critical)") + '">' + r.act + '</td>' +
         '<td style="font-family:var(--mono)">' + r.loc + '</td>' +
         '<td style="text-align:left;font-size:11.5px;color:var(--ink-2)">' + esc(r.sample.join("; ") || "none identified") + '</td></tr>').join("") +
       '</tbody></table>' +
@@ -3069,25 +3006,24 @@ const M49 = {
     const noneRelevant = scored.length === 0;
     const askFor = {
       exporter: "Buyers will ask for these. Two are cheap and entirely up to you: file your beneficial ownership with PACRA, and get an accredited assay. Start there.",
-      importer: "Check any Zambian counterparty against these four before you pay a deposit. Scoring 0/4 does not make them a bad counterparty — it means you will have to verify their claims yourself.",
+      importer: "Check any Zambian counterparty against these four before you pay a deposit. Scoring 0/4 does not make them a bad counterparty, it means you will have to verify their claims yourself.",
       supplier: "Your customer's lender will look through to you on ownership. Filing beneficial ownership with PACRA is the easy win.",
       financier: "These four are the only provenance signals you can check from outside Zambia. Everything else in a data room is self-reported.",
       investor: "Whoever finances your plant will score your offtake partner on these. Budget for the assay and custody chain up front, not later.",
     }[role];
-    blocks.push(card("Verification standards — and who already clears them",
+    blocks.push(card("Verification standards, and who already clears them",
       '<p class="note" style="margin:0 0 10px">' + esc(askFor) + '</p>' +
       (noneRelevant
         ? '<div class="callout void" style="margin:0"><strong>Not one counterparty evidenced in this commodity clears ' +
           'any of the four standards.</strong> The scored list is dominated by copper, because copper is the only part ' +
           'of the Zambian sector that has had to satisfy outside lenders and the LME. For ' +
           esc(document.querySelector("#adv-commodity option:checked").textContent.toLowerCase()) +
-          ' there is no verified counterparty to benchmark against — which means a buyer cannot screen you against ' +
+          ' there is no verified counterparty to benchmark against, which means a buyer cannot screen you against ' +
           'a peer, and you cannot point at a local precedent. Being first to clear even PACRA beneficial ownership ' +
-          'plus an accredited assay would put you ahead of the entire visible field.</div>'
-        : '<table class="data"><thead><tr><th>Counterparty</th><th>Role</th><th>Score</th></tr></thead><tbody>' +
+          'plus an accredited assay would put you ahead of the entire visible field.</div>': '<table class="data"><thead><tr><th>Counterparty</th><th>Role</th><th>Score</th></tr></thead><tbody>' +
           scored.map((p) =>
             '<tr><td style="font-weight:600">' + esc(p.n) + '</td><td style="text-align:left">' + esc(tc(p.r)) + '</td>' +
-            '<td style="font-family:var(--mono);color:' + (p.sc >= 2 ? "var(--good)" : "var(--warning)") + '">' + p.sc + '/4</td></tr>').join("") +
+            '<td style="font-family:var(--mono);color:' + (p.sc >= 2 ? "var(--good)": "var(--warning)") + '">' + p.sc + '/4</td></tr>').join("") +
           '</tbody></table>' +
           '<p class="note" style="margin:8px 0 0">' + relevant.length + ' of ' + PARTNERS.length +
           ' counterparties in the chain layer are evidenced in this commodity and clear at least one standard.</p>')));
@@ -3100,20 +3036,19 @@ const M49 = {
       const agg = {};
       flows.forEach((r) => { agg[r.par] = (agg[r.par] || 0) + (Number(r.usd) || 0); });
       const total = Object.values(agg).reduce((a, b) => a + b, 0);
-      const mine = /^\d+$/.test(dest) ? (agg[dest] || 0) : 0;
+      const mine = /^\d+$/.test(dest) ? (agg[dest] || 0): 0;
       const top = Object.entries(agg).sort((a, b) => b[1] - a[1]).slice(0, 6);
       blocks.push(card("What the trade data says about this route",
         '<p class="note" style="margin:0 0 8px">Zambia\'s declared exports on ' + hs.join(" / ") +
         ', all years in the Comtrade pull. ' +
         (mine ? 'Your stated destination accounts for <strong>' + (100 * mine / total).toFixed(1) +
-          '%</strong> of declared value, so there is an established channel and comparable pricing to benchmark against.'
-        : 'Your stated destination does not appear as a material declared destination — either the trade is invoiced ' +
+          '%</strong> of declared value, so there is an established channel and comparable pricing to benchmark against.': 'Your stated destination does not appear as a material declared destination: either the trade is invoiced ' +
           'through an intermediary jurisdiction, or the channel is genuinely thin. Verify against the buyer\'s own import records.') +
         '</p><table class="data"><thead><tr><th>Where it is declared to go</th><th>Value</th><th>Share</th></tr></thead><tbody>' +
         top.map(([p, v]) =>
-          '<tr' + (p === dest ? ' style="background:rgba(57,135,229,.08)"' : '') + '><td style="font-weight:600">' +
+          '<tr' + (p === dest ? ' style="background:rgba(57,135,229,.08)"': '') + '><td style="font-weight:600">' +
           esc(M49[p] || "code " + p) + '</td><td style="font-family:var(--mono)">$' +
-          (v >= 1e9 ? (v / 1e9).toFixed(2) + "bn" : Math.round(v / 1e6) + "m") + '</td>' +
+          (v >= 1e9 ? (v / 1e9).toFixed(2) + "bn": Math.round(v / 1e6) + "m") + '</td>' +
           '<td style="font-family:var(--mono)">' + (100 * v / total).toFixed(1) + '%</td></tr>').join("") +
         '</tbody></table>'));
     } else {
@@ -3126,12 +3061,11 @@ const M49 = {
         '"market price", you have no way to check it.</p></div>'));
     }
 
-    /* ---- 5. the gaps — the part that makes this honest ---- */
-    const feedN = ((window.LICENSES && window.LICENSES.points) || [])
-      .filter((p) => COMMODITY_RX[com].test(p[5] || "")).length;
+    /* ---- 5. the gaps, the part that makes this honest ---- */
+    const feedN = ((window.LICENSES && window.LICENSES.points) || []).filter((p) => COMMODITY_RX[com].test(p[5] || "")).length;
     const gaps = [];
     gaps.push("<strong>You cannot prove where the ore came from.</strong> Nothing public links a shipment to a licence. " +
-      "If a buyer or lender asks for mine-to-port traceability, you will have to build it into your contracts — there is " +
+      "If a buyer or lender asks for mine-to-port traceability, you will have to build it into your contracts: there is " +
       "no registry to point at.");
     if (scale === "small") {
       gaps.push("<strong>At small scale, the formal route mostly is not open to you.</strong> Around 94% of the 3,622 " +
@@ -3147,7 +3081,7 @@ const M49 = {
         "1,428 have not filed annual returns, and 214 companies holding mineral rights have no registry record at all. " +
         "Budget for your own verification.");
     }
-    gaps.push("<strong>" + fmt(feedN) + " licences list this commodity — but that is ground, not production.</strong> " +
+    gaps.push("<strong>" + fmt(feedN) + " licences list this commodity, but that is ground, not production.</strong> " +
       "Most of it is exploration. A licence is not evidence anyone is mining. Check the production licence types in the " +
       "chain above before you count on supply.");
     blocks.push(card("What to watch out for",
@@ -3182,16 +3116,14 @@ const M49 = {
   const S = window.SUPPLY;
   if (!S) return;
   const fmt = (n) => Number(n).toLocaleString("en-US");
-  const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  const esc = (s) => String(s == null ? "": s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   const tc = (s) => String(s || "").replace(/_/g, " ").replace(/\b\w/g, (c) => c.toUpperCase());
 
   /* One flat row shape for both sources so search and filters stay simple. */
-  const ROWS = [
-    ...S.AGENTS.map((a) => ({
+  const ROWS = [...S.AGENTS.map((a) => ({
       n: a.n, cat: "Customs clearing agents", town: a.t || "", what: a.lic || "Licensed clearing agent",
-      extra: a.exp ? "licence to " + a.exp : "", ch: a.ch, kind: "agent", status: "",
-    })),
-    ...S.SUPPLIERS.map((r) => ({
+      extra: a.exp ? "licence to " + a.exp: "", ch: a.ch, kind: "agent", status: "",
+    })),...S.SUPPLIERS.map((r) => ({
       n: r.n, cat: r.lbl, town: r.t || "", what: r.w || "", extra: r.own || "",
       ch: r.ch, kind: "supplier", status: r.ps || "",
     })),
@@ -3264,37 +3196,35 @@ const M49 = {
         return terms.every((t) => hay.indexOf(t) >= 0);
       });
     }
-    // reachable first, then name — so the useful ones are at the top
+    // reachable first, then name, so the useful ones are at the top
     rows = rows.slice().sort((a, b) => (b.ch - a.ch) || a.n.localeCompare(b.n));
 
     document.getElementById("supply-count").innerHTML = rows.length
-      ? "<strong>" + fmt(rows.length) + "</strong> match" + (rows.length === 1 ? "" : "es") +
-        (rows.length > 200 ? " — showing the first 200" : "") + ". " +
-        fmt(rows.filter((r) => r.ch).length) + " have a phone or email on file."
-      : "No matches. Try a shorter search, or clear the filters.";
+      ? "<strong>" + fmt(rows.length) + "</strong> match" + (rows.length === 1 ? "": "es") +
+        (rows.length > 200 ? ": showing the first 200": "") + ". " +
+        fmt(rows.filter((r) => r.ch).length) + " have a phone or email on file.": "No matches. Try a shorter search, or clear the filters.";
 
     document.getElementById("supply-table").innerHTML = rows.length
       ? "<thead><tr><th>Company</th><th>What they are</th><th>Town</th><th>Contact on file</th></tr></thead><tbody>" +
         rows.slice(0, 200).map((r) =>
           '<tr><td style="font-weight:600">' + esc(r.n) +
             (r.status && r.status !== "Active"
-              ? ' <span style="color:var(--muted);font-size:11px">(' + esc(r.status) + ')</span>' : "") + '</td>' +
+              ? ' <span style="color:var(--muted);font-size:11px">(' + esc(r.status) + ')</span>': "") + '</td>' +
           '<td style="text-align:left">' + esc(r.cat) +
             (r.what && r.what !== r.cat
               ? '<div style="color:var(--muted);font-size:11.5px;margin-top:2px">' +
-                esc(r.what.length > 120 ? r.what.slice(0, 118) + "…" : r.what) + '</div>' : "") + '</td>' +
-          '<td style="white-space:nowrap">' + esc(r.town ? tc(r.town.toLowerCase()) : "—") + '</td>' +
-          '<td style="white-space:nowrap"><span class="reach-dot ' + (r.ch ? "yes" : "no") + '"></span>' +
-            (r.ch ? "yes" : "not found") + '</td></tr>').join("") + "</tbody>"
-      : "";
+                esc(r.what.length > 120 ? r.what.slice(0, 118) + "…": r.what) + '</div>': "") + '</td>' +
+          '<td style="white-space:nowrap">' + esc(r.town ? tc(r.town.toLowerCase()): ": ") + '</td>' +
+          '<td style="white-space:nowrap"><span class="reach-dot ' + (r.ch ? "yes": "no") + '"></span>' +
+            (r.ch ? "yes": "not found") + '</td></tr>').join("") + "</tbody>": "";
   }
 
   qEl.addEventListener("input", draw);
   [catSel, townSel, reachEl].forEach((el) => el.addEventListener("change", draw));
-  document.querySelectorAll("#supply-chips .supply-chip").forEach((btn) => {
+  document.querySelectorAll("#supply-chips.supply-chip").forEach((btn) => {
     btn.addEventListener("click", () => {
       const on = btn.classList.contains("on");
-      document.querySelectorAll("#supply-chips .supply-chip").forEach((b) => b.classList.remove("on"));
+      document.querySelectorAll("#supply-chips.supply-chip").forEach((b) => b.classList.remove("on"));
       if (on) { catSel.value = "all"; } else { btn.classList.add("on"); catSel.value = btn.dataset.cat; }
       draw();
     });
@@ -3302,10 +3232,7 @@ const M49 = {
   draw();
 
   /* ----- where the agents are ----- */
-  const top = Object.entries(townCounts)
-    .filter(([t]) => S.AGENTS.some((a) => a.t === t))
-    .map(([t]) => [t, S.AGENTS.filter((a) => a.t === t).length])
-    .sort((a, b) => b[1] - a[1]).slice(0, 14);
+  const top = Object.entries(townCounts).filter(([t]) => S.AGENTS.some((a) => a.t === t)).map(([t]) => [t, S.AGENTS.filter((a) => a.t === t).length]).sort((a, b) => b[1] - a[1]).slice(0, 14);
   const BORDER = { NAKONDE: 1, CHIRUNDU: 1, KASUMBALESA: 1, KAZUNGULA: 1, SESHEKE: 1, LIVINGSTONE: 1, MPULUNGU: 1 };
   new Chart(document.getElementById("supply-town-chart"), {
     type: "bar",
@@ -3314,7 +3241,7 @@ const M49 = {
       datasets: [{
         label: "Licensed clearing agents",
         data: top.map(([, n]) => n),
-        backgroundColor: top.map(([t]) => (BORDER[t] ? "#e06a3a" : "#3987e5")),
+        backgroundColor: top.map(([t]) => (BORDER[t] ? "#e06a3a": "#3987e5")),
         borderRadius: 4, borderSkipped: false,
       }],
     },
@@ -3323,7 +3250,7 @@ const M49 = {
       plugins: {
         legend: { display: false },
         tooltip: { callbacks: {
-          label: (c) => fmt(c.parsed.y) + " agents" + (BORDER[top[c.dataIndex][0]] ? " — border post" : ""),
+          label: (c) => fmt(c.parsed.y) + " agents" + (BORDER[top[c.dataIndex][0]] ? ": border post": ""),
         } },
       },
       scales: {
@@ -3341,4 +3268,127 @@ const M49 = {
       if (ch) ch.resize();
     });
   });
+})();
+
+/* ================================================================
+   COLLAPSIBLE CARDS
+   Each tab holds up to a dozen cards, which is a wall of content. The
+   first card in a panel stays open; the rest collapse to their heading
+   so a tab opens as a scannable list.
+   Runs last, after every module has built its charts, and works on the
+   existing markup so no card had to be restructured by hand.
+================================================================ */
+(function collapsibleCards() {
+  /* Panels whose secondary cards collapse. The map panel is excluded: its extra cards are
+     already shown and hidden by the licence-filter logic, and nesting a second mechanism
+     inside that would fight it. */
+  const PANELS = ["register", "trace", "supply", "siting", "trade", "method"];
+  const CHEV = '<svg class="chev" viewBox="0 0 8 12" fill="none" aria-hidden="true">' +
+    '<path d="M1.5 1L6 6l-4.5 5" stroke="currentColor" stroke-width="2" ' +
+    'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  /* A collapsed card renders its canvases and map divs at 0x0, and neither Chart.js nor
+     Leaflet recovers on its own. Resize whatever is inside the moment it first opens. */
+  function reflow(card) {
+    card.querySelectorAll("canvas").forEach((cv) => {
+      const ch = window.Chart && Chart.getChart(cv);
+      if (ch) ch.resize();
+    });
+    if (window._leafletMap && card.contains(window._leafletMap.getContainer())) {
+      window._leafletMap.invalidateSize();
+    }
+    card.querySelectorAll(".leaflet-container").forEach((el) => {
+      // siting has its own map instance; find it through the element Leaflet tagged
+      const m = el._leaflet_id && window.L && L.DomUtil ? null : null;
+      if (m) m.invalidateSize();
+    });
+    // the siting map is the one non-global instance; nudge it via a resize event
+    window.dispatchEvent(new Event("resize"));
+  }
+
+  function summarise(card) {
+    /* A one-line hint on the collapsed heading, so a shut card still says what is inside. */
+    const t = card.querySelector("table.data tbody");
+    if (t && t.rows.length) return t.rows.length + " rows";
+    if (card.querySelector("canvas")) return "chart";
+    if (card.querySelector(".leaflet-container, #siting-map")) return "map";
+    return "";
+  }
+
+  PANELS.forEach((id) => {
+    const panel = document.getElementById("tab-" + id);
+    if (!panel) return;
+    const cards = [...panel.querySelectorAll(":scope > .card")];
+    if (cards.length < 2) return;
+
+    cards.forEach((card, i) => {
+      const h = card.querySelector(":scope > h2");
+      if (!h) return;
+
+      /* Move everything after the heading into a body wrapper. */
+      const body = document.createElement("div");
+      body.className = "card-body";
+      let node = h.nextSibling;
+      while (node) {
+        const next = node.nextSibling;
+        body.appendChild(node);
+        node = next;
+      }
+      card.appendChild(body);
+      card.classList.add("collapsible");
+
+      const open = i === 0;
+      card.dataset.open = open ? "1" : "0";
+
+      const hint = summarise(card);
+      h.innerHTML = CHEV + "<span>" + h.innerHTML + "</span>" +
+        (hint ? '<span class="card-hint">' + hint + "</span>" : "");
+      h.setAttribute("role", "button");
+      h.setAttribute("tabindex", "0");
+      h.setAttribute("aria-expanded", String(open));
+
+      let reflowed = open;
+      const toggle = () => {
+        const nowOpen = card.dataset.open !== "1";
+        card.dataset.open = nowOpen ? "1" : "0";
+        h.setAttribute("aria-expanded", String(nowOpen));
+        if (nowOpen && !reflowed) { reflowed = true; requestAnimationFrame(() => reflow(card)); }
+        else if (nowOpen) { requestAnimationFrame(() => reflow(card)); }
+      };
+      h.addEventListener("click", toggle);
+      h.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggle(); }
+      });
+    });
+
+    /* Expand-all / collapse-all, above the cards. */
+    const tools = document.createElement("div");
+    tools.className = "panel-tools";
+    tools.innerHTML = '<button type="button" data-act="open">EXPAND ALL</button>' +
+                      '<button type="button" data-act="shut">COLLAPSE ALL</button>';
+    const firstCard = panel.querySelector(":scope > .card");
+    if (firstCard) panel.insertBefore(tools, firstCard);
+    tools.addEventListener("click", (e) => {
+      const act = e.target.dataset && e.target.dataset.act;
+      if (!act) return;
+      panel.querySelectorAll(":scope > .card.collapsible").forEach((c) => {
+        c.dataset.open = act === "open" ? "1" : "0";
+        const hh = c.querySelector(":scope > h2");
+        if (hh) hh.setAttribute("aria-expanded", String(act === "open"));
+        if (act === "open") requestAnimationFrame(() => reflow(c));
+      });
+    });
+  });
+
+  /* Deep links and the global search jump straight to a card; make sure it is open. */
+  function revealTarget(el) {
+    const card = el && el.closest && el.closest(".card.collapsible");
+    if (card && card.dataset.open !== "1") {
+      card.dataset.open = "1";
+      const hh = card.querySelector(":scope > h2");
+      if (hh) hh.setAttribute("aria-expanded", "true");
+      requestAnimationFrame(() => reflow(card));
+    }
+  }
+  window._revealCard = revealTarget;
 })();

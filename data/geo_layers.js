@@ -1,4 +1,4 @@
-// geo_layers.js — hand-authored geographic layers for the Legibility Map.
+// geo_layers.js: hand-authored geographic layers for the Legibility Map.
 // All coordinates are [lat, lng] (Leaflet convention).
 //
 // IMPORTANT PROVENANCE NOTE:
@@ -9,11 +9,11 @@
 //    known operations. They are NOT data from the Zambian Mining Cadastre
 //    (portals.landfolio.com/zambia), whose query endpoint is login-gated.
 //  - Clearing-agent points are city-level clusters representing where agents on the
-//    ZRA licensed clearing agents list (zra.org.zm) are concentrated — not
+//    ZRA licensed clearing agents list (zra.org.zm) are concentrated, not
 //    individual geocoded addresses.
 //  - LME warehouse points are an illustrative subset of LME-approved warehouse
 //    LOCATIONS (cities). The LME approves warehouse companies at listed locations;
-//    none are in Zambia — that absence is the point.
+//    none are in Zambia, that absence is the point.
 
 window.GEO = {
 
@@ -22,7 +22,7 @@ window.GEO = {
       name: "Lobito Corridor (Benguela Railway)",
       mode: "rail",
       color: "#e4572e",
-      status: "Rehabilitated; 30-yr concession to Lobito Atlantic Railway (Trafigura, Mota-Engil, Vecturis). USD 753M financing (DFC $553M + DBSA $200M), financial close June 2026. Zambia branch (Chingola–Jimbe) planned.",
+      status: "Rehabilitated; 30-yr concession to Lobito Atlantic Railway (Trafigura, Mota-Engil, Vecturis). USD 753M financing (DFC $553M + DBSA $200M), financial close June 2026. Zambia branch (Chingola-Jimbe) planned.",
       port: "Port of Lobito, Angola (Atlantic)",
       waypoints: [
         [-12.35, 13.55],  // Lobito
@@ -43,7 +43,7 @@ window.GEO = {
       name: "TAZARA (Dar es Salaam Corridor)",
       mode: "rail",
       color: "#2e9db5",
-      status: "Revival under 2024 China–Tanzania–Zambia MoU (FOCAC). Historic Copperbelt outlet to the Indian Ocean.",
+      status: "Revival under 2024 China-Tanzania-Zambia MoU (FOCAC). Historic Copperbelt outlet to the Indian Ocean.",
       port: "Port of Dar es Salaam, Tanzania (Indian Ocean)",
       waypoints: [
         [-12.80, 28.21],  // Kitwe
@@ -59,7 +59,7 @@ window.GEO = {
       ]
     },
     {
-      name: "North–South Corridor (Durban)",
+      name: "North-South Corridor (Durban)",
       mode: "road/rail",
       color: "#8d76c9",
       status: "Dominant historic route for refined metal; longest distance, congested borders (Chirundu, Beitbridge).",
@@ -133,13 +133,13 @@ window.GEO = {
     { name: "Ndola / Kitwe (Copperbelt)", latlng: [-12.89, 28.44], weight: 4, note: "Copperbelt cluster serving mine logistics." },
     { name: "Kasumbalesa border", latlng: [-12.25, 27.80], weight: 4, note: "DRC border; key transit chokepoint for Congolese cobalt/copper." },
     { name: "Nakonde border", latlng: [-9.34, 32.75], weight: 3, note: "Tanzania border (TAZARA/Dar road)." },
-    { name: "Chirundu border", latlng: [-16.03, 28.85], weight: 3, note: "Zimbabwe border (North–South corridor); one-stop border post." },
+    { name: "Chirundu border", latlng: [-16.03, 28.85], weight: 3, note: "Zimbabwe border (North-South corridor); one-stop border post." },
     { name: "Livingstone / Kazungula", latlng: [-17.79, 25.26], weight: 2, note: "Botswana/Namibia routes; Kazungula bridge." },
     { name: "Mwami border", latlng: [-13.52, 32.94], weight: 1, note: "Malawi border." }
   ],
 
   // Illustrative subset of LME-approved warehouse locations (cities). NONE are in
-  // Zambia or anywhere upstream on these corridors — the "void" thesis.
+  // Zambia or anywhere upstream on these corridors, the "void" thesis.
   lmeWarehouses: [
     { name: "Rotterdam", latlng: [51.92, 4.48] },
     { name: "Antwerp", latlng: [51.22, 4.40] },

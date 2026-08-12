@@ -40,12 +40,19 @@ header.app-header {
   background: linear-gradient(180deg, #0d121a, #0a0e14);
   position: sticky; top: 0; z-index: 1100;
 }
-.brand-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-header.app-header h1 {
-  margin: 0; font-size: 17px; font-weight: 700; letter-spacing: 0.01em; white-space: nowrap;
+.brand-row { display: flex; align-items: center; gap: 18px; flex-wrap: wrap; padding-bottom: 12px; }
+.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex-shrink: 0; }
+.brand-mark { display: block; flex-shrink: 0; }
+.brand-text { display: flex; flex-direction: column; line-height: 1.1; }
+.brand-text strong {
+  font-size: 14.5px; font-weight: 700; color: var(--ink);
+  letter-spacing: 0.08em; font-family: var(--mono);
 }
-header.app-header h1 .tick { color: var(--amber); font-family: var(--mono); margin-right: 6px; }
-p.sub { margin: 2px 0 10px; color: var(--muted); font-size: 12px; max-width: 980px; }
+.brand-sub {
+  font-size: 9.5px; color: var(--muted); letter-spacing: 0.16em;
+  font-family: var(--mono); margin-top: 3px;
+}
+p.sub { display: none; }
 
 .global-search {
   flex: 1; min-width: 220px; max-width: 460px;
@@ -54,7 +61,8 @@ p.sub { margin: 2px 0 10px; color: var(--muted); font-size: 12px; max-width: 980
   padding: 6px 12px; transition: border-color 0.15s, box-shadow 0.15s;
 }
 .global-search:focus-within { border-color: var(--amber); box-shadow: 0 0 0 3px rgba(245,166,35,0.12); }
-.global-search .gs-icon { color: var(--amber); font-family: var(--mono); font-size: 13px; }
+.global-search .gs-icon { color: var(--muted); flex-shrink: 0; transition: color 0.15s; }
+.global-search:focus-within .gs-icon { color: var(--amber); }
 .global-search input {
   flex: 1; background: transparent; border: none; outline: none;
   color: var(--ink); font: inherit; font-size: 13.5px;
@@ -420,3 +428,39 @@ label.chk input { accent-color: var(--amber); cursor: pointer; }
 .reach-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; }
 .reach-dot.yes { background: var(--good); }
 .reach-dot.no { background: var(--grid); }
+
+/* ---------- collapsible cards ---------- */
+/* Every tab past the first card is collapsed by default so a panel opens as a short list of
+   headings rather than a wall. Charts and maps inside a collapsed card measure 0x0, so the
+   toggle handler in app.js resizes them on first open. */
+.card.collapsible > h2 {
+  cursor: pointer; user-select: none; display: flex; align-items: center; gap: 9px;
+  margin: 0; padding: 1px 0;
+}
+.card.collapsible > h2:hover { color: var(--amber); }
+.card.collapsible > h2:focus-visible { outline: 2px solid var(--amber); outline-offset: 3px; border-radius: 3px; }
+.card.collapsible > h2 .chev {
+  flex-shrink: 0; width: 9px; height: 9px; color: var(--muted);
+  transition: transform 0.16s ease, color 0.16s;
+}
+.card.collapsible > h2:hover .chev { color: var(--amber); }
+.card.collapsible[data-open="1"] > h2 .chev { transform: rotate(90deg); color: var(--amber); }
+.card.collapsible > h2 .card-hint {
+  margin-left: auto; font-size: 10.5px; font-weight: 500; color: var(--muted);
+  font-family: var(--mono); letter-spacing: 0.04em; white-space: nowrap;
+}
+.card-body { display: none; padding-top: 10px; }
+.card.collapsible[data-open="1"] > .card-body { display: block; }
+.card.collapsible { padding-bottom: 13px; }
+
+/* section toolbar: expand / collapse all */
+.panel-tools {
+  display: flex; gap: 8px; align-items: center; justify-content: flex-end;
+  margin: 0 0 10px;
+}
+.panel-tools button {
+  font-size: 11px; font-family: var(--mono); letter-spacing: 0.04em;
+  background: none; border: 1px solid var(--grid); color: var(--muted);
+  padding: 3px 9px; border-radius: 5px; cursor: pointer; transition: all 0.12s;
+}
+.panel-tools button:hover { border-color: var(--amber); color: var(--ink); }
