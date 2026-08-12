@@ -687,3 +687,18 @@ label.chk input { accent-color: var(--amber); cursor: pointer; }
   header.app-header, nav.tabs, .panel-tools, .hero-stats, .tool-grid { display: none !important; }
   .card { break-inside: avoid; box-shadow: none; }
 }
+
+/* ---------- api demo ---------- */
+.api-url, .api-out {
+  font-family: var(--mono); font-size: 11.5px; line-height: 1.55;
+  background: var(--panel-2); border: 1px solid var(--border); border-radius: 9px;
+  padding: 11px 14px; margin: 10px 0 0; overflow-x: auto;
+  white-space: pre; color: var(--ink-2);
+}
+.api-url { color: var(--amber); margin-bottom: 0; }
+.api-out { max-height: 340px; overflow-y: auto; }
+.api-out .k { color: var(--s1); }
+.api-out .s { color: var(--s2); }
+.api-out .n { color: var(--s4); }
+.api-out .t { color: var(--good); font-weight: 700; }
+.api-out .f { color: var(--critical); font-weight: 700; }

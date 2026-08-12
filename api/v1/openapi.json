@@ -1,0 +1,185 @@
+{
+    "openapi":  "3.1.0",
+    "info":  {
+                 "title":  "Zambia Mineral Origin Gate",
+                 "version":  "1.0.0",
+                 "description":  "Static JSON API. One file per Zambian mineral licence code, returning a binary origin verdict plus four auditable checks against published government registers. Served by GitHub Pages with permissive CORS, so it is callable from a browser or an off-chain worker without a proxy."
+             },
+    "servers":  [
+                    {
+                        "url":  "https://danielpatelzamb.github.io/zambia-legibility-map/api/v1"
+                    }
+                ],
+    "paths":  {
+                  "/index.json":  {
+                                      "get":  {
+                                                  "summary":  "Service metadata, check definitions, counts and source provenance",
+                                                  "operationId":  "getIndex",
+                                                  "responses":  {
+                                                                    "200":  {
+                                                                                "description":  "Service description"
+                                                                            }
+                                                                }
+                                              }
+                                  },
+                  "/licence/{licenceCode}.json":  {
+                                                      "get":  {
+                                                                  "summary":  "Origin gate verdict for one licence code",
+                                                                  "description":  "Codes are upper case, for example 40199-HQ-AMR. A code absent from the active register but named in an adverse notice returns found true with status revoked_or_lapsed, so revoked is never confused with unknown. A genuinely unknown code returns HTTP 404.",
+                                                                  "operationId":  "getLicence",
+                                                                  "parameters":  [
+                                                                                     {
+                                                                                         "name":  "licenceCode",
+                                                                                         "in":  "path",
+                                                                                         "schema":  {
+                                                                                                        "type":  "string",
+                                                                                                        "example":  "40199-HQ-AMR"
+                                                                                                    },
+                                                                                         "required":  true
+                                                                                     }
+                                                                                 ],
+                                                                  "responses":  {
+                                                                                    "200":  {
+                                                                                                "content":  {
+                                                                                                                "application/json":  {
+                                                                                                                                         "schema":  {
+                                                                                                                                                        "$ref":  "#/components/schemas/GateResponse"
+                                                                                                                                                    }
+                                                                                                                                     }
+                                                                                                            },
+                                                                                                "description":  "Gate verdict"
+                                                                                            },
+                                                                                    "404":  {
+                                                                                                "description":  "No such licence code in this snapshot"
+                                                                                            }
+                                                                                }
+                                                              }
+                                                  },
+                  "/bulk/gate.json":  {
+                                          "get":  {
+                                                      "summary":  "Every code with its verdict",
+                                                      "operationId":  "getBulk",
+                                                      "responses":  {
+                                                                        "200":  {
+                                                                                    "description":  "All verdicts"
+                                                                                }
+                                                                    }
+                                                  }
+                                      }
+              },
+    "components":  {
+                       "schemas":  {
+                                       "GateResponse":  {
+                                                            "type":  "object",
+                                                            "required":  [
+                                                                             "schema",
+                                                                             "licence_code",
+                                                                             "found",
+                                                                             "verified",
+                                                                             "origin_eligible",
+                                                                             "checks"
+                                                                         ],
+                                                            "properties":  {
+                                                                               "schema":  {
+                                                                                              "const":  "zm-origin-gate/v1",
+                                                                                              "type":  "string"
+                                                                                          },
+                                                                               "generated":  {
+                                                                                                 "type":  "string",
+                                                                                                 "format":  "date"
+                                                                                             },
+                                                                               "licence_code":  {
+                                                                                                    "type":  "string"
+                                                                                                },
+                                                                               "found":  {
+                                                                                             "type":  "boolean"
+                                                                                         },
+                                                                               "on_active_register":  {
+                                                                                                          "type":  "boolean"
+                                                                                                      },
+                                                                               "status":  {
+                                                                                              "type":  "string",
+                                                                                              "enum":  [
+                                                                                                           "active",
+                                                                                                           "revoked_or_lapsed"
+                                                                                                       ]
+                                                                                          },
+                                                                               "verified":  {
+                                                                                                "type":  "boolean",
+                                                                                                "description":  "True only when all four checks pass. This is the tradeable signal."
+                                                                                            },
+                                                                               "origin_eligible":  {
+                                                                                                       "type":  "boolean",
+                                                                                                       "description":  "True when the licence class may lawfully produce minerals for sale."
+                                                                                                   },
+                                                                               "grade":  {
+                                                                                             "type":  "string",
+                                                                                             "enum":  [
+                                                                                                          "A",
+                                                                                                          "B",
+                                                                                                          "C",
+                                                                                                          "D"
+                                                                                                      ]
+                                                                                         },
+                                                                               "checks_passed":  {
+                                                                                                     "maximum":  4,
+                                                                                                     "type":  "integer",
+                                                                                                     "minimum":  0
+                                                                                                 },
+                                                                               "checks_total":  {
+                                                                                                    "const":  4,
+                                                                                                    "type":  "integer"
+                                                                                                },
+                                                                               "checks":  {
+                                                                                              "items":  {
+                                                                                                            "properties":  {
+                                                                                                                               "id":  {
+                                                                                                                                          "type":  "string"
+                                                                                                                                      },
+                                                                                                                               "pass":  {
+                                                                                                                                            "type":  "boolean"
+                                                                                                                                        },
+                                                                                                                               "requirement":  {
+                                                                                                                                                   "type":  "string"
+                                                                                                                                               },
+                                                                                                                               "detail":  {
+                                                                                                                                              "type":  "string"
+                                                                                                                                          },
+                                                                                                                               "source":  {
+                                                                                                                                              "type":  "string",
+                                                                                                                                              "description":  "id of an entry in sources"
+                                                                                                                                          }
+                                                                                                                           },
+                                                                                                            "type":  "object"
+                                                                                                        },
+                                                                                              "type":  "array"
+                                                                                          },
+                                                                               "licence":  {
+                                                                                               "type":  [
+                                                                                                            "object",
+                                                                                                            "null"
+                                                                                                        ]
+                                                                                           },
+                                                                               "holder":  {
+                                                                                              "type":  "object"
+                                                                                          },
+                                                                               "adverse_notices":  {
+                                                                                                       "items":  {
+                                                                                                                     "type":  "object"
+                                                                                                                 },
+                                                                                                       "type":  "array"
+                                                                                                   },
+                                                                               "sources":  {
+                                                                                               "items":  {
+                                                                                                             "type":  "object"
+                                                                                                         },
+                                                                                               "type":  "array"
+                                                                                           },
+                                                                               "disclaimer":  {
+                                                                                                  "type":  "string"
+                                                                                              }
+                                                                           }
+                                                        }
+                                   }
+                   }
+}

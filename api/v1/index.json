@@ -1,0 +1,73 @@
+{
+    "schema":  "zm-origin-gate/v1",
+    "generated":  "2026-08-12",
+    "service":  "Zambia Mineral Origin Gate",
+    "description":  "Resolves a Zambian mineral licence code to a binary verified or not-verified verdict against four checks, each traceable to a published government register.",
+    "base_url":  "https://danielpatelzamb.github.io/zambia-legibility-map/api/v1",
+    "endpoints":  {
+                      "licence":  "https://danielpatelzamb.github.io/zambia-legibility-map/api/v1/licence/{LICENCE_CODE}.json",
+                      "bulk":  "https://danielpatelzamb.github.io/zambia-legibility-map/api/v1/bulk/gate.json",
+                      "openapi":  "https://danielpatelzamb.github.io/zambia-legibility-map/api/v1/openapi.json"
+                  },
+    "gate_definition":  "verified is true only when all four checks pass. Deliberately binary: a rich per-lot provenance payload fragments a fungible commodity and harms price discovery, whereas a binary gate concentrates liquidity into a single pool. Check detail is returned for audit, not for trading.",
+    "checks":  [
+                   {
+                       "id":  "licence_permits_production",
+                       "source":  "ngdr",
+                       "requirement":  "The licence class must permit minerals to be produced for sale"
+                   },
+                   {
+                       "id":  "no_adverse_notice",
+                       "source":  "mmmd_notices",
+                       "requirement":  "The licence must not appear in a cancellation or default notice"
+                   },
+                   {
+                       "id":  "beneficial_ownership_declared",
+                       "source":  "pacra",
+                       "requirement":  "The holder must have declared its beneficial owners"
+                   },
+                   {
+                       "id":  "annual_returns_filed",
+                       "source":  "pacra",
+                       "requirement":  "The holder must be current on statutory annual returns"
+                   }
+               ],
+    "counts":  {
+                   "codes_total":  9505,
+                   "on_active_register":  7444,
+                   "revoked_or_lapsed":  2061,
+                   "origin_eligible":  2444,
+                   "not_origin_eligible":  5000,
+                   "verified":  48
+               },
+    "sources":  {
+                    "value":  [
+                                  {
+                                      "id":  "ngdr",
+                                      "name":  "NGDR active mineral licence register",
+                                      "publisher":  "Geological Survey Department, Zambia",
+                                      "url":  "https://ngdr.gsb.gov.zm/",
+                                      "snapshot":  "2025-06-18",
+                                      "covers":  "licence code, type, holder, commodities, area, expiry, coordinates"
+                                  },
+                                  {
+                                      "id":  "mmmd_notices",
+                                      "name":  "Cancellation and default notices",
+                                      "publisher":  "Ministry of Mines and Minerals Development, Zambia",
+                                      "url":  "https://www.mmmd.gov.zm/",
+                                      "snapshot":  "2025-06-18",
+                                      "covers":  "MLC 78 cancellations, 2023 and 2025 public default notices"
+                                  },
+                                  {
+                                      "id":  "pacra",
+                                      "name":  "PACRA companies registry",
+                                      "publisher":  "Patents and Companies Registration Agency, Zambia",
+                                      "url":  "https://www.pacra.org.zm/",
+                                      "snapshot":  "2026-07-29",
+                                      "covers":  "entity number, status, declared business, beneficial ownership, annual returns"
+                                  }
+                              ],
+                    "Count":  3
+                },
+    "licence_terms":  "Derived from Zambian public registers. Reuse freely with attribution to this project and to the underlying government sources named above."
+}

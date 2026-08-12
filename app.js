@@ -3878,3 +3878,58 @@ const M49 = {
 
   buildRecord();
 })();
+
+/* ================================================================
+   ORIGIN GATE API DEMO
+   Calls the real static endpoint with a relative path, so the same code
+   proves the API locally and on the deployed site. If this panel shows
+   a response, the endpoint exists.
+================================================================ */
+(function apiDemo() {
+  const btn = document.getElementById("api-call");
+  if (!btn) return;
+  const outEl = document.getElementById("api-out");
+  const urlEl = document.getElementById("api-url");
+  const codeEl = document.getElementById("api-code");
+
+  /* Minimal JSON highlight. Keys, strings, numbers and booleans are picked out so a reader
+     can find `verified` at a glance, which is the only field a caller acts on. */
+  function hl(json) {
+    return json
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/"([^"\\]*(\\.[^"\\]*)*)"(\s*:)/g, '<span class="k">"$1"</span>$3')
+      .replace(/:\s*"([^"\\]*(\\.[^"\\]*)*)"/g, ': <span class="s">"$1"</span>')
+      .replace(/:\s*(-?\d+\.?\d*)/g, ': <span class="n">$1</span>')
+      .replace(/:\s*true/g, ': <span class="t">true</span>')
+      .replace(/:\s*false/g, ': <span class="f">false</span>');
+  }
+
+  async function call() {
+    const code = codeEl.value.trim().toUpperCase();
+    if (!code) return;
+    const path = "api/v1/licence/" + encodeURIComponent(code) + ".json";
+    urlEl.textContent = "GET " + new URL(path, location.href).href;
+    outEl.textContent = "fetching...";
+    try {
+      const r = await fetch(path, { cache: "no-store" });
+      if (r.status === 404) {
+        outEl.innerHTML = '<span class="f">HTTP 404</span>\n\nNo such licence code in this snapshot. ' +
+          "A 404 means only that: not found. A revoked licence returns 200 with status " +
+          '"revoked_or_lapsed", so the two are never confused.';
+        return;
+      }
+      if (!r.ok) { outEl.innerHTML = '<span class="f">HTTP ' + r.status + "</span>"; return; }
+      const j = await r.json();
+      const verdict = j.verified
+        ? '<span class="t">verified: true</span>  (' + j.checks_passed + "/4 checks passed)"
+        : '<span class="f">verified: false</span>  (' + j.checks_passed + "/4 checks passed)";
+      outEl.innerHTML = "HTTP " + r.status + "   " + verdict + "\n\n" + hl(JSON.stringify(j, null, 2));
+    } catch (e) {
+      outEl.innerHTML = '<span class="f">' + String(e.message || e) + "</span>\n\n" +
+        "If this page was opened as a local file, the browser blocks fetch. Serve the folder over " +
+        "HTTP, or try it on the deployed site.";
+    }
+  }
+  btn.addEventListener("click", call);
+  codeEl.addEventListener("keydown", (e) => { if (e.key === "Enter") call(); });
+})();
