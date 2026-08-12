@@ -1,0 +1,53 @@
+/* zm-ui design tokens.
+   Copied verbatim from the deployed terminal's styles.css :root block so the package and the
+   app cannot drift. If you change a value here, change it there too — or better, make the app
+   consume this file. */
+
+:root {
+  /* surfaces, darkest to lightest */
+  --bg: #0a0e14;
+  --panel: #10151d;
+  --panel-2: #151b26;
+  --border: #1e2733;
+  --grid: #1b2330;
+  --baseline: #2a3446;
+
+  /* text, strongest to weakest */
+  --ink: #dce5ee;
+  --ink-2: #9aa7b6;
+  --muted: #64718a;
+
+  /* brand accent — used for focus, selection and the active state */
+  --amber: #f5a623;
+
+  /* categorical series. Use in order; they are ordered for distinguishability, so s1+s2
+     is the most legible pair and s1+s4 the least. Never pick by taste out of sequence. */
+  --s1: #3987e5; /* blue */
+  --s2: #e06a3a; /* orange */
+  --s3: #22b381; /* aqua */
+  --s4: #d9a114; /* yellow */
+  --s5: #d55181; /* magenta */
+
+  /* status, in escalating severity. These carry meaning — do not use them decoratively. */
+  --good: #3fb950;
+  --warning: #d29922;
+  --serious: #ec835a;
+  --critical: #f85149;
+
+  --mono: ui-monospace, "Cascadia Mono", Consolas, "SF Mono", monospace;
+
+  /* spacing scale — the app uses these values, now named */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 14px;
+  --sp-5: 18px;
+  --sp-6: 26px;
+  --radius: 8px;
+  --radius-sm: 4px;
+  --radius-pill: 20px;
+}
+
+/* The terminal is dark-first by design: it is an analyst tool meant for long sessions, and
+   the categorical palette above was chosen against #0a0e14. There is deliberately no light
+   theme — a light variant would need a re-derived palette, not inverted tokens. */
